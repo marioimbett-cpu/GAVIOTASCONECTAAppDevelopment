@@ -331,7 +331,7 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const worker: OfficioWorker = {
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+      id: store.newId(),
       authorId,
       status: "pendiente",
       createdAt: new Date().toISOString(),
@@ -541,7 +541,7 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
   }
 
   function addReview(r: Omit<OfficioReview, "id" | "date">) {
-    const review: OfficioReview = { ...r, id: Date.now().toString(36), date: new Date().toISOString().slice(0, 10) };
+    const review: OfficioReview = { ...r, id: store.newId(), date: new Date().toISOString().slice(0, 10) };
     const all = [...store.getReviews(), review];
     store.setReviews(all);
     refreshReviews();

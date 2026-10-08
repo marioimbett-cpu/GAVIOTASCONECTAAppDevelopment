@@ -1,5 +1,9 @@
-// ── Gaviotas Conecta — Data Store (localStorage) ─────────────────────────────
-// All data editable from the admin panel is stored here.
+// ── Gaviotas Conecta — Data Store (Supabase) ──────────────────────────────────
+// Los datos viven en Supabase. Se cargan al abrir la app (store.init) en una
+// caché en memoria para que las pantallas los lean de forma síncrona; cada
+// set*() actualiza la caché y sincroniza los cambios con la base de datos.
+
+import { supabase } from "./supabase";
 
 export interface NewsItem {
   id: number;
@@ -144,7 +148,7 @@ export interface AppSettings {
   logoEmoji: string;
   neighborhood: string;
   city: string;
-  adminPassword: string;
+  adminPassword?: string; // obsoleto: el acceso admin ahora es con Supabase Auth
   presidentName: string;
   presidentEmail: string;
   resolutionNumber: string;
@@ -231,7 +235,6 @@ const DEFAULT_SETTINGS: AppSettings = {
   logoEmoji: "🦅",
   neighborhood: "Barrio Las Gaviotas",
   city: "Cartagena de Indias",
-  adminPassword: "admin2026",
   presidentName: "[Nombre del Presidente]",
   presidentEmail: "jac.lasgaviotas@correo.com",
   resolutionNumber: "[Número]",
@@ -330,61 +333,272 @@ const DEFAULT_REVIEWS: OfficioReview[] = [
   { id: "r4", authorName: "Pedro L.", authorId: "user4", workerId: "w3", stars: 5, comment: "Resolvió la emergencia eléctrica a las 11 pm. Muy profesional.", date: "2026-09-20" },
 ];
 
-// ── Generic helpers ──────────────────────────────────────────────────────────
-function load<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
+// ── Supabase sync ────────────────────────────────────────────────────────────
+type Row = Record<string, any>;
+type ContentKey = "news" | "events" | "places" | "directory" | "gallery" | "chatbot" | "emergency";
+
+const CONTENT_DEFAULTS: Record<ContentKey, { id: string | number }[]> = {
+  news: DEFAULT_NEWS, events: DEFAULT_EVENTS, places: DEFAULT_PLACES, directory: DEFAULT_DIRECTORY,
+  gallery: DEFAULT_GALLERY, chatbot: DEFAULT_CHATBOT, emergency: DEFAULT_EMERGENCY,
+};
+
+const session = { userId: "", isAdmin: false };
+
+const cache = {
+  news: [...DEFAULT_NEWS] as NewsItem[],
+  events: [...DEFAULT_EVENTS] as EventItem[],
+  places: [...DEFAULT_PLACES] as Place[],
+  directory: [...DEFAULT_DIRECTORY] as DirectoryBusiness[],
+  gallery: [...DEFAULT_GALLERY] as GalleryPhoto[],
+  chatbot: [...DEFAULT_CHATBOT] as ChatbotEntry[],
+  emergency: [...DEFAULT_EMERGENCY] as EmergencyLine[],
+  settings: { ...DEFAULT_SETTINGS } as AppSettings,
+  certificates: [] as CertificateRequest[],
+  lostFound: [] as LostFoundItem[],
+  workers: [] as OfficioWorker[],
+  reviews: [] as OfficioReview[],
+};
+
+// Última versión sincronizada de cada registro, para enviar solo lo que cambió.
+const synced: Record<string, Map<string, string>> = {};
+function snapshot(key: string, list: { id: string | number }[]) {
+  synced[key] = new Map(list.map((i) => [String(i.id), JSON.stringify(i)]));
+}
+function diff<T extends { id: string | number }>(key: string, list: T[]) {
+  const prev = synced[key] ?? new Map<string, string>();
+  const added: T[] = [], changed: T[] = [];
+  const ids = new Set<string>();
+  for (const item of list) {
+    const id = String(item.id);
+    ids.add(id);
+    const json = JSON.stringify(item);
+    if (!prev.has(id)) added.push(item);
+    else if (prev.get(id) !== json) changed.push(item);
   }
+  const removed = [...prev.keys()].filter((id) => !ids.has(id));
+  snapshot(key, list);
+  return { added, changed, removed };
 }
 
-function save<T>(key: string, value: T): void {
-  localStorage.setItem(key, JSON.stringify(value));
+function report(action: string, error: { message: string } | null, loud = true) {
+  if (!error) return;
+  console.error(`[Gaviotas] ${action}:`, error.message);
+  if (loud) alert(`No se pudo ${action}. Revisa tu conexión e inténtalo de nuevo.`);
+}
+
+const uuid = () => crypto.randomUUID();
+
+function omit(obj: Row, keys: string[]): Row {
+  const out: Row = {};
+  for (const k of Object.keys(obj)) if (!keys.includes(k) && obj[k] !== undefined) out[k] = obj[k];
+  return out;
+}
+
+// ── Mapeo filas ⇄ objetos de la app ──────────────────────────────────────────
+const CERT_COLS = ["id", "consecutive", "createdAt", "status", "adminComment", "approvedAt"];
+const certFromRow = (r: Row): CertificateRequest => ({
+  ...r.data, id: r.id, consecutive: r.consecutive, createdAt: r.created_at, status: r.status,
+  adminComment: r.admin_comment ?? undefined, approvedAt: r.approved_at ?? undefined,
+});
+const certToRow = (c: CertificateRequest): Row => ({
+  id: c.id, status: c.status, admin_comment: c.adminComment ?? null, approved_at: c.approvedAt ?? null,
+  data: omit(c as unknown as Row, CERT_COLS),
+});
+
+const LF_COLS = ["id", "status", "createdAt", "resolvedAt", "authorId"];
+const lfFromRow = (r: Row): LostFoundItem => ({
+  ...r.data, id: r.id, status: r.status, createdAt: r.created_at, resolvedAt: r.resolved_at ?? undefined, authorId: r.author_id,
+});
+const lfToRow = (i: LostFoundItem): Row => ({
+  id: i.id, status: i.status, resolved_at: i.resolvedAt ?? null, data: omit(i as unknown as Row, LF_COLS),
+});
+
+const W_COLS = ["id", "authorId", "status", "rejectionReason", "createdAt", "verified", "hiredCount", "cedula"];
+const workerFromRow = (r: Row, cedulas: Map<string, string>): OfficioWorker => ({
+  ...r.data, id: r.id, authorId: r.author_id, status: r.status, rejectionReason: r.rejection_reason ?? undefined,
+  createdAt: r.created_at, verified: r.verified, hiredCount: r.hired_count, cedula: cedulas.get(r.id) ?? "",
+});
+const workerToRow = (w: OfficioWorker): Row => ({
+  id: w.id, status: w.status, rejection_reason: w.rejectionReason ?? null, verified: w.verified,
+  hired_count: w.hiredCount, data: omit(w as unknown as Row, W_COLS),
+});
+
+const reviewFromRow = (r: Row): OfficioReview => ({
+  id: r.id, workerId: r.worker_id, authorId: r.author_id, authorName: r.author_name,
+  stars: r.stars, comment: r.comment, date: String(r.created_at).slice(0, 10),
+});
+
+// ── Escritura ────────────────────────────────────────────────────────────────
+async function syncContent(key: ContentKey, list: { id: string | number }[]) {
+  const { removed } = diff(key, list);
+  const rows = list.map((item, i) => ({ collection: key, id: String(item.id), sort_order: i, data: item, updated_at: new Date().toISOString() }));
+  if (rows.length) report("guardar los cambios", (await supabase.from("content_items").upsert(rows)).error);
+  if (removed.length) report("borrar", (await supabase.from("content_items").delete().eq("collection", key).in("id", removed)).error);
+}
+
+async function syncTable<T extends { id: string }>(
+  key: string, table: string, list: T[], toRow: (t: T) => Row, canEdit: (t: T) => boolean,
+  afterInsert?: (t: T) => Promise<void>,
+) {
+  const { added, changed, removed } = diff(key, list);
+  for (const item of added) {
+    const { error } = await supabase.from(table).insert(toRow(item));
+    report("guardar", error);
+    if (!error && afterInsert) await afterInsert(item);
+  }
+  for (const item of changed) {
+    if (!canEdit(item)) continue;
+    const row = toRow(item);
+    delete row.id;
+    report("actualizar", (await supabase.from(table).update(row).eq("id", item.id)).error, session.isAdmin);
+  }
+  if (removed.length && session.isAdmin) report("borrar", (await supabase.from(table).delete().in("id", removed)).error);
+}
+
+// ── Lectura ──────────────────────────────────────────────────────────────────
+async function loadAll() {
+  const { data: adm } = await supabase.rpc("is_admin");
+  session.isAdmin = adm === true;
+
+  const [content, settings, certs, lf, workers, priv, reviews] = await Promise.all([
+    supabase.from("content_items").select("collection,id,data").order("sort_order"),
+    supabase.from("app_settings").select("data").eq("id", 1).maybeSingle(),
+    supabase.from("certificates").select("*").order("created_at"),
+    supabase.from("lost_found").select("*").order("created_at", { ascending: false }),
+    supabase.from("workers").select("*").order("created_at"),
+    supabase.from("worker_private").select("worker_id,cedula"),
+    supabase.from("reviews").select("*").order("created_at"),
+  ]);
+
+  if (!content.error && content.data) {
+    for (const key of Object.keys(CONTENT_DEFAULTS) as ContentKey[]) {
+      (cache[key] as Row[]) = content.data.filter((r) => r.collection === key).map((r) => r.data);
+    }
+  } else report("cargar el contenido", content.error, false);
+  if (settings.data) cache.settings = { ...DEFAULT_SETTINGS, ...settings.data.data };
+
+  const cedulas = new Map<string, string>((priv.data ?? []).map((p) => [p.worker_id, p.cedula]));
+  cache.certificates = (certs.data ?? []).map(certFromRow);
+  cache.lostFound = (lf.data ?? []).map(lfFromRow);
+  cache.workers = (workers.data ?? []).map((r) => workerFromRow(r, cedulas));
+  cache.reviews = (reviews.data ?? []).map(reviewFromRow);
+
+  for (const key of Object.keys(CONTENT_DEFAULTS) as ContentKey[]) snapshot(key, cache[key]);
+  snapshot("certificates", cache.certificates);
+  snapshot("lostFound", cache.lostFound);
+  snapshot("workers", cache.workers);
+  snapshot("reviews", cache.reviews);
+}
+
+async function ensureVisitorSession() {
+  const { data } = await supabase.auth.getSession();
+  if (data.session) { session.userId = data.session.user.id; return; }
+  const { data: anon, error } = await supabase.auth.signInAnonymously();
+  report("iniciar la sesión", error, false);
+  session.userId = anon.user?.id ?? "";
 }
 
 // ── Store API ─────────────────────────────────────────────────────────────────
 export const store = {
-  getNews: () => load<NewsItem[]>("gc_news", DEFAULT_NEWS),
-  setNews: (v: NewsItem[]) => save("gc_news", v),
-
-  getEvents: () => load<EventItem[]>("gc_events", DEFAULT_EVENTS),
-  setEvents: (v: EventItem[]) => save("gc_events", v),
-
-  getPlaces: () => load<Place[]>("gc_places", DEFAULT_PLACES),
-  setPlaces: (v: Place[]) => save("gc_places", v),
-
-  getDirectory: () => load<DirectoryBusiness[]>("gc_directory", DEFAULT_DIRECTORY),
-  setDirectory: (v: DirectoryBusiness[]) => save("gc_directory", v),
-
-  getGallery: () => load<GalleryPhoto[]>("gc_gallery", DEFAULT_GALLERY),
-  setGallery: (v: GalleryPhoto[]) => save("gc_gallery", v),
-
-  getChatbot: () => load<ChatbotEntry[]>("gc_chatbot", DEFAULT_CHATBOT),
-  setChatbot: (v: ChatbotEntry[]) => save("gc_chatbot", v),
-
-  getEmergency: () => load<EmergencyLine[]>("gc_emergency", DEFAULT_EMERGENCY),
-  setEmergency: (v: EmergencyLine[]) => save("gc_emergency", v),
-
-  getSettings: () => load<AppSettings>("gc_settings", DEFAULT_SETTINGS),
-  setSettings: (v: AppSettings) => save("gc_settings", v),
-
-  getCertificates: () => load<CertificateRequest[]>("gc_certificates", []),
-  setCertificates: (v: CertificateRequest[]) => save("gc_certificates", v),
-
-  getLostFound: () => load<LostFoundItem[]>("gc_lostfound", []),
-  setLostFound: (v: LostFoundItem[]) => save("gc_lostfound", v),
-
-  getWorkers: () => load<OfficioWorker[]>("gc_workers", DEFAULT_WORKERS),
-  setWorkers: (v: OfficioWorker[]) => save("gc_workers", v),
-
-  getReviews: () => load<OfficioReview[]>("gc_reviews", DEFAULT_REVIEWS),
-  setReviews: (v: OfficioReview[]) => save("gc_reviews", v),
-
-  getAuthorId: () => {
-    let id = localStorage.getItem("gc_author_id");
-    if (!id) { id = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("gc_author_id", id); }
-    return id;
+  /** Abre sesión (anónima para vecinos) y carga todos los datos. Llamar antes de renderizar. */
+  async init() {
+    try { await ensureVisitorSession(); await loadAll(); }
+    catch (e) { console.error("[Gaviotas] init", e); }
   },
+  reload: loadAll,
+
+  isAdmin: () => session.isAdmin,
+
+  /** Inicia sesión de administrador. Devuelve un mensaje de error o null si todo salió bien. */
+  async adminSignIn(email: string, password: string): Promise<string | null> {
+    const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    if (error) return "Correo o contraseña incorrectos";
+    session.userId = data.user.id;
+    await loadAll();
+    if (!session.isAdmin) { await store.adminSignOut(); return "Esta cuenta no tiene permisos de administrador"; }
+    return null;
+  },
+  async adminSignOut() {
+    await supabase.auth.signOut();
+    session.isAdmin = false;
+    await ensureVisitorSession();
+    await loadAll();
+  },
+  async changeAdminPassword(password: string): Promise<string | null> {
+    const { error } = await supabase.auth.updateUser({ password });
+    return error ? error.message : null;
+  },
+
+  getNews: () => cache.news,
+  setNews: (v: NewsItem[]) => { cache.news = v; void syncContent("news", v); },
+
+  getEvents: () => cache.events,
+  setEvents: (v: EventItem[]) => { cache.events = v; void syncContent("events", v); },
+
+  getPlaces: () => cache.places,
+  setPlaces: (v: Place[]) => { cache.places = v; void syncContent("places", v); },
+
+  getDirectory: () => cache.directory,
+  setDirectory: (v: DirectoryBusiness[]) => { cache.directory = v; void syncContent("directory", v); },
+
+  getGallery: () => cache.gallery,
+  setGallery: (v: GalleryPhoto[]) => { cache.gallery = v; void syncContent("gallery", v); },
+
+  getChatbot: () => cache.chatbot,
+  setChatbot: (v: ChatbotEntry[]) => { cache.chatbot = v; void syncContent("chatbot", v); },
+
+  getEmergency: () => cache.emergency,
+  setEmergency: (v: EmergencyLine[]) => { cache.emergency = v; void syncContent("emergency", v); },
+
+  getSettings: () => cache.settings,
+  setSettings: (v: AppSettings) => {
+    const { adminPassword: _ignored, ...data } = v;
+    cache.settings = data;
+    void supabase.from("app_settings").update({ data, updated_at: new Date().toISOString() }).eq("id", 1)
+      .then(({ error }) => report("guardar los ajustes", error));
+  },
+
+  getCertificates: () => cache.certificates,
+  setCertificates: (v: CertificateRequest[]) => {
+    cache.certificates = v;
+    void syncTable("certificates", "certificates", v, certToRow, () => true);
+  },
+  /** Envía una solicitud nueva; el servidor asigna el consecutivo. */
+  async addCertificate(req: CertificateRequest): Promise<CertificateRequest | null> {
+    const { data, error } = await supabase.from("certificates").insert({ ...certToRow(req), status: "Enviada" }).select().single();
+    report("enviar la solicitud", error);
+    if (error || !data) return null;
+    const saved = certFromRow(data);
+    cache.certificates = [...cache.certificates, saved];
+    snapshot("certificates", cache.certificates);
+    return saved;
+  },
+
+  getLostFound: () => cache.lostFound,
+  setLostFound: (v: LostFoundItem[]) => {
+    cache.lostFound = v;
+    void syncTable("lostFound", "lost_found", v, lfToRow, (i) => session.isAdmin || i.authorId === session.userId);
+  },
+
+  getWorkers: () => cache.workers,
+  setWorkers: (v: OfficioWorker[]) => {
+    cache.workers = v;
+    void syncTable("workers", "workers", v, workerToRow,
+      (w) => session.isAdmin || w.authorId === session.userId,
+      async (w) => {
+        if (w.cedula) report("guardar la cédula", (await supabase.from("worker_private").insert({ worker_id: w.id, cedula: w.cedula })).error);
+      });
+  },
+
+  getReviews: () => cache.reviews,
+  setReviews: (v: OfficioReview[]) => {
+    cache.reviews = v;
+    void syncTable("reviews", "reviews", v,
+      (r) => ({ id: r.id, worker_id: r.workerId, author_name: r.authorName, stars: r.stars, comment: r.comment }),
+      () => false);
+  },
+
+  /** Id del usuario actual (anónimo o admin) en Supabase. */
+  getAuthorId: () => session.userId,
+  newId: uuid,
 };

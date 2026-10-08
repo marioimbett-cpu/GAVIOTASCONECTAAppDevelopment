@@ -130,7 +130,7 @@ function Select({ label, value, onChange, options, required = true }: {
 type View = "menu" | "form" | "requests";
 
 function newId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  return store.newId();
 }
 
 function consecutive() {
@@ -200,7 +200,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
     setStep(step + 1);
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!authorized) { setErrors(["Debes autorizar el tratamiento de datos"]); return; }
     const id = newId();
     const req: CertificateRequest = {
@@ -214,9 +214,9 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
       photoContrato: photoContrato || undefined,
       photoSelfie: photoSelfie || undefined,
     };
-    const prev = store.getCertificates();
-    store.setCertificates([...prev, req]);
-    setCertId(id);
+    const saved = await store.addCertificate(req);
+    if (!saved) return;
+    setCertId(saved.id);
     setSubmitted(true);
   }
 

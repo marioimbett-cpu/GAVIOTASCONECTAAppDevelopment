@@ -606,6 +606,15 @@ function EmergencyManager() {
 function SettingsManager() {
   const [settings, setSettings] = useState<AppSettings>(store.getSettings());
   const [saved, setSaved] = useState(false);
+  const [newPwd, setNewPwd] = useState("");
+  const [pwdMsg, setPwdMsg] = useState("");
+
+  async function changePassword() {
+    if (newPwd.length < 8) { setPwdMsg("La contraseña debe tener mínimo 8 caracteres"); return; }
+    const error = await store.changeAdminPassword(newPwd);
+    setPwdMsg(error ? `No se pudo cambiar: ${error}` : "✅ Contraseña actualizada");
+    if (!error) setNewPwd("");
+  }
 
   function save() {
     store.setSettings(settings);
@@ -657,12 +666,16 @@ function SettingsManager() {
           placeholder="Este certificado se expide con base en..."
         />
       </ACard>
-      <ACard>
-        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#162323" }}>🔐 Contraseña del panel admin</p>
-        <AField label="Nueva contraseña" type="password" value={settings.adminPassword} onChange={(v) => setSettings({ ...settings, adminPassword: v })} placeholder="Mínimo 6 caracteres" />
-        <p style={{ fontSize: 11, color: "#6B7A7A", margin: "0 0 10px" }}>Guarda esta contraseña en un lugar seguro.</p>
-      </ACard>
       <ABtn onClick={save}>💾 Guardar ajustes</ABtn>
+      <ACard>
+        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#162323" }}>🔐 Tu contraseña de administrador</p>
+        <AField label="Nueva contraseña" type="password" value={newPwd} onChange={setNewPwd} placeholder="Mínimo 8 caracteres" />
+        {pwdMsg && <p style={{ fontSize: 12, color: pwdMsg.startsWith("✅") ? "#16A34A" : "#DC2626", margin: "0 0 10px" }}>{pwdMsg}</p>}
+        <ABtn onClick={changePassword}>Cambiar contraseña</ABtn>
+      </ACard>
+      <ACard>
+        <ABtn onClick={async () => { await store.adminSignOut(); window.location.reload(); }}>🚪 Cerrar sesión de administrador</ABtn>
+      </ACard>
     </div>
   );
 }

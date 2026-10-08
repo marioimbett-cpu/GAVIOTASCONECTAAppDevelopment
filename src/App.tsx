@@ -1101,18 +1101,28 @@ function ContactScreen({ onBack }: { onBack: () => void }) {
 // ── More Screen ────────────────────────────────────────────────────────────
 function AdminAccess({ onOpen, theme }: { onOpen: () => void; theme: ReturnType<typeof makeTheme> }) {
   const [show, setShow] = useState(false);
+  const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
 
-  function attempt() {
-    const correct = store.getSettings().adminPassword;
-    if (pwd === correct) { setShow(false); setPwd(""); setErr(""); onOpen(); }
-    else { setErr("Contraseña incorrecta"); }
+  async function attempt() {
+    if (busy) return;
+    setBusy(true);
+    const error = await store.adminSignIn(email, pwd);
+    setBusy(false);
+    if (error) { setErr(error); return; }
+    setShow(false); setPwd(""); setErr(""); onOpen();
+  }
+
+  function open() {
+    if (store.isAdmin()) onOpen();
+    else setShow(true);
   }
 
   return (
     <>
-      <button onClick={() => setShow(true)} style={{ width: "100%", marginBottom: 12, padding: "12px 16px", background: "none", border: `1.5px dashed ${theme.border}`, borderRadius: 14, color: theme.muted, fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+      <button onClick={open} style={{ width: "100%", marginBottom: 12, padding: "12px 16px", background: "none", border: `1.5px dashed ${theme.border}`, borderRadius: 14, color: theme.muted, fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
         ⚙️ Panel Administrativo
       </button>
       {show && (
@@ -1121,13 +1131,14 @@ function AdminAccess({ onOpen, theme }: { onOpen: () => void; theme: ReturnType<
             <div style={{ textAlign: "center" as const, marginBottom: 16 }}>
               <div style={{ fontSize: 36, marginBottom: 8 }}>⚙️</div>
               <p style={{ margin: 0, fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: 18, color: theme.ink }}>Panel Admin</p>
-              <p style={{ margin: "4px 0 0", fontSize: 13, color: theme.muted }}>Ingresa la contraseña de administrador</p>
+              <p style={{ margin: "4px 0 0", fontSize: 13, color: theme.muted }}>Ingresa con tu cuenta de administrador</p>
             </div>
-            <input type="password" value={pwd} onChange={(e) => { setPwd(e.target.value); setErr(""); }} onKeyDown={(e) => e.key === "Enter" && attempt()} placeholder="Contraseña" autoFocus style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${err ? "#DC2626" : theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink, marginBottom: 8, boxSizing: "border-box" as const }} />
+            <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); setErr(""); }} placeholder="Correo" autoFocus autoComplete="username" style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${err ? "#DC2626" : theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink, marginBottom: 8, boxSizing: "border-box" as const }} />
+            <input type="password" autoComplete="current-password" value={pwd} onChange={(e) => { setPwd(e.target.value); setErr(""); }} onKeyDown={(e) => e.key === "Enter" && attempt()} placeholder="Contraseña" style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${err ? "#DC2626" : theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink, marginBottom: 8, boxSizing: "border-box" as const }} />
             {err && <p style={{ color: "#DC2626", fontSize: 12, margin: "0 0 8px" }}>{err}</p>}
             <div style={{ display: "flex", gap: 8 }}>
               <button onClick={() => { setShow(false); setPwd(""); setErr(""); }} style={{ flex: 1, padding: "11px", borderRadius: 11, background: theme.surface, border: "none", color: theme.muted, fontWeight: 600, fontSize: 14, cursor: "pointer" }}>Cancelar</button>
-              <button onClick={attempt} style={{ flex: 1, padding: "11px", borderRadius: 11, background: TEAL, border: "none", color: "white", fontWeight: 700, fontSize: 14, cursor: "pointer" }}>Entrar</button>
+              <button onClick={attempt} style={{ flex: 1, padding: "11px", borderRadius: 11, background: TEAL, border: "none", color: "white", fontWeight: 700, fontSize: 14, cursor: "pointer" }}>{busy ? "Entrando…" : "Entrar"}</button>
             </div>
           </div>
         </div>
