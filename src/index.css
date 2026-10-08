@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import 'leaflet/dist/leaflet.css';
+@import 'tailwindcss';
+
+/* Oculta controles de Leaflet que no necesitamos */
+.leaflet-control-attribution { font-size: 9px !important; }
+.leaflet-popup-content { font-family: 'Outfit', sans-serif; margin: 10px 14px; }
+.leaflet-popup-content-wrapper { border-radius: 12px !important; box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important; }
+.leaflet-popup-tip-container { margin-top: -1px; }
+
+@theme inline {
+  --color-background: #FAF6F0;
+  --color-foreground: #162323;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #162323;
+  --color-primary: #0D6E6E;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #E8F5F5;
+  --color-secondary-foreground: #0D6E6E;
+  --color-muted: #F0EBE3;
+  --color-muted-foreground: #6B7A7A;
+  --color-accent: #E8643A;
+  --color-accent-foreground: #FFFFFF;
+  --color-border: #E2DAD0;
+  --color-ring: #0D6E6E;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --radius: 1rem;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
