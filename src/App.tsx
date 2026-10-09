@@ -1105,6 +1105,7 @@ function AdminAccess({ onOpen, theme }: { onOpen: () => void; theme: ReturnType<
   const [pwd, setPwd] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [showPwd, setShowPwd] = useState(false);
 
   async function attempt() {
     if (busy) return;
@@ -1134,7 +1135,16 @@ function AdminAccess({ onOpen, theme }: { onOpen: () => void; theme: ReturnType<
               <p style={{ margin: "4px 0 0", fontSize: 13, color: theme.muted }}>Ingresa con tu cuenta de administrador</p>
             </div>
             <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); setErr(""); }} placeholder="Correo" autoFocus autoComplete="username" style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${err ? "#DC2626" : theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink, marginBottom: 8, boxSizing: "border-box" as const }} />
-            <input type="password" autoComplete="current-password" value={pwd} onChange={(e) => { setPwd(e.target.value); setErr(""); }} onKeyDown={(e) => e.key === "Enter" && attempt()} placeholder="Contraseña" style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${err ? "#DC2626" : theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink, marginBottom: 8, boxSizing: "border-box" as const }} />
+            <div style={{ position: "relative" as const, marginBottom: 8 }}>
+              <input type={showPwd ? "text" : "password"} autoComplete="current-password" value={pwd} onChange={(e) => { setPwd(e.target.value); setErr(""); }} onKeyDown={(e) => e.key === "Enter" && attempt()} placeholder="Contraseña" style={{ width: "100%", padding: "12px 46px 12px 14px", borderRadius: 12, border: `1.5px solid ${err ? "#DC2626" : theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink, boxSizing: "border-box" as const }} />
+              <button type="button" onClick={() => setShowPwd((v) => !v)} aria-label={showPwd ? "Ocultar contraseña" : "Mostrar contraseña"} title={showPwd ? "Ocultar contraseña" : "Mostrar contraseña"} style={{ position: "absolute" as const, right: 6, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", background: "none", border: "none", cursor: "pointer", color: theme.muted, padding: 0 }}>
+                {showPwd ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" /><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                )}
+              </button>
+            </div>
             {err && <p style={{ color: "#DC2626", fontSize: 12, margin: "0 0 8px" }}>{err}</p>}
             <div style={{ display: "flex", gap: 8 }}>
               <button onClick={() => { setShow(false); setPwd(""); setErr(""); }} style={{ flex: 1, padding: "11px", borderRadius: 11, background: theme.surface, border: "none", color: theme.muted, fontWeight: 600, fontSize: 14, cursor: "pointer" }}>Cancelar</button>
