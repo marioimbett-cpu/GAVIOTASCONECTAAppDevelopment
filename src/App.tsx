@@ -175,14 +175,18 @@ function LoginScreen({ onLogin, onGoRegister, onRecover, onSkip }: { onLogin: (u
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     if (!email || !password) { setError("Completa todos los campos."); return; }
     if (!email.includes("@")) { setError("Ingresa un correo válido."); return; }
     if (password.length < 6) { setError("La contraseña debe tener al menos 6 caracteres."); return; }
     setLoading(true);
-    setTimeout(() => { setLoading(false); onLogin({ name: email.split("@")[0], email }); }, 1200);
+    const err = await store.signIn(email, password);
+    setLoading(false);
+    if (err) { setError(err); return; }
+    const u = store.currentUser();
+    if (u) onLogin(u);
   }
 
   return (
@@ -229,7 +233,7 @@ function RegisterScreen({ onRegister, onGoLogin }: { onRegister: (u: User) => vo
   const [loading, setLoading] = useState(false);
   const set = (k: string) => (v: string) => setForm((f) => ({ ...f, [k]: v }));
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     if (!form.name || !form.email || !form.password) { setError("Completa los campos obligatorios."); return; }
@@ -237,7 +241,11 @@ function RegisterScreen({ onRegister, onGoLogin }: { onRegister: (u: User) => vo
     if (form.password.length < 6) { setError("La contraseña debe tener al menos 6 caracteres."); return; }
     if (form.password !== form.confirm) { setError("Las contraseñas no coinciden."); return; }
     setLoading(true);
-    setTimeout(() => { setLoading(false); onRegister({ name: form.name, email: form.email }); }, 1400);
+    const err = await store.signUp(form.name, form.email, form.phone, form.password);
+    setLoading(false);
+    if (err) { setError(err); return; }
+    const u = store.currentUser();
+    if (u) onRegister(u);
   }
 
   return (
@@ -278,6 +286,17 @@ function RecoverScreen({ onBack }: { onBack: () => void }) {
   const { theme } = useTheme();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function send() {
+    if (!email.includes("@")) { setError("Ingresa un correo válido."); return; }
+    setLoading(true);
+    const err = await store.sendPasswordReset(email);
+    setLoading(false);
+    if (err) { setError(err); return; }
+    setSent(true);
+  }
 
   return (
     <div style={{ height: "100%", background: theme.bg, overflowY: "auto" as const }}>
@@ -303,8 +322,9 @@ function RecoverScreen({ onBack }: { onBack: () => void }) {
         ) : (
           <Card>
             <div style={{ padding: "24px 20px", display: "flex", flexDirection: "column" as const, gap: 16 }}>
-              <InputField label="Correo registrado" type="email" placeholder="tucorreo@email.com" value={email} onChange={setEmail} />
-              <button onClick={() => email.includes("@") && setSent(true)} style={{ padding: "14px", borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
+              <InputField label="Correo registrado" type="email" placeholder="tucorreo@email.com" value={email} onChange={(v) => { setEmail(v); setError(""); }} />
+              {error && <p style={{ color: "#DC2626", fontSize: 13, margin: 0 }}>{error}</p>}
+              <button onClick={send} disabled={loading} style={{ padding: "14px", borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
                 Enviar enlace de recuperación
               </button>
               <button onClick={onBack} style={{ background: "none", border: "none", color: theme.muted, fontSize: 13, cursor: "pointer" }}>
@@ -1303,8 +1323,8 @@ function BottomNav({ active, onChange }: { active: Screen; onChange: (s: Screen)
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const theme = makeTheme(darkMode);
-  const [authView, setAuthView] = useState<AuthView>("splash");
-  const [user, setUser] = useState<User | null>(null);
+  const [authView, setAuthView] = useState<AuthView>(() => (store.currentUser() ? "app" : "splash"));
+  const [user, setUser] = useState<User | null>(() => store.currentUser());
   const [screen, setScreen] = useState<Screen>("home");
   const [subScreen, setSubScreen] = useState<SubScreen>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
@@ -1312,7 +1332,7 @@ export default function App() {
   const [showAdmin, setShowAdmin] = useState(false);
 
   function handleLogin(u: User) { setUser(u); setAuthView("app"); }
-  function handleLogout() { setUser(null); setAuthView("splash"); setScreen("home"); setSubScreen(null); }
+  function handleLogout() { setUser(null); setAuthView("splash"); setScreen("home"); setSubScreen(null); void store.signOut(); }
   function toggleFav(id: number) {
     setFavorites((f) => {
       const next = new Set(f);

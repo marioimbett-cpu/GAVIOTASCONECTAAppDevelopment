@@ -342,7 +342,7 @@ const CONTENT_DEFAULTS: Record<ContentKey, { id: string | number }[]> = {
   gallery: DEFAULT_GALLERY, chatbot: DEFAULT_CHATBOT, emergency: DEFAULT_EMERGENCY,
 };
 
-const session = { userId: "", isAdmin: false };
+const session: { userId: string; isAdmin: boolean; user: { name: string; email: string } | null } = { userId: "", isAdmin: false, user: null };
 
 const cache = {
   news: [...DEFAULT_NEWS] as NewsItem[],
@@ -490,12 +490,44 @@ async function loadAll() {
   snapshot("reviews", cache.reviews);
 }
 
+type AuthUser = { id: string; email?: string; is_anonymous?: boolean; user_metadata?: Row };
+function setUser(u: AuthUser | null | undefined) {
+  session.userId = u?.id ?? "";
+  session.user = u && !u.is_anonymous && u.email
+    ? { name: u.user_metadata?.full_name || u.email.split("@")[0], email: u.email }
+    : null;
+}
+
+async function startClaim(): Promise<string | null> {
+  const { data } = await supabase.auth.getSession();
+  if (!data.session?.user.is_anonymous) return null;
+  const { data: code } = await supabase.rpc("start_claim");
+  return (code as string | null) ?? null;
+}
+
+async function afterAccountLogin(claimCode: string | null) {
+  const { data } = await supabase.auth.getUser();
+  setUser(data.user);
+  if (claimCode) await supabase.rpc("finish_claim", { claim_code: claimCode });
+  await loadAll();
+}
+
+function authError(msg: string): string {
+  const m = msg.toLowerCase();
+  if (m.includes("invalid login")) return "Correo o contraseña incorrectos.";
+  if (m.includes("already registered") || m.includes("already been registered")) return "Ese correo ya tiene una cuenta. Inicia sesión.";
+  if (m.includes("email not confirmed")) return "Debes confirmar tu correo antes de iniciar sesión.";
+  if (m.includes("password")) return "La contraseña no es válida (mínimo 6 caracteres).";
+  if (m.includes("rate limit") || m.includes("too many")) return "Demasiados intentos. Espera unos minutos.";
+  return "No se pudo completar. Revisa tu conexión e inténtalo de nuevo.";
+}
+
 async function ensureVisitorSession() {
   const { data } = await supabase.auth.getSession();
-  if (data.session) { session.userId = data.session.user.id; return; }
+  if (data.session) { setUser(data.session.user); return; }
   const { data: anon, error } = await supabase.auth.signInAnonymously();
   report("iniciar la sesión", error, false);
-  session.userId = anon.user?.id ?? "";
+  setUser(anon.user);
 }
 
 // ── Store API ─────────────────────────────────────────────────────────────────
@@ -509,21 +541,54 @@ export const store = {
 
   isAdmin: () => session.isAdmin,
 
+  /** Vecino con cuenta (no anónimo), o null. */
+  currentUser: () => session.user,
+
+  /** Crea una cuenta de vecino. Lo que publicó sin cuenta en este celular pasa a su cuenta. */
+  async signUp(name: string, email: string, phone: string, password: string): Promise<string | null> {
+    const code = await startClaim();
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(), password,
+      options: { data: { full_name: name.trim(), phone: phone.trim() } },
+    });
+    if (error) return authError(error.message);
+    if (!data.session) return "Te enviamos un correo para confirmar tu cuenta. Ábrelo y luego inicia sesión.";
+    await afterAccountLogin(code);
+    return null;
+  },
+
+  /** Inicia sesión de vecino con correo y contraseña. */
+  async signIn(email: string, password: string): Promise<string | null> {
+    const code = await startClaim();
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    if (error) return authError(error.message);
+    await afterAccountLogin(code);
+    return null;
+  },
+
+  async signOut() {
+    await supabase.auth.signOut();
+    session.isAdmin = false;
+    session.user = null;
+    await ensureVisitorSession();
+    await loadAll();
+  },
+
+  async sendPasswordReset(email: string): Promise<string | null> {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: window.location.origin });
+    return error ? authError(error.message) : null;
+  },
+
   /** Inicia sesión de administrador. Devuelve un mensaje de error o null si todo salió bien. */
   async adminSignIn(email: string, password: string): Promise<string | null> {
     const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (error) return "Correo o contraseña incorrectos";
-    session.userId = data.user.id;
+    setUser(data.user);
     await loadAll();
     if (!session.isAdmin) { await store.adminSignOut(); return "Esta cuenta no tiene permisos de administrador"; }
     return null;
   },
-  async adminSignOut() {
-    await supabase.auth.signOut();
-    session.isAdmin = false;
-    await ensureVisitorSession();
-    await loadAll();
-  },
+  async adminSignOut() { await store.signOut(); },
   async changeAdminPassword(password: string): Promise<string | null> {
     const { error } = await supabase.auth.updateUser({ password });
     return error ? error.message : null;
