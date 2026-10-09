@@ -21,15 +21,23 @@
     "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.0.0",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/leaflet": "^1.9.22",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "^6.0.0",
+    "@vitejs/plugin-react": "^6.1.2",
     "oxfmt": "^0.2.0",
-    "tailwindcss": "^4.0.0",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5.7.0",
-    "vite": "^8.0.5"
+    "vite": "^8.3.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "dompurify": ">=3.4.16",
+      "nanoid": ">=3.3.18",
+      "source-map-js": ">=1.2.2",
+      "postcss": ">=8.5.23"
+    }
   }
 }

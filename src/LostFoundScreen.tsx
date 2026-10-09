@@ -545,6 +545,7 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
               <PhotoUploader photos={photos} onChange={setPhotos} max={4} />
             </div>
             <Field label="Teléfono de contacto" value={phone} onChange={setPhone} type="tel" placeholder="Ej: 300 000 0000" />
+            <p style={{ fontSize: 12, color: "#6B7A7A", margin: "-4px 0 12px", lineHeight: 1.5 }}>Este teléfono será visible para todos en la publicación, para que puedan contactarte.</p>
             <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#162323", marginBottom: 8 }}>
               <input type="checkbox" checked={showWhatsApp} onChange={(e) => setShowWhatsApp(e.target.checked)} style={{ width: 18, height: 18, accentColor: TEAL }} />
               Mostrar botón de WhatsApp en la publicación

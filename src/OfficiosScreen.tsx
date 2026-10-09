@@ -216,7 +216,10 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
             <p style={{ fontSize: 13, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Reseñas</p>
             {!isOwner && !reviewSent && (
-              <button onClick={() => setShowReviewForm(true)} style={{ fontSize: 12, fontWeight: 700, color: TEAL, background: TEAL + "15", padding: "5px 12px", borderRadius: 100, border: "none", cursor: "pointer" }}>
+              <button onClick={() => {
+                if (!store.currentUser()) { alert("Para calificar un servicio debes iniciar sesión o crear una cuenta (Más → Cerrar sesión → Iniciar sesión)."); return; }
+                setShowReviewForm(true);
+              }} style={{ fontSize: 12, fontWeight: 700, color: TEAL, background: TEAL + "15", padding: "5px 12px", borderRadius: 100, border: "none", cursor: "pointer" }}>
                 ⭐ Calificar
               </button>
             )}

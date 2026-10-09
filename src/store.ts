@@ -383,7 +383,12 @@ function diff<T extends { id: string | number }>(key: string, list: T[]) {
 function report(action: string, error: { message: string } | null, loud = true) {
   if (!error) return;
   console.error(`[Gaviotas] ${action}:`, error.message);
-  if (loud) alert(`No se pudo ${action}. Revisa tu conexión e inténtalo de nuevo.`);
+  if (!loud) return;
+  const m = error.message;
+  if (m.includes("LIMITE_DIARIO")) alert("Alcanzaste el máximo de publicaciones permitidas por hoy. Inténtalo de nuevo mañana.");
+  else if (m.includes("_data_size") || m.includes("_len")) alert("El contenido es demasiado grande. Usa menos fotos o un texto más corto.");
+  else if (m.includes("row-level security")) alert("No tienes permiso para hacer esta acción.");
+  else alert(`No se pudo ${action}. Revisa tu conexión e inténtalo de nuevo.`);
 }
 
 const uuid = () => crypto.randomUUID();
