@@ -714,7 +714,7 @@ export default function LostFoundScreen({ onBack }: { onBack: () => void }) {
 
       {/* FAB */}
       {tab !== "Finales felices" && (
-        <button onClick={() => setShowForm(true)} style={{
+        <button onClick={() => { if (store.requireAccount("publicar")) setShowForm(true); }} style={{
           position: "fixed", bottom: 88, right: 20,
           width: 56, height: 56, borderRadius: "50%",
           background: `linear-gradient(135deg, ${CORAL}, #C0522C)`,

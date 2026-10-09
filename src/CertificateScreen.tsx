@@ -396,7 +396,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
         ))}
       </div>
 
-      <button onClick={() => { setView("form"); setStep(1); setSubmitted(false); setErrors([]); }}
+      <button onClick={() => { if (!store.requireAccount("solicitar un certificado")) return; setView("form"); setStep(1); setSubmitted(false); setErrors([]); }}
         style={{ width: "100%", padding: "16px", borderRadius: 14, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontWeight: 700, fontSize: 16, border: "none", cursor: "pointer", marginBottom: 12 }}>
         📋 Solicitar certificado
       </button>

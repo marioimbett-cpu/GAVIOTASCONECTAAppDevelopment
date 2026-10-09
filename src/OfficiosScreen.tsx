@@ -217,7 +217,7 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
             <p style={{ fontSize: 13, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Reseñas</p>
             {!isOwner && !reviewSent && (
               <button onClick={() => {
-                if (!store.currentUser()) { alert("Para calificar un servicio debes iniciar sesión o crear una cuenta (Más → Cerrar sesión → Iniciar sesión)."); return; }
+                if (!store.requireAccount("calificar un servicio")) return;
                 setShowReviewForm(true);
               }} style={{ fontSize: 12, fontWeight: 700, color: TEAL, background: TEAL + "15", padding: "5px 12px", borderRadius: 100, border: "none", cursor: "pointer" }}>
                 ⭐ Calificar
@@ -758,7 +758,7 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
 
             {/* Ofrece tus servicios CTA */}
             {!myProfile && (
-              <button onClick={() => setView("register")}
+              <button onClick={() => { if (store.requireAccount("inscribirte en Oficios del barrio")) setView("register"); }}
                 style={{ width: "100%", padding: "16px", borderRadius: 16, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 14, textAlign: "left" }}>
                 <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }}>🧰</div>
                 <div>

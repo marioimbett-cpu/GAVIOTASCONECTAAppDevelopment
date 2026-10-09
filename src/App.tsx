@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import MapScreen from "./MapScreen";
 import ChatScreen from "./ChatScreen";
 import AdminPanel from "./AdminPanel";
@@ -1373,6 +1373,13 @@ export default function App() {
   const [showAdmin, setShowAdmin] = useState(false);
 
   function handleLogin(u: User) { setUser(u); setAuthView("app"); }
+
+  // Una pantalla pide cuenta para publicar: ir a iniciar sesión.
+  useEffect(() => {
+    const goLogin = () => { setShowAdmin(false); setAuthView("login"); };
+    window.addEventListener("gc:require-login", goLogin);
+    return () => window.removeEventListener("gc:require-login", goLogin);
+  }, []);
   function handleLogout() { setUser(null); setAuthView("splash"); setScreen("home"); setSubScreen(null); void store.signOut(); }
   function toggleFav(id: number) {
     setFavorites((f) => {

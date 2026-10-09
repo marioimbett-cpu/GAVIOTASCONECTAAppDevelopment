@@ -628,6 +628,15 @@ export const store = {
   /** Vecino con cuenta (no anónimo), o null. */
   currentUser: () => session.user,
 
+  /** Para publicar hay que tener cuenta. Devuelve true si la tiene; si no, ofrece ir a iniciar sesión. */
+  requireAccount(action = "publicar"): boolean {
+    if (session.user) return true;
+    if (confirm(`Para ${action} debes iniciar sesión o crear una cuenta. ¿Quieres hacerlo ahora?`)) {
+      window.dispatchEvent(new CustomEvent("gc:require-login"));
+    }
+    return false;
+  },
+
   /** Crea una cuenta de vecino. Lo que publicó sin cuenta en este celular pasa a su cuenta. */
   async signUp(name: string, email: string, phone: string, password: string): Promise<string | null> {
     const code = await startClaim();

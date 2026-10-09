@@ -85,7 +85,7 @@ Para repetir las pruebas de la base de datos: pegar `supabase/tests/security.sql
 
 ## 5. Riesgos pendientes
 
-- **Sin CAPTCHA:** un atacante con muchas IP podría crear sesiones anónimas (Supabase limita a 30 por hora por IP) y publicar dentro de los límites diarios. Configurar Cloudflare Turnstile (sección 6).
+- **Sin CAPTCHA:** mitigado: publicar, inscribir oficios, pedir certificados, calificar y subir fotos exige cuenta con correo confirmado (verificado en la base de datos). Sin cuenta solo se puede ver. Recomendado activar Cloudflare Turnstile antes del lanzamiento público si aparecen registros falsos.
 - **Fotos huérfanas:** al borrar una publicación, sus fotos quedan en el almacenamiento.
 - **Sin paginación en pantalla:** la app trae hasta 300 perdidos, 500 oficios y 2.000 reseñas; con más volumen hará falta "cargar más".
 - **Plan gratuito:** límites de base de datos, almacenamiento y transferencia, y pausa por inactividad. Confirmar las cifras vigentes en el panel de Supabase.
