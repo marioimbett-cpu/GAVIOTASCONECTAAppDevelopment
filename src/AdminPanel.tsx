@@ -7,6 +7,7 @@ import {
 import CertificateAdmin from "./CertificateAdmin";
 import LostFoundAdmin from "./LostFoundAdmin";
 import OfficiosAdmin from "./OfficiosAdmin";
+import EyeToggle from "./EyeToggle";
 
 const TEAL = "#0D6E6E";
 const CORAL = "#E8643A";
@@ -86,6 +87,8 @@ function AField({ label, value, onChange, type = "text", placeholder = "", multi
   label: string; value: string; onChange: (v: string) => void;
   type?: string; placeholder?: string; multiline?: boolean;
 }) {
+  const [showPwd, setShowPwd] = useState(false);
+  const isPwd = type === "password";
   const base: React.CSSProperties = {
     width: "100%", padding: "10px 12px", borderRadius: 10,
     border: "1.5px solid #E2DAD0", fontSize: 13,
@@ -97,7 +100,10 @@ function AField({ label, value, onChange, type = "text", placeholder = "", multi
       <label style={{ fontSize: 11, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 4 }}>{label}</label>
       {multiline
         ? <textarea value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} rows={3} style={{ ...base, resize: "vertical" as const }} />
-        : <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} style={base} />}
+        : <div style={{ position: "relative" as const }}>
+            <input type={isPwd && showPwd ? "text" : type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} style={isPwd ? { ...base, paddingRight: 46 } : base} />
+            {isPwd && <EyeToggle visible={showPwd} onToggle={() => setShowPwd((v) => !v)} />}
+          </div>}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import CertificateScreen from "./CertificateScreen";
 import LostFoundScreen from "./LostFoundScreen";
 import OfficiosScreen from "./OfficiosScreen";
 import { store } from "./store";
+import EyeToggle from "./EyeToggle";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type Screen = "home" | "news" | "events" | "directory" | "more";
@@ -67,10 +68,15 @@ function Card({ children, style, onClick }: { children: React.ReactNode; style?:
 
 function InputField({ label, type = "text", placeholder, value, onChange }: { label: string; type?: string; placeholder: string; value: string; onChange: (v: string) => void }) {
   const { theme } = useTheme();
+  const [showPwd, setShowPwd] = useState(false);
+  const isPwd = type === "password";
   return (
     <div>
       <label style={{ fontSize: 12, fontWeight: 700, color: theme.muted, textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>{label}</label>
-      <input type={type} placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: `1.5px solid ${theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink }} />
+      <div style={{ position: "relative" as const }}>
+      <input type={isPwd && showPwd ? "text" : type} placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} style={{ width: "100%", boxSizing: "border-box" as const, padding: isPwd ? "13px 46px 13px 16px" : "13px 16px", borderRadius: 12, border: `1.5px solid ${theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink }} />
+      {isPwd && <EyeToggle visible={showPwd} onToggle={() => setShowPwd((v) => !v)} color={theme.muted} />}
+      </div>
     </div>
   );
 }
