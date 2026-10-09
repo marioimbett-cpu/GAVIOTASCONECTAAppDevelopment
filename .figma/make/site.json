@@ -1,15 +1,15 @@
 {
-  "title": "gaviotasconecta.figma.site",
+  "title": "Gaviotas Conecta",
   "description": "App comunitaria del Barrio Las Gaviotas, Cartagena. Noticias, eventos, oficios del barrio, certificados de vecindad, mascotas perdidas y líneas de emergencia en un solo lugar.",
   "language": "es-CO",
   "robots": {
     "index": false
   },
   "icons": {
-    "icon": "/.figma/make/favicon.png"
+    "icon": "/favicon.png"
   },
   "openGraph": {
-    "image": "/.figma/make/social-image.png"
+    "image": "/icon-512.png"
   },
   "accessibility": {
     "addBypassLinks": false,
