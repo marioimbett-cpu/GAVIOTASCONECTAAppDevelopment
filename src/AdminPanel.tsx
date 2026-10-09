@@ -330,7 +330,7 @@ function PlacesManager() {
       <AField label="Emoji del marcador" value={editing.emoji} onChange={(v) => setEditing({ ...editing, emoji: v })} placeholder="ej. 🛒" />
       <AField label="Teléfono (opcional)" value={editing.phone || ""} onChange={(v) => setEditing({ ...editing, phone: v })} placeholder="ej. 300 123 4567" />
       <AField label="Horario (opcional)" value={editing.hours || ""} onChange={(v) => setEditing({ ...editing, hours: v })} placeholder="ej. Lun–Vie 8 a.m.–5 p.m." />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 10 }}>
         <AField label="Latitud" value={String(editing.lat)} onChange={(v) => setEditing({ ...editing, lat: parseFloat(v) || editing.lat })} placeholder="ej. 10.4004" />
         <AField label="Longitud" value={String(editing.lng)} onChange={(v) => setEditing({ ...editing, lng: parseFloat(v) || editing.lng })} placeholder="ej. -75.4893" />
       </div>
@@ -471,7 +471,7 @@ function GalleryManager() {
         <span style={{ fontSize: 14, color: "#6B7A7A" }}>{items.length} fotos</span>
         <ABtn small onClick={() => setEditing({ ...empty })}>+ Nueva foto</ABtn>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 10 }}>
         {items.map((item) => (
           <div key={item.id} style={{ background: "white", borderRadius: 12, border: "1px solid #E2DAD0", overflow: "hidden" }}>
             <img src={item.url} alt={item.caption} style={{ width: "100%", height: 90, objectFit: "cover" as const }} onError={(e) => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1519689680058-324335573bb0?w=300&h=200&fit=crop"; }} />

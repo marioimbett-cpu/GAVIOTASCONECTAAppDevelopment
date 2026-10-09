@@ -502,7 +502,7 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
       </div>
 
       <div style={{ padding: "16px 20px 0" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 10 }}>
           {quickLinks.map((q) => (
             <button key={q.label} onClick={q.action} style={{ background: theme.card, border: `1px solid ${theme.border}`, borderRadius: 14, padding: "13px 4px", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 6, cursor: "pointer" }}>
               <div style={{ width: 40, height: 40, borderRadius: 11, background: q.color + "18", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>{q.icon}</div>
@@ -570,7 +570,7 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
           <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 19, fontWeight: 600, margin: 0, color: theme.ink }}>Servicios del barrio</h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 8 }}>
           {[
             { icon: "📋", label: "Certif. vecindad", color: TEAL, action: () => onSubScreen("certificate") },
             { icon: "🐾", label: "Perdidos", color: CORAL, action: () => onSubScreen("lostfound") },
@@ -911,7 +911,7 @@ function ParticipateScreen({ onBack }: { onBack: () => void }) {
             ) : (
               <>
                 <SectionTitle>Tipo de problema</SectionTitle>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 8, marginBottom: 16 }}>
                   {reportTypes.map((r) => (
                     <button key={r.value} onClick={() => setReportForm({ ...reportForm, type: r.value })} style={{ padding: "12px", borderRadius: 12, border: `1.5px solid ${reportForm.type === r.value ? TEAL : theme.border}`, background: reportForm.type === r.value ? TEAL + "15" : theme.card, textAlign: "left" as const, cursor: "pointer" }}>
                       <div style={{ fontSize: 13, fontWeight: 700, color: reportForm.type === r.value ? TEAL : theme.ink }}>{r.label}</div>
@@ -967,7 +967,7 @@ function GalleryScreen({ onBack }: { onBack: () => void }) {
           </div>
         </div>
       )}
-      <div style={{ padding: "0 20px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+      <div style={{ padding: "0 20px", display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 8 }}>
         {photos.map((p) => (
           <div key={p.id} onClick={() => setSelected(p.id)} style={{ aspectRatio: "1", borderRadius: 12, overflow: "hidden", background: theme.surface, cursor: "pointer", position: "relative" as const }}>
             <img src={p.url} alt={p.caption} style={{ width: "100%", height: "100%", objectFit: "cover" as const }} />
@@ -1275,7 +1275,7 @@ function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, onGoN
         )}
 
         {/* Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 10, marginBottom: 16 }}>
           {([["5", "Noticias", onGoNews], ["4", "Eventos", onGoEvents], ["8", "Negocios", onGoDirectory]] as [string, string, () => void][]).map(([val, lbl, action]) => (
             <button key={lbl} onClick={action} style={{ background: theme.card, border: `1px solid ${theme.border}`, borderRadius: 14, padding: "13px 10px", textAlign: "center" as const, cursor: "pointer" }}>
               <div style={{ fontSize: 21, fontWeight: 800, color: TEAL, fontFamily: "'Fraunces', serif" }}>{val}</div>
@@ -1466,6 +1466,7 @@ export default function App() {
         <div style={{
           flex: 1,
           overflowY: (subScreen === "map" || subScreen === "chat") ? "hidden" : "auto" as any,
+          overflowX: "hidden" as const,
           paddingBottom: (subScreen === "map" || subScreen === "chat") ? 0 : 16,
           // lostfound uses its own internal scroll + fixed overlay for the form
           position: "relative" as const,
