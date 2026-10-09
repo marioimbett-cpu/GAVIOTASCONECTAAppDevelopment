@@ -1,0 +1,45 @@
+# Respaldo diario de la base de datos de Supabase (el plan gratuito no incluye copias).
+# Requiere el secreto SUPABASE_DB_URL en GitHub → Settings → Secrets and variables → Actions:
+#   la "Connection string" (URI, Session pooler) de Supabase → Project Settings → Database.
+# El respaldo queda como artefacto privado del repositorio durante 30 días.
+name: Respaldo diario
+
+on:
+  schedule:
+    - cron: "17 8 * * *" # 3:17 a.m. hora de Colombia
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  respaldo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Verificar que el secreto existe
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$DB_URL" ]; then echo "::error::Falta el secreto SUPABASE_DB_URL"; exit 1; fi
+      - name: Instalar cliente de PostgreSQL 17
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -sSo /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client-17
+      - name: Exportar esquema y datos (public + auth + storage)
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          mkdir -p respaldo
+          /usr/lib/postgresql/17/bin/pg_dump "$DB_URL" --no-owner --no-privileges \
+            --schema=public --schema=auth --schema=storage \
+            --file=respaldo/gaviotas-$(date -u +%Y%m%d).sql
+          gzip respaldo/*.sql
+          ls -lh respaldo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: respaldo-${{ github.run_id }}
+          path: respaldo/
+          retention-days: 30
