@@ -38,11 +38,11 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
   const day = approvedDate.getDate();
   const month = approvedDate.toLocaleDateString("es-CO", { month: "long" });
   const year = approvedDate.getFullYear();
-  const verifyUrl = `gaviotasconecta.app/verificar/${cert.consecutive}`;
+  const verifyLink = `${window.location.origin}/verificar/${cert.id}`;
+  const verifyUrl = `${window.location.host}/verificar`;
 
   useEffect(() => {
-    const payload = `CERTIFICADO DE VECINDAD\n${cert.consecutive}\n${cert.fullName}\n${cert.docType} No. ${cert.docNumber}\n${verifyUrl}`;
-    QRCode.toDataURL(payload, { width: 160, margin: 1, color: { dark: "#0D6E6E", light: "#FFFFFF" } })
+    QRCode.toDataURL(verifyLink, { width: 160, margin: 1, color: { dark: "#0D6E6E", light: "#FFFFFF" } })
       .then(setQrUrl)
       .catch(() => {});
   }, [cert]);
@@ -230,9 +230,8 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
         {/* Nota verificación */}
         <div style={{ background: "#F5F5F5", borderRadius: 8, padding: "8px 10px", marginBottom: 10 }}>
           <p style={{ fontSize: 9.5, color: "#6B7A7A", margin: 0, lineHeight: 1.5, textAlign: "center" }}>
-            Verifique la autenticidad escaneando el código QR o en{" "}
-            <span style={{ color: TEAL, fontWeight: 700 }}>{verifyUrl}</span>{" "}
-            con el código <strong style={{ color: "#162323" }}>{cert.consecutive}</strong>.
+            Verifique la autenticidad del certificado <strong style={{ color: "#162323" }}>{cert.consecutive}</strong>{" "}
+            escaneando el código QR con la cámara del celular ({verifyUrl}).
           </p>
         </div>
 

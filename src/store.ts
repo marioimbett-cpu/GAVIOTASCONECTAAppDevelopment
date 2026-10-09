@@ -399,6 +399,74 @@ function omit(obj: Row, keys: string[]): Row {
   return out;
 }
 
+// ── Fotos: se suben al almacenamiento y en la base de datos queda solo el enlace ──
+// "publico": fotos que cualquiera puede ver (perdidos, oficios, noticias, galería).
+// "certificados": documentos privados (cédulas, recibos, firma); solo dueño y JAC,
+// mediante enlaces firmados que vencen.
+type Bucket = "publico" | "certificados";
+const DATA_URL = /^data:image\/(png|jpe?g|webp);base64,/i;
+const PRIVATE_PREFIX = "storage://certificados/";
+const signedToPrivate = new Map<string, string>();
+
+async function uploadDataUrl(bucket: Bucket, dataUrl: string): Promise<string> {
+  const blob = await (await fetch(dataUrl)).blob();
+  const ext = blob.type === "image/png" ? "png" : blob.type === "image/webp" ? "webp" : "jpg";
+  const path = `${session.userId}/${uuid()}.${ext}`;
+  const { error } = await supabase.storage.from(bucket).upload(path, blob, { contentType: blob.type, upsert: false });
+  if (error) throw error;
+  return bucket === "publico" ? supabase.storage.from("publico").getPublicUrl(path).data.publicUrl : PRIVATE_PREFIX + path;
+}
+
+/** Sube cada foto en base64 del objeto y la reemplaza (en el mismo objeto) por su enlace. */
+async function externalizeImages(obj: Row, bucket: Bucket): Promise<boolean> {
+  let changed = false;
+  const visit = async (o: Row) => {
+    for (const k of Object.keys(o)) {
+      const v = o[k];
+      if (typeof v === "string" && DATA_URL.test(v)) { o[k] = await uploadDataUrl(bucket, v); changed = true; }
+      else if (v && typeof v === "object") await visit(v);
+    }
+  };
+  await visit(obj);
+  return changed;
+}
+
+/** Copia del objeto con los enlaces firmados convertidos de nuevo a referencias privadas. */
+function restorePrivate<T>(value: T): T {
+  if (typeof value === "string") return (signedToPrivate.get(value) ?? value) as T;
+  if (Array.isArray(value)) return value.map(restorePrivate) as T;
+  if (value && typeof value === "object") {
+    const out: Row = {};
+    for (const [k, v] of Object.entries(value)) out[k] = restorePrivate(v);
+    return out as T;
+  }
+  return value;
+}
+
+/** Reemplaza (en el mismo objeto) las referencias privadas por enlaces firmados de 12 horas. */
+async function resolvePrivate(objs: Row[]) {
+  const refs: { o: Row; k: string; path: string }[] = [];
+  const visit = (o: Row) => {
+    for (const k of Object.keys(o)) {
+      const v = o[k];
+      if (typeof v === "string" && v.startsWith(PRIVATE_PREFIX)) refs.push({ o, k, path: v.slice(PRIVATE_PREFIX.length) });
+      else if (v && typeof v === "object") visit(v);
+    }
+  };
+  objs.forEach(visit);
+  if (!refs.length) return;
+  const { data } = await supabase.storage.from("certificados").createSignedUrls([...new Set(refs.map((r) => r.path))], 60 * 60 * 12);
+  const byPath = new Map((data ?? []).filter((d) => d.signedUrl).map((d) => [d.path, d.signedUrl]));
+  for (const r of refs) {
+    const url = byPath.get(r.path);
+    if (url) { signedToPrivate.set(url, PRIVATE_PREFIX + r.path); r.o[r.k] = url; }
+  }
+}
+
+function markSynced(key: string, item: { id: string | number }) {
+  synced[key]?.set(String(item.id), JSON.stringify(item));
+}
+
 // ── Mapeo filas ⇄ objetos de la app ──────────────────────────────────────────
 const CERT_COLS = ["id", "consecutive", "createdAt", "status", "adminComment", "approvedAt"];
 const certFromRow = (r: Row): CertificateRequest => ({
@@ -407,7 +475,7 @@ const certFromRow = (r: Row): CertificateRequest => ({
 });
 const certToRow = (c: CertificateRequest): Row => ({
   id: c.id, status: c.status, admin_comment: c.adminComment ?? null, approved_at: c.approvedAt ?? null,
-  data: omit(c as unknown as Row, CERT_COLS),
+  data: restorePrivate(omit(c as unknown as Row, CERT_COLS)),
 });
 
 const LF_COLS = ["id", "status", "createdAt", "resolvedAt", "authorId"];
@@ -436,6 +504,10 @@ const reviewFromRow = (r: Row): OfficioReview => ({
 // ── Escritura ────────────────────────────────────────────────────────────────
 async function syncContent(key: ContentKey, list: { id: string | number }[]) {
   const { removed } = diff(key, list);
+  try {
+    for (const item of list) await externalizeImages(item as Row, "publico");
+    snapshot(key, list);
+  } catch (e) { report("subir las fotos", e as { message: string }); return; }
   const rows = list.map((item, i) => ({ collection: key, id: String(item.id), sort_order: i, data: item, updated_at: new Date().toISOString() }));
   if (rows.length) report("guardar los cambios", (await supabase.from("content_items").upsert(rows)).error);
   if (removed.length) report("borrar", (await supabase.from("content_items").delete().eq("collection", key).in("id", removed)).error);
@@ -443,9 +515,15 @@ async function syncContent(key: ContentKey, list: { id: string | number }[]) {
 
 async function syncTable<T extends { id: string }>(
   key: string, table: string, list: T[], toRow: (t: T) => Row, canEdit: (t: T) => boolean,
-  afterInsert?: (t: T) => Promise<void>,
+  afterInsert?: (t: T) => Promise<void>, bucket?: Bucket,
 ) {
   const { added, changed, removed } = diff(key, list);
+  // Sube primero las fotos nuevas; si falla, no se guarda el registro.
+  for (const item of [...added, ...changed.filter(canEdit)]) {
+    if (!bucket) break;
+    try { if (await externalizeImages(item as Row, bucket)) markSynced(key, item); }
+    catch (e) { report("subir las fotos", e as { message: string }); return; }
+  }
   for (const item of added) {
     const { error } = await supabase.from(table).insert(toRow(item));
     report("guardar", error);
@@ -468,11 +546,11 @@ async function loadAll() {
   const [content, settings, certs, lf, workers, priv, reviews] = await Promise.all([
     supabase.from("content_items").select("collection,id,data").order("sort_order"),
     supabase.from("app_settings").select("data").eq("id", 1).maybeSingle(),
-    supabase.from("certificates").select("*").order("created_at"),
-    supabase.from("lost_found").select("*").order("created_at", { ascending: false }),
-    supabase.from("workers").select("*").order("created_at"),
+    supabase.from("certificates").select("*").order("created_at").limit(500),
+    supabase.from("lost_found").select("*").order("created_at", { ascending: false }).limit(300),
+    supabase.from("workers").select("*").order("created_at").limit(500),
     supabase.from("worker_private").select("worker_id,cedula"),
-    supabase.from("reviews").select("*").order("created_at"),
+    supabase.from("reviews").select("*").order("created_at", { ascending: false }).limit(2000),
   ]);
 
   if (!content.error && content.data) {
@@ -486,7 +564,8 @@ async function loadAll() {
   cache.certificates = (certs.data ?? []).map(certFromRow);
   cache.lostFound = (lf.data ?? []).map(lfFromRow);
   cache.workers = (workers.data ?? []).map((r) => workerFromRow(r, cedulas));
-  cache.reviews = (reviews.data ?? []).map(reviewFromRow);
+  cache.reviews = (reviews.data ?? []).map(reviewFromRow).reverse();
+  await resolvePrivate([...cache.certificates, cache.settings] as Row[]);
 
   for (const key of Object.keys(CONTENT_DEFAULTS) as ContentKey[]) snapshot(key, cache[key]);
   snapshot("certificates", cache.certificates);
@@ -635,21 +714,32 @@ export const store = {
   setSettings: (v: AppSettings) => {
     const { adminPassword: _ignored, ...data } = v;
     cache.settings = data;
-    void supabase.from("app_settings").update({ data, updated_at: new Date().toISOString() }).eq("id", 1)
-      .then(({ error }) => report("guardar los ajustes", error));
+    void (async () => {
+      // La firma del presidente se guarda en el almacenamiento privado, no pública.
+      try { await externalizeImages(data as Row, "certificados"); }
+      catch (e) { report("subir la firma", e as { message: string }); return; }
+      await resolvePrivate([data as Row]);
+      const { error } = await supabase.from("app_settings")
+        .update({ data: restorePrivate(data), updated_at: new Date().toISOString() }).eq("id", 1);
+      report("guardar los ajustes", error);
+    })();
   },
 
   getCertificates: () => cache.certificates,
   setCertificates: (v: CertificateRequest[]) => {
     cache.certificates = v;
-    void syncTable("certificates", "certificates", v, certToRow, () => true);
+    void syncTable("certificates", "certificates", v, certToRow, () => true, undefined, "certificados");
   },
-  /** Envía una solicitud nueva; el servidor asigna el consecutivo. */
+  /** Envía una solicitud nueva; las fotos van al almacenamiento privado y el servidor asigna el consecutivo. */
   async addCertificate(req: CertificateRequest): Promise<CertificateRequest | null> {
-    const { data, error } = await supabase.from("certificates").insert({ ...certToRow(req), status: "Enviada" }).select().single();
+    const copy = structuredClone(req);
+    try { await externalizeImages(copy as unknown as Row, "certificados"); }
+    catch (e) { report("subir las fotos", e as { message: string }); return null; }
+    const { data, error } = await supabase.from("certificates").insert({ ...certToRow(copy), status: "Enviada" }).select().single();
     report("enviar la solicitud", error);
     if (error || !data) return null;
     const saved = certFromRow(data);
+    await resolvePrivate([saved as unknown as Row]);
     cache.certificates = [...cache.certificates, saved];
     snapshot("certificates", cache.certificates);
     return saved;
@@ -658,7 +748,7 @@ export const store = {
   getLostFound: () => cache.lostFound,
   setLostFound: (v: LostFoundItem[]) => {
     cache.lostFound = v;
-    void syncTable("lostFound", "lost_found", v, lfToRow, (i) => session.isAdmin || i.authorId === session.userId);
+    void syncTable("lostFound", "lost_found", v, lfToRow, (i) => session.isAdmin || i.authorId === session.userId, undefined, "publico");
   },
 
   getWorkers: () => cache.workers,
@@ -668,7 +758,7 @@ export const store = {
       (w) => session.isAdmin || w.authorId === session.userId,
       async (w) => {
         if (w.cedula) report("guardar la cédula", (await supabase.from("worker_private").insert({ worker_id: w.id, cedula: w.cedula })).error);
-      });
+      }, "publico");
   },
 
   getReviews: () => cache.reviews,
