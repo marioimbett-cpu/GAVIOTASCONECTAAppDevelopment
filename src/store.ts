@@ -3,7 +3,7 @@
 // caché en memoria para que las pantallas los lean de forma síncrona; cada
 // set*() actualiza la caché y sincroniza los cambios con la base de datos.
 
-import { supabase } from "./supabase";
+import { supabase, openedFromRecoveryLink } from "./supabase";
 
 export interface NewsItem {
   id: number;
@@ -572,6 +572,17 @@ export const store = {
     session.user = null;
     await ensureVisitorSession();
     await loadAll();
+  },
+
+  /** true si la app se abrió desde el enlace de recuperar contraseña. */
+  isPasswordRecovery: () => openedFromRecoveryLink && !!session.user,
+
+  /** Guarda la contraseña nueva después de abrir el enlace de recuperación. */
+  async setNewPassword(password: string): Promise<string | null> {
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) return authError(error.message);
+    history.replaceState(null, "", window.location.pathname);
+    return null;
   },
 
   async sendPasswordReset(email: string): Promise<string | null> {

@@ -11,7 +11,7 @@ import EyeToggle from "./EyeToggle";
 // ── Types ──────────────────────────────────────────────────────────────────
 type Screen = "home" | "news" | "events" | "directory" | "more";
 type SubScreen = "contact" | "gallery" | "about" | "privacy" | "participate" | "notifications" | "map" | "chat" | "certificate" | "lostfound" | "oficios" | null;
-type AuthView = "splash" | "login" | "register" | "recover" | "app";
+type AuthView = "splash" | "login" | "register" | "recover" | "newPassword" | "app";
 
 interface User { name: string; email: string; }
 interface Notification { id: number; icon: string; title: string; body: string; time: string; read: boolean; }
@@ -333,6 +333,47 @@ function RecoverScreen({ onBack }: { onBack: () => void }) {
             </div>
           </Card>
         )}
+      </div>
+    </div>
+  );
+}
+
+// ── Auth: New Password (desde el enlace del correo) ───────────────────────────
+function NewPasswordScreen({ onDone }: { onDone: () => void }) {
+  const { theme } = useTheme();
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function save() {
+    if (password.length < 6) { setError("La contraseña debe tener al menos 6 caracteres."); return; }
+    if (password !== confirm) { setError("Las contraseñas no coinciden."); return; }
+    setLoading(true);
+    const err = await store.setNewPassword(password);
+    setLoading(false);
+    if (err) { setError(err); return; }
+    onDone();
+  }
+
+  return (
+    <div style={{ height: "100%", background: theme.bg, overflowY: "auto" as const }}>
+      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0A4F4F 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
+        <div style={{ width: 60, height: 60, borderRadius: 16, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 16px" }}>🔑</div>
+        <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 24, fontWeight: 700, margin: "0 0 4px" }}>Nueva contraseña</h2>
+        <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Escribe la contraseña que usarás de ahora en adelante</p>
+      </div>
+      <div style={{ padding: "28px 20px" }}>
+        <Card>
+          <div style={{ padding: "24px 20px", display: "flex", flexDirection: "column" as const, gap: 16 }}>
+            <InputField label="Nueva contraseña" type="password" placeholder="Mínimo 6 caracteres" value={password} onChange={(v) => { setPassword(v); setError(""); }} />
+            <InputField label="Confirmar contraseña" type="password" placeholder="Repite la contraseña" value={confirm} onChange={(v) => { setConfirm(v); setError(""); }} />
+            {error && <p style={{ color: "#DC2626", fontSize: 13, margin: 0 }}>{error}</p>}
+            <button onClick={save} disabled={loading} style={{ padding: "14px", borderRadius: 12, background: loading ? theme.muted : `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
+              {loading ? "Guardando..." : "Guardar contraseña"}
+            </button>
+          </div>
+        </Card>
       </div>
     </div>
   );
@@ -1323,7 +1364,7 @@ function BottomNav({ active, onChange }: { active: Screen; onChange: (s: Screen)
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const theme = makeTheme(darkMode);
-  const [authView, setAuthView] = useState<AuthView>(() => (store.currentUser() ? "app" : "splash"));
+  const [authView, setAuthView] = useState<AuthView>(() => (store.isPasswordRecovery() ? "newPassword" : store.currentUser() ? "app" : "splash"));
   const [user, setUser] = useState<User | null>(() => store.currentUser());
   const [screen, setScreen] = useState<Screen>("home");
   const [subScreen, setSubScreen] = useState<SubScreen>(null);
@@ -1367,6 +1408,7 @@ export default function App() {
   if (authView === "login") return authShell(<LoginScreen onLogin={handleLogin} onGoRegister={() => setAuthView("register")} onRecover={() => setAuthView("recover")} onSkip={() => setAuthView("app")} />);
   if (authView === "register") return authShell(<RegisterScreen onRegister={handleLogin} onGoLogin={() => setAuthView("login")} />);
   if (authView === "recover") return authShell(<RecoverScreen onBack={() => setAuthView("login")} />);
+  if (authView === "newPassword") return authShell(<NewPasswordScreen onDone={() => setAuthView("app")} />);
 
   // Sub-screens
   const subScreenMap: Record<string, React.ReactNode> = {
