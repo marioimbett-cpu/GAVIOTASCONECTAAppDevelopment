@@ -159,7 +159,7 @@ function SplashScreen({ onNext }: { onNext: (v: "login" | "register" | "app") =>
           Gaviotas <span style={{ color: SKY }}>Conecta</span>
         </h1>
         <p style={{ color: "#3D5A80", fontSize: 15, margin: 0, lineHeight: 1.55, maxWidth: 300 }}>
-          La plataforma digital de la comunidad de la Urbanización Las Gaviotas
+          La plataforma digital de la Urbanización Las Gaviotas
         </p>
       </div>
 
