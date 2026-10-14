@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
-const TEAL = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL = "#0060A8";
+const CORAL = "#0088CC";
 
 interface Theme {
   bg: string; card: string; border: string; ink: string;
@@ -124,7 +124,7 @@ function getBotReply(input: string): string {
 
 // ── Render message with *bold* ─────────────────────────────────────────────
 function MessageText({ text, fromBot }: { text: string; fromBot: boolean }) {
-  const color = fromBot ? "#162323" : "white";
+  const color = fromBot ? "#0E2238" : "white";
   const parts = text.split(/(\*[^*]+\*)/g);
   return (
     <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color, whiteSpace: "pre-wrap" as const }}>
@@ -187,7 +187,7 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
         </button>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{
-            width: 46, height: 46, borderRadius: 15, background: `linear-gradient(135deg, ${TEAL}, #0a4f4f)`,
+            width: 46, height: 46, borderRadius: 15, background: `linear-gradient(135deg, ${TEAL}, #003078)`,
             display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22,
             boxShadow: `0 4px 16px ${TEAL}44`,
           }}>
@@ -237,14 +237,14 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
             alignItems: "flex-end",
           }}>
             {msg.from === "bot" && (
-              <div style={{ width: 30, height: 30, borderRadius: 10, background: `linear-gradient(135deg, ${TEAL}, #0a4f4f)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0 }}>
+              <div style={{ width: 30, height: 30, borderRadius: 10, background: `linear-gradient(135deg, ${TEAL}, #003078)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0 }}>
                 <img src="/gaviota.png" alt="" style={{ width: 28, height: 28, display: "block" }} />
               </div>
             )}
             <div style={{
               maxWidth: "78%",
               background: msg.from === "user"
-                ? `linear-gradient(135deg, ${TEAL}, #0a4f4f)`
+                ? `linear-gradient(135deg, ${TEAL}, #003078)`
                 : theme.card,
               border: msg.from === "bot" ? `1px solid ${theme.border}` : "none",
               borderRadius: msg.from === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
@@ -262,7 +262,7 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
         {/* Typing indicator */}
         {typing && (
           <div style={{ display: "flex", alignItems: "flex-end", gap: 8, marginBottom: 12 }}>
-            <div style={{ width: 30, height: 30, borderRadius: 10, background: `linear-gradient(135deg, ${TEAL}, #0a4f4f)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0 }}>
+            <div style={{ width: 30, height: 30, borderRadius: 10, background: `linear-gradient(135deg, ${TEAL}, #003078)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0 }}>
               <img src="/gaviota.png" alt="" style={{ width: 28, height: 28, display: "block" }} />
             </div>
             <div style={{
@@ -306,7 +306,7 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
             disabled={!input.trim() || typing}
             style={{
               width: 46, height: 46, borderRadius: "50%", flexShrink: 0,
-              background: input.trim() && !typing ? `linear-gradient(135deg, ${TEAL}, #0a4f4f)` : theme.surface,
+              background: input.trim() && !typing ? `linear-gradient(135deg, ${TEAL}, #003078)` : theme.surface,
               border: "none", cursor: input.trim() && !typing ? "pointer" : "not-allowed",
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: input.trim() && !typing ? `0 4px 16px ${TEAL}44` : "none",

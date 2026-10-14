@@ -18,8 +18,8 @@ L.Marker.prototype.options.icon = L.icon({
 });
 
 // ── Brand ────────────────────────────────────────────────────────────────
-const TEAL  = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL  = "#0060A8";
+const CORAL = "#0088CC";
 
 // ── Coordenadas del Barrio Las Gaviotas, Cartagena de Indias ─────────────
 // Fuente: OpenStreetMap / Nominatim (polígono oficial del barrio)
@@ -274,9 +274,9 @@ export default function MapScreen({ onBack, theme }: MapScreenProps) {
                   )}
                   <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 5 }}>
                     <span style={{ fontSize: 20 }}>{place.emoji}</span>
-                    <strong style={{ fontSize: 13, color: "#162323", lineHeight: 1.3 }}>{place.name}</strong>
+                    <strong style={{ fontSize: 13, color: "#0E2238", lineHeight: 1.3 }}>{place.name}</strong>
                   </div>
-                  <p style={{ fontSize: 12, color: "#6B7A7A", margin: "0 0 5px", lineHeight: 1.5 }}>{place.desc}</p>
+                  <p style={{ fontSize: 12, color: "#5B6B7F", margin: "0 0 5px", lineHeight: 1.5 }}>{place.desc}</p>
                   {place.hours && <p style={{ fontSize: 11, color: TEAL, margin: "3px 0", fontWeight: 600 }}>🕐 {place.hours}</p>}
                   {place.phone && <p style={{ fontSize: 11, color: TEAL, margin: "3px 0", fontWeight: 600 }}>📞 {place.phone}</p>}
                 </div>

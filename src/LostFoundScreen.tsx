@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import { store, LostFoundItem, LFType, LFCategory, LFSpecies, LFSize, LFObjectCat } from "./store";
 
-const TEAL = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL = "#0060A8";
+const CORAL = "#0088CC";
 const RED = "#DC2626";
 const GREEN = "#16A34A";
 
@@ -61,7 +61,7 @@ function PhotoUploader({ photos, onChange, max = 4 }: {
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
         {photos.map((p, i) => (
           <div key={i} style={{ position: "relative", width: 80, height: 80 }}>
-            <img src={p} alt="" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 10, border: "1.5px solid #E2DAD0" }} />
+            <img src={p} alt="" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 10, border: "1.5px solid #D6E2EE" }} />
             <button onClick={() => onChange(photos.filter((_, j) => j !== i))}
               style={{ position: "absolute", top: -6, right: -6, width: 20, height: 20, borderRadius: "50%", background: RED, border: "2px solid white", color: "white", fontSize: 10, fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
               ×
@@ -78,7 +78,7 @@ function PhotoUploader({ photos, onChange, max = 4 }: {
       </div>
       <input ref={ref} type="file" accept="image/*" style={{ display: "none" }}
         onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
-      <p style={{ fontSize: 11, color: "#6B7A7A", margin: 0 }}>Máximo {max} fotos · Se ajustan automáticamente</p>
+      <p style={{ fontSize: 11, color: "#5B6B7F", margin: 0 }}>Máximo {max} fotos · Se ajustan automáticamente</p>
     </div>
   );
 }
@@ -88,7 +88,7 @@ function Chip({ label, active, color = TEAL, onClick }: { label: string; active:
   return (
     <button onClick={onClick} style={{
       padding: "7px 14px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700,
-      background: active ? color : "#F0EBE3", color: active ? "white" : "#6B7A7A", transition: "all 0.15s",
+      background: active ? color : "#E9F0F7", color: active ? "white" : "#5B6B7F", transition: "all 0.15s",
     }}>{label}</button>
   );
 }
@@ -99,11 +99,11 @@ function Field({ label, value, onChange, placeholder = "", type = "text", requir
 }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, marginBottom: 6 }}>
+      <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, marginBottom: 6 }}>
         {label}{required && <span style={{ color: CORAL }}>*</span>}
       </label>
       <input type={type} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)}
-        style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: "#162323", boxSizing: "border-box" }} />
+        style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: "#0E2238", boxSizing: "border-box" }} />
     </div>
   );
 }
@@ -113,11 +113,11 @@ function Select({ label, value, onChange, options, required = true }: {
 }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, marginBottom: 6 }}>
+      <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, marginBottom: 6 }}>
         {label}{required && <span style={{ color: CORAL }}>*</span>}
       </label>
       <select value={value} onChange={(e) => onChange(e.target.value)}
-        style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: value ? "#162323" : "#9CA3AF" }}>
+        style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: value ? "#0E2238" : "#9CA3AF" }}>
         <option value="">Selecciona...</option>
         {options.map((o) => <option key={o} value={o}>{o}</option>)}
       </select>
@@ -130,11 +130,11 @@ function Textarea({ label, value, onChange, placeholder = "", required = false }
 }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, marginBottom: 6 }}>
+      <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, marginBottom: 6 }}>
         {label}{required && <span style={{ color: CORAL }}>*</span>}
       </label>
       <textarea value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} rows={3}
-        style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: "#162323", resize: "vertical", boxSizing: "border-box" }} />
+        style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: "#0E2238", resize: "vertical", boxSizing: "border-box" }} />
     </div>
   );
 }
@@ -157,11 +157,11 @@ function ItemCard({ item, onClick }: { item: LostFoundItem; onClick: () => void 
 
   return (
     <button onClick={onClick} style={{
-      background: "white", border: "1px solid #E2DAD0", borderRadius: 16, overflow: "hidden",
+      background: "white", border: "1px solid #D6E2EE", borderRadius: 16, overflow: "hidden",
       display: "flex", flexDirection: "column", cursor: "pointer", textAlign: "left", width: "100%", padding: 0,
     }}>
       {/* Photo */}
-      <div style={{ width: "100%", height: 160, background: "#F0EBE3", position: "relative", flexShrink: 0 }}>
+      <div style={{ width: "100%", height: 160, background: "#E9F0F7", position: "relative", flexShrink: 0 }}>
         {item.photos[0] ? (
           <img src={item.photos[0]} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
@@ -188,13 +188,13 @@ function ItemCard({ item, onClick }: { item: LostFoundItem; onClick: () => void 
       </div>
       {/* Info */}
       <div style={{ padding: "12px 14px" }}>
-        <p style={{ fontFamily: "'Fraunces', serif", fontSize: 16, fontWeight: 800, color: "#162323", margin: "0 0 3px" }}>{title}</p>
-        <p style={{ fontSize: 13, color: "#6B7A7A", margin: "0 0 8px", lineHeight: 1.4 }}>{subtitle}</p>
+        <p style={{ fontFamily: "'Fraunces', serif", fontSize: 16, fontWeight: 800, color: "#0E2238", margin: "0 0 3px" }}>{title}</p>
+        <p style={{ fontSize: 13, color: "#5B6B7F", margin: "0 0 8px", lineHeight: 1.4 }}>{subtitle}</p>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 11, color: "#6B7A7A", display: "flex", alignItems: "center", gap: 3 }}>
+          <span style={{ fontSize: 11, color: "#5B6B7F", display: "flex", alignItems: "center", gap: 3 }}>
             📍 {item.sector}
           </span>
-          <span style={{ fontSize: 11, color: "#6B7A7A" }}>· {daysAgo(item.createdAt)}</span>
+          <span style={{ fontSize: 11, color: "#5B6B7F" }}>· {daysAgo(item.createdAt)}</span>
         </div>
       </div>
     </button>
@@ -229,7 +229,7 @@ function DetailView({ item, onBack, onResolve, isAuthor }: {
       {/* Photo gallery */}
       {item.photos.length > 0 && (
         <div>
-          <div style={{ width: "100%", height: 240, background: "#F0EBE3", position: "relative" }}>
+          <div style={{ width: "100%", height: 240, background: "#E9F0F7", position: "relative" }}>
             <img src={item.photos[photoIdx]} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             <div style={{ position: "absolute", top: 12, left: 12 }}>
               <span style={{ background: isLost ? RED : GREEN, color: "white", fontSize: 12, fontWeight: 800, padding: "5px 12px", borderRadius: 100 }}>
@@ -250,13 +250,13 @@ function DetailView({ item, onBack, onResolve, isAuthor }: {
       )}
 
       <div style={{ padding: "16px 20px" }}>
-        <p style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 800, color: "#162323", margin: "0 0 4px" }}>{title}</p>
-        <p style={{ fontSize: 13, color: "#6B7A7A", margin: "0 0 16px" }}>📍 {item.sector} · {daysAgo(item.createdAt)}</p>
+        <p style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 800, color: "#0E2238", margin: "0 0 4px" }}>{title}</p>
+        <p style={{ fontSize: 13, color: "#5B6B7F", margin: "0 0 16px" }}>📍 {item.sector} · {daysAgo(item.createdAt)}</p>
 
         {/* Pet info */}
         {isPet && (
           <div style={{ background: "#F0FAF5", borderRadius: 14, padding: "14px", marginBottom: 16 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Datos de la mascota</p>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Datos de la mascota</p>
             {([
               item.species ? ["Especie", item.species] : null,
               item.breed ? ["Raza", item.breed] : null,
@@ -265,9 +265,9 @@ function DetailView({ item, onBack, onResolve, isAuthor }: {
               item.hasCollar !== undefined ? ["Collar", item.hasCollar ? "Sí" : "No"] : null,
               item.hasTag !== undefined ? ["Placa de identificación", item.hasTag ? "Sí" : "No"] : null,
             ] as ([string, string] | null)[]).filter((x): x is [string, string] => x !== null).map(([k, v]) => (
-              <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #E2DAD0" }}>
-                <span style={{ fontSize: 13, color: "#6B7A7A", fontWeight: 600 }}>{k as string}</span>
-                <span style={{ fontSize: 13, color: "#162323", fontWeight: 700 }}>{v as string}</span>
+              <div key={k as string} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "1px solid #D6E2EE" }}>
+                <span style={{ fontSize: 13, color: "#5B6B7F", fontWeight: 600 }}>{k as string}</span>
+                <span style={{ fontSize: 13, color: "#0E2238", fontWeight: 700 }}>{v as string}</span>
               </div>
             ))}
           </div>
@@ -276,17 +276,17 @@ function DetailView({ item, onBack, onResolve, isAuthor }: {
         {/* Description */}
         {item.description && (
           <div style={{ marginBottom: 14 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 6px" }}>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 6px" }}>
               {isPet ? "Señas particulares" : "Descripción"}
             </p>
-            <p style={{ fontSize: 14, color: "#162323", lineHeight: 1.6, margin: 0 }}>{item.description}</p>
+            <p style={{ fontSize: 14, color: "#0E2238", lineHeight: 1.6, margin: 0 }}>{item.description}</p>
           </div>
         )}
 
         {/* Date lost/found */}
         <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-          <span style={{ fontSize: 13, color: "#6B7A7A" }}>📅 Fecha {isLost ? "pérdida" : "hallazgo"}:</span>
-          <span style={{ fontSize: 13, color: "#162323", fontWeight: 700 }}>{item.dateLostFound}</span>
+          <span style={{ fontSize: 13, color: "#5B6B7F" }}>📅 Fecha {isLost ? "pérdida" : "hallazgo"}:</span>
+          <span style={{ fontSize: 13, color: "#0E2238", fontWeight: 700 }}>{item.dateLostFound}</span>
         </div>
 
         {/* Reward warning */}
@@ -341,7 +341,7 @@ function DetailView({ item, onBack, onResolve, isAuthor }: {
         <a href={shareUrl} target="_blank" rel="noopener noreferrer" style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
           width: "100%", padding: "13px", borderRadius: 14,
-          background: "#F0EBE3", color: "#162323", fontWeight: 700, fontSize: 14,
+          background: "#E9F0F7", color: "#0E2238", fontWeight: 700, fontSize: 14,
           textDecoration: "none", boxSizing: "border-box",
         }}>
           📤 Compartir en WhatsApp
@@ -428,7 +428,7 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 200, background: "white", display: "flex", flexDirection: "column", fontFamily: "'Outfit', sans-serif" }}>
       {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #062E2E)`, padding: "16px 20px", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #00245C)`, padding: "16px 20px", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
         <button onClick={onClose} style={{ background: "none", border: "none", color: "white", cursor: "pointer", padding: 4 }}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="white" strokeWidth="2.2" strokeLinecap="round" /></svg>
         </button>
@@ -440,9 +440,9 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
 
       {/* Progress */}
       <div style={{ display: "flex", gap: 4, padding: "12px 20px 0", flexShrink: 0 }}>
-        {[1, 2, 3].map((s) => <div key={s} style={{ flex: 1, height: 4, borderRadius: 100, background: s <= step ? TEAL : "#E2DAD0" }} />)}
+        {[1, 2, 3].map((s) => <div key={s} style={{ flex: 1, height: 4, borderRadius: 100, background: s <= step ? TEAL : "#D6E2EE" }} />)}
       </div>
-      <p style={{ fontSize: 12, color: "#6B7A7A", fontWeight: 700, padding: "6px 20px 0", flexShrink: 0, margin: 0 }}>
+      <p style={{ fontSize: 12, color: "#5B6B7F", fontWeight: 700, padding: "6px 20px 0", flexShrink: 0, margin: 0 }}>
         Paso {step} de 3 — {step === 1 ? "¿Qué publicas?" : step === 2 ? "Detalles" : "Fotos y contacto"}
       </p>
 
@@ -456,24 +456,24 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
 
         {step === 1 && (
           <div>
-            <p style={{ fontWeight: 700, fontSize: 14, color: "#162323", marginBottom: 10 }}>¿Es Perdido o Encontrado?</p>
+            <p style={{ fontWeight: 700, fontSize: 14, color: "#0E2238", marginBottom: 10 }}>¿Es Perdido o Encontrado?</p>
             <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
               {(["Perdido", "Encontrado"] as LFType[]).map((t) => (
                 <button key={t} onClick={() => setType(t)} style={{
                   flex: 1, padding: "18px 10px", borderRadius: 14, cursor: "pointer", fontWeight: 700, fontSize: 15,
-                  background: type === t ? (t === "Perdido" ? RED : GREEN) : "#F0EBE3",
-                  color: type === t ? "white" : "#6B7A7A", border: "none",
+                  background: type === t ? (t === "Perdido" ? RED : GREEN) : "#E9F0F7",
+                  color: type === t ? "white" : "#5B6B7F", border: "none",
                 }}>
                   {t === "Perdido" ? "🔍 Perdido" : "✅ Encontrado"}
                 </button>
               ))}
             </div>
-            <p style={{ fontWeight: 700, fontSize: 14, color: "#162323", marginBottom: 10 }}>¿Mascota u Objeto?</p>
+            <p style={{ fontWeight: 700, fontSize: 14, color: "#0E2238", marginBottom: 10 }}>¿Mascota u Objeto?</p>
             <div style={{ display: "flex", gap: 10 }}>
               {(["Mascota", "Objeto"] as LFCategory[]).map((c) => (
                 <button key={c} onClick={() => setCategory(c)} style={{
                   flex: 1, padding: "18px 10px", borderRadius: 14, cursor: "pointer", fontWeight: 700, fontSize: 15,
-                  background: category === c ? TEAL : "#F0EBE3", color: category === c ? "white" : "#6B7A7A", border: "none",
+                  background: category === c ? TEAL : "#E9F0F7", color: category === c ? "white" : "#5B6B7F", border: "none",
                 }}>
                   {c === "Mascota" ? "🐾 Mascota" : "📦 Objeto"}
                 </button>
@@ -491,16 +491,16 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
             <Select label="Tamaño" value={size} onChange={(v) => setSize(v as LFSize)} options={SIZES} required={false} />
             <Textarea label="Señas particulares" value={distinctive} onChange={setDistinctive} placeholder="Cicatrices, manchas, comportamiento…" />
             <div style={{ display: "flex", gap: 14, marginBottom: 14 }}>
-              <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#162323" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#0E2238" }}>
                 <input type="checkbox" checked={hasCollar} onChange={(e) => setHasCollar(e.target.checked)} style={{ width: 18, height: 18, accentColor: TEAL }} />
                 Tenía collar
               </label>
-              <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#162323" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#0E2238" }}>
                 <input type="checkbox" checked={hasTag} onChange={(e) => setHasTag(e.target.checked)} style={{ width: 18, height: 18, accentColor: TEAL }} />
                 Tenía placa
               </label>
             </div>
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#162323", marginBottom: 10 }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#0E2238", marginBottom: 10 }}>
               <input type="checkbox" checked={reward} onChange={(e) => setReward(e.target.checked)} style={{ width: 18, height: 18, accentColor: TEAL }} />
               Ofrece recompensa
             </label>
@@ -537,7 +537,7 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
 
         {step === 3 && (
           <div>
-            <p style={{ fontWeight: 700, fontSize: 14, color: "#162323", marginBottom: 10 }}>Fotos (máximo 4)</p>
+            <p style={{ fontWeight: 700, fontSize: 14, color: "#0E2238", marginBottom: 10 }}>Fotos (máximo 4)</p>
             {category === "Objeto" && objectCat === "Documentos" && (
               <WarnBox>Recuerda: muestra solo el nombre en la foto del documento, nunca el número.</WarnBox>
             )}
@@ -545,8 +545,8 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
               <PhotoUploader photos={photos} onChange={setPhotos} max={4} />
             </div>
             <Field label="Teléfono de contacto" value={phone} onChange={setPhone} type="tel" placeholder="Ej: 300 000 0000" />
-            <p style={{ fontSize: 12, color: "#6B7A7A", margin: "-4px 0 12px", lineHeight: 1.5 }}>Este teléfono será visible para todos en la publicación, para que puedan contactarte.</p>
-            <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#162323", marginBottom: 8 }}>
+            <p style={{ fontSize: 12, color: "#5B6B7F", margin: "-4px 0 12px", lineHeight: 1.5 }}>Este teléfono será visible para todos en la publicación, para que puedan contactarte.</p>
+            <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#0E2238", marginBottom: 8 }}>
               <input type="checkbox" checked={showWhatsApp} onChange={(e) => setShowWhatsApp(e.target.checked)} style={{ width: 18, height: 18, accentColor: TEAL }} />
               Mostrar botón de WhatsApp en la publicación
             </label>
@@ -555,10 +555,10 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
       </div>
 
       {/* Footer */}
-      <div style={{ padding: "12px 20px 24px", flexShrink: 0, borderTop: "1px solid #E2DAD0" }}>
+      <div style={{ padding: "12px 20px 24px", flexShrink: 0, borderTop: "1px solid #D6E2EE" }}>
         <button onClick={goNext} style={{
           width: "100%", padding: "15px", borderRadius: 14,
-          background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`,
+          background: `linear-gradient(135deg, ${TEAL}, #003078)`,
           color: "white", fontWeight: 700, fontSize: 16, border: "none", cursor: "pointer",
         }}>
           {step < 3 ? "Siguiente →" : "✅ Publicar"}
@@ -574,7 +574,7 @@ function ResolvedCard({ item }: { item: LostFoundItem }) {
   const title = isPet ? (item.petName || item.species || "Mascota") : (item.objectCat || "Objeto");
   return (
     <div style={{ background: "#DCFCE7", border: "1.5px solid #86EFAC", borderRadius: 14, padding: "12px 14px", display: "flex", gap: 12, alignItems: "center" }}>
-      <div style={{ width: 56, height: 56, borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "#F0EBE3" }}>
+      <div style={{ width: 56, height: 56, borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "#E9F0F7" }}>
         {item.photos[0]
           ? <img src={item.photos[0]} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           : <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>{isPet ? "🐾" : "📦"}</div>}
@@ -645,7 +645,7 @@ export default function LostFoundScreen({ onBack }: { onBack: () => void }) {
   return (
     <div style={{ paddingBottom: 100, position: "relative" }}>
       {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #062E2E)`, padding: "20px 20px 16px" }}>
+      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #00245C)`, padding: "20px 20px 16px" }}>
         <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "rgba(255,255,255,0.8)", fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 0 12px" }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           Volver
@@ -655,11 +655,11 @@ export default function LostFoundScreen({ onBack }: { onBack: () => void }) {
       </div>
 
       {/* Tabs */}
-      <div style={{ background: "white", borderBottom: "1px solid #E2DAD0", padding: "0 16px", display: "flex", gap: 0 }}>
+      <div style={{ background: "white", borderBottom: "1px solid #D6E2EE", padding: "0 16px", display: "flex", gap: 0 }}>
         {(["Perdidos", "Encontrados", "Finales felices"] as MainTab[]).map((t) => (
           <button key={t} onClick={() => setTab(t)} style={{
             flex: 1, padding: "13px 4px", border: "none", background: "none", cursor: "pointer",
-            fontSize: 12, fontWeight: 700, color: tab === t ? TEAL : "#6B7A7A",
+            fontSize: 12, fontWeight: 700, color: tab === t ? TEAL : "#5B6B7F",
             borderBottom: tab === t ? `2.5px solid ${TEAL}` : "2.5px solid transparent",
           }}>{t}</button>
         ))}
@@ -678,8 +678,8 @@ export default function LostFoundScreen({ onBack }: { onBack: () => void }) {
             {visibleActive.length === 0 ? (
               <div style={{ textAlign: "center", padding: "40px 20px" }}>
                 <p style={{ fontSize: 48, marginBottom: 12 }}>{tab === "Perdidos" ? "🔍" : "✅"}</p>
-                <p style={{ fontSize: 15, color: "#6B7A7A" }}>No hay publicaciones de {tab.toLowerCase()} actualmente.</p>
-                <p style={{ fontSize: 13, color: "#6B7A7A", marginTop: 4 }}>¡Sé el primero en publicar!</p>
+                <p style={{ fontSize: 15, color: "#5B6B7F" }}>No hay publicaciones de {tab.toLowerCase()} actualmente.</p>
+                <p style={{ fontSize: 13, color: "#5B6B7F", marginTop: 4 }}>¡Sé el primero en publicar!</p>
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -696,11 +696,11 @@ export default function LostFoundScreen({ onBack }: { onBack: () => void }) {
             {resolved.length === 0 ? (
               <div style={{ textAlign: "center", padding: "40px 20px" }}>
                 <p style={{ fontSize: 48, marginBottom: 12 }}>🎉</p>
-                <p style={{ fontSize: 15, color: "#6B7A7A" }}>Aún no hay casos resueltos. ¡Pronto habrá buenas noticias!</p>
+                <p style={{ fontSize: 15, color: "#5B6B7F" }}>Aún no hay casos resueltos. ¡Pronto habrá buenas noticias!</p>
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <p style={{ fontSize: 13, color: "#6B7A7A", marginBottom: 4, fontWeight: 600 }}>🎉 {resolved.length} {resolved.length === 1 ? "final feliz" : "finales felices"} en el barrio</p>
+                <p style={{ fontSize: 13, color: "#5B6B7F", marginBottom: 4, fontWeight: 600 }}>🎉 {resolved.length} {resolved.length === 1 ? "final feliz" : "finales felices"} en el barrio</p>
                 {resolved.map((item) => (
                   <button key={item.id} onClick={() => setSelected(item)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}>
                     <ResolvedCard item={item} />
@@ -719,7 +719,7 @@ export default function LostFoundScreen({ onBack }: { onBack: () => void }) {
           width: 56, height: 56, borderRadius: "50%",
           background: `linear-gradient(135deg, ${CORAL}, #C0522C)`,
           color: "white", fontSize: 24, fontWeight: 900, border: "none", cursor: "pointer",
-          boxShadow: "0 6px 24px rgba(232,100,58,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50,
+          boxShadow: "0 6px 24px rgba(0,136,204,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50,
         }}>
           +
         </button>

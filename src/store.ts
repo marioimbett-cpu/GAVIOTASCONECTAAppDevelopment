@@ -159,8 +159,8 @@ export interface AppSettings {
 }
 
 // ── Defaults ──────────────────────────────────────────────────────────────────
-const TEAL = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL = "#0060A8";
+const CORAL = "#0088CC";
 
 const DEFAULT_NEWS: NewsItem[] = [
   { id: 1, category: "Proyecto", color: "#7B4FBF", title: "Nueva cancha de microfútbol para Las Gaviotas", summary: "La JAC gestiona la construcción de una cancha sintética en el sector sur, con presupuesto aprobado por la Alcaldía de Cartagena.", date: "10 sep 2026", image: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=600&h=300&fit=crop&auto=format", readTime: "3 min" },

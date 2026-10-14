@@ -6,8 +6,8 @@ import { store, CertificateRequest, CertStatus } from "./store";
 import logoJAC from "./imports/WhatsApp_Image_2026-09-22_at_2.16.16_PM.jpeg";
 import escudoAC from "./imports/Escudo_Accio_n_Comunal_Colombia.svg";
 
-const TEAL = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL = "#0060A8";
+const CORAL = "#0088CC";
 
 const STATUS_META: Record<CertStatus, { color: string; bg: string; emoji: string }> = {
   "Enviada":            { color: "#2E86AB", bg: "#E8F4F8", emoji: "📤" },
@@ -21,9 +21,9 @@ const ALL_STATUSES: CertStatus[] = ["Enviada", "En revisión", "Aprobada", "Requ
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ display: "flex", gap: 10, padding: "7px 0", borderBottom: "1px solid #F0EBE3" }}>
-      <span style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", minWidth: 120 }}>{label}</span>
-      <span style={{ fontSize: 13, color: "#162323", fontWeight: 600, flex: 1 }}>{value}</span>
+    <div style={{ display: "flex", gap: 10, padding: "7px 0", borderBottom: "1px solid #E9F0F7" }}>
+      <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", minWidth: 120 }}>{label}</span>
+      <span style={{ fontSize: 13, color: "#0E2238", fontWeight: 600, flex: 1 }}>{value}</span>
     </div>
   );
 }
@@ -42,7 +42,7 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
   const verifyUrl = `${window.location.host}/verificar`;
 
   useEffect(() => {
-    QRCode.toDataURL(verifyLink, { width: 160, margin: 1, color: { dark: "#0D6E6E", light: "#FFFFFF" } })
+    QRCode.toDataURL(verifyLink, { width: 160, margin: 1, color: { dark: "#0060A8", light: "#FFFFFF" } })
       .then(setQrUrl)
       .catch(() => {});
   }, [cert]);
@@ -105,10 +105,10 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
 
   return (
     <div>
-    <div ref={certRef} style={{ background: "white", border: `2px solid ${TEAL}40`, borderRadius: 16, overflow: "hidden", maxWidth: 420, margin: "0 auto", boxShadow: "0 8px 32px rgba(13,110,110,0.12)" }}>
+    <div ref={certRef} style={{ background: "white", border: `2px solid ${TEAL}40`, borderRadius: 16, overflow: "hidden", maxWidth: 420, margin: "0 auto", boxShadow: "0 8px 32px rgba(0,96,168,0.12)" }}>
 
       {/* ── Encabezado ── */}
-      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #062E2E)`, padding: "16px 18px 14px" }}>
+      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #00245C)`, padding: "16px 18px 14px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
           {/* Escudo Acción Comunal */}
           <div style={{ width: 62, height: 62, borderRadius: 10, background: "white", display: "flex", alignItems: "center", justifyContent: "center", padding: 4, overflow: "hidden", flexShrink: 0 }}>
@@ -148,9 +148,9 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
       <div style={{ padding: "16px 18px", fontFamily: "'Outfit', sans-serif" }}>
 
         {/* Encabezado cuerpo */}
-        <p style={{ fontSize: 11.5, fontWeight: 800, color: "#162323", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "center", margin: "0 0 12px", lineHeight: 1.4 }}>
+        <p style={{ fontSize: 11.5, fontWeight: 800, color: "#0E2238", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "center", margin: "0 0 12px", lineHeight: 1.4 }}>
           El Presidente de la Junta de Acción Comunal<br />
-          <span style={{ fontSize: 10, fontWeight: 700, color: "#6B7A7A" }}>del Barrio Las Gaviotas</span>
+          <span style={{ fontSize: 10, fontWeight: 700, color: "#5B6B7F" }}>del Barrio Las Gaviotas</span>
         </p>
 
         <p style={{ fontSize: 12, fontWeight: 800, color: TEAL, textTransform: "uppercase", letterSpacing: "0.1em", textAlign: "center", margin: "0 0 14px" }}>
@@ -158,7 +158,7 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
         </p>
 
         {/* Párrafo 1 */}
-        <p style={{ fontSize: 12, color: "#162323", lineHeight: 1.8, margin: "0 0 12px", textAlign: "justify" }}>
+        <p style={{ fontSize: 12, color: "#0E2238", lineHeight: 1.8, margin: "0 0 12px", textAlign: "justify" }}>
           Que el(la) señor(a){" "}
           <strong style={{ color: TEAL }}>{cert.fullName.toUpperCase()}</strong>
           {", "}identificado(a) con{" "}
@@ -174,12 +174,12 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
         </p>
 
         {/* Párrafo 2 */}
-        <p style={{ fontSize: 12, color: "#162323", lineHeight: 1.8, margin: "0 0 12px", textAlign: "justify" }}>
+        <p style={{ fontSize: 12, color: "#0E2238", lineHeight: 1.8, margin: "0 0 12px", textAlign: "justify" }}>
           {settings.certTextP2 || "Que, según la información y los soportes aportados por el(la) interesado(a), y hasta la fecha de expedición, se le reconoce como vecino(a) de esta comunidad."}
         </p>
 
         {/* Párrafo 3 — expedición */}
-        <p style={{ fontSize: 12, color: "#162323", lineHeight: 1.8, margin: "0 0 14px", textAlign: "justify" }}>
+        <p style={{ fontSize: 12, color: "#0E2238", lineHeight: 1.8, margin: "0 0 14px", textAlign: "justify" }}>
           El presente certificado se expide a solicitud del(la) interesado(a), con destino a{" "}
           <strong>{cert.purpose.toLowerCase()}</strong>
           {", en Cartagena de Indias, a los "}
@@ -188,7 +188,7 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
 
         {/* Vigencia */}
         <div style={{ background: "#F0FAF5", border: `1px solid ${TEAL}40`, borderRadius: 10, padding: "9px 12px", marginBottom: 16 }}>
-          <p style={{ fontSize: 11.5, color: "#0A4F4F", fontWeight: 700, margin: 0, textAlign: "center" }}>
+          <p style={{ fontSize: 11.5, color: "#003078", fontWeight: 700, margin: 0, textAlign: "center" }}>
             Vigencia: treinta (30) días calendario a partir de su expedición.
           </p>
         </div>
@@ -206,14 +206,14 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
                   style={{ maxHeight: 56, maxWidth: 180, objectFit: "contain", display: "block" }}
                 />
               ) : (
-                <div style={{ width: "70%", height: 1, background: "#162323" }} />
+                <div style={{ width: "70%", height: 1, background: "#0E2238" }} />
               )}
             </div>
             {/* Nombre siempre visible en texto */}
-            <p style={{ fontSize: 12, fontWeight: 800, color: "#162323", margin: "0 0 1px", fontFamily: "'Fraunces', serif" }}>
+            <p style={{ fontSize: 12, fontWeight: 800, color: "#0E2238", margin: "0 0 1px", fontFamily: "'Fraunces', serif" }}>
               {settings.presidentName}
             </p>
-            <p style={{ fontSize: 10.5, fontWeight: 600, color: "#6B7A7A", margin: "0 0 2px" }}>
+            <p style={{ fontSize: 10.5, fontWeight: 600, color: "#5B6B7F", margin: "0 0 2px" }}>
               Presidente – JAC Barrio Las Gaviotas
             </p>
             <p style={{ fontSize: 10, color: TEAL, margin: 0 }}>{settings.presidentEmail}</p>
@@ -222,15 +222,15 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
           {qrUrl && (
             <div style={{ textAlign: "center", flexShrink: 0 }}>
               <img src={qrUrl} alt="QR verificación" style={{ width: 76, height: 76, display: "block", borderRadius: 6 }} />
-              <p style={{ fontSize: 8.5, color: "#6B7A7A", margin: "3px 0 0", lineHeight: 1.3 }}>Escanear para<br />verificar</p>
+              <p style={{ fontSize: 8.5, color: "#5B6B7F", margin: "3px 0 0", lineHeight: 1.3 }}>Escanear para<br />verificar</p>
             </div>
           )}
         </div>
 
         {/* Nota verificación */}
         <div style={{ background: "#F5F5F5", borderRadius: 8, padding: "8px 10px", marginBottom: 10 }}>
-          <p style={{ fontSize: 9.5, color: "#6B7A7A", margin: 0, lineHeight: 1.5, textAlign: "center" }}>
-            Verifique la autenticidad del certificado <strong style={{ color: "#162323" }}>{cert.consecutive}</strong>{" "}
+          <p style={{ fontSize: 9.5, color: "#5B6B7F", margin: 0, lineHeight: 1.5, textAlign: "center" }}>
+            Verifique la autenticidad del certificado <strong style={{ color: "#0E2238" }}>{cert.consecutive}</strong>{" "}
             escaneando el código QR con la cámara del celular ({verifyUrl}).
           </p>
         </div>
@@ -250,7 +250,7 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
         display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
         width: "100%", maxWidth: 420, margin: "14px auto 0",
         padding: "14px", borderRadius: 14,
-        background: downloading ? "#6B7A7A" : `linear-gradient(135deg, ${TEAL}, #0A4F4F)`,
+        background: downloading ? "#5B6B7F" : `linear-gradient(135deg, ${TEAL}, #003078)`,
         color: "white", fontWeight: 700, fontSize: 15,
         border: "none", cursor: downloading ? "not-allowed" : "pointer",
         fontFamily: "'Outfit', sans-serif",
@@ -350,7 +350,7 @@ export default function CertificateAdmin() {
           </div>
         </div>
 
-        <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 17, fontWeight: 700, color: "#162323", margin: "0 0 12px" }}>Datos del solicitante</h3>
+        <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 17, fontWeight: 700, color: "#0E2238", margin: "0 0 12px" }}>Datos del solicitante</h3>
         <Row label="Nombre" value={selected.fullName} />
         <Row label="Documento" value={`${selected.docType} ${selected.docNumber}`} />
         <Row label="Dirección" value={selected.address} />
@@ -362,7 +362,7 @@ export default function CertificateAdmin() {
         <Row label="Enviada" value={new Date(selected.createdAt).toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" })} />
 
         {/* Photos */}
-        <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 16, fontWeight: 700, color: "#162323", margin: "16px 0 10px" }}>Documentos adjuntos</h3>
+        <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 16, fontWeight: 700, color: "#0E2238", margin: "16px 0 10px" }}>Documentos adjuntos</h3>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
           {[
             { label: "Cédula frontal", img: selected.photoCedulaFront },
@@ -372,18 +372,18 @@ export default function CertificateAdmin() {
             ...(selected.photoSelfie ? [{ label: "Selfie", img: selected.photoSelfie }] : []),
           ].map(({ label, img }) => (
             <div key={label} style={{ width: 90 }}>
-              <img src={img} alt={label} style={{ width: 90, height: 68, objectFit: "cover", borderRadius: 10, border: "1.5px solid #E2DAD0", display: "block" }} />
-              <p style={{ fontSize: 10, color: "#6B7A7A", textAlign: "center", margin: "3px 0 0" }}>{label}</p>
+              <img src={img} alt={label} style={{ width: 90, height: 68, objectFit: "cover", borderRadius: 10, border: "1.5px solid #D6E2EE", display: "block" }} />
+              <p style={{ fontSize: 10, color: "#5B6B7F", textAlign: "center", margin: "3px 0 0" }}>{label}</p>
             </div>
           ))}
         </div>
 
         {/* Comment */}
         <div style={{ marginBottom: 14 }}>
-          <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>Comentario (opcional)</label>
+          <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>Comentario (opcional)</label>
           <textarea value={comment} onChange={(e) => setComment(e.target.value)} rows={3}
             placeholder="Escribe un mensaje para el solicitante..."
-            style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #E2DAD0", fontSize: 13, fontFamily: "'Outfit', sans-serif", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
+            style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #D6E2EE", fontSize: 13, fontFamily: "'Outfit', sans-serif", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
         </div>
 
         {/* Action buttons */}
@@ -403,7 +403,7 @@ export default function CertificateAdmin() {
         </div>
 
         <button onClick={() => updateStatus("Aprobada")} disabled={saving}
-          style={{ width: "100%", padding: "14px", borderRadius: 14, background: saving ? "#6B7A7A" : `linear-gradient(135deg, #16A34A, #15803D)`, color: "white", fontWeight: 700, fontSize: 15, border: "none", cursor: saving ? "not-allowed" : "pointer", marginBottom: 12 }}>
+          style={{ width: "100%", padding: "14px", borderRadius: 14, background: saving ? "#5B6B7F" : `linear-gradient(135deg, #16A34A, #15803D)`, color: "white", fontWeight: 700, fontSize: 15, border: "none", cursor: saving ? "not-allowed" : "pointer", marginBottom: 12 }}>
           {saving ? "Guardando..." : "✅ Aprobar solicitud"}
         </button>
 
@@ -425,13 +425,13 @@ export default function CertificateAdmin() {
 
   return (
     <div>
-      <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 700, color: "#162323", margin: "0 0 10px" }}>
+      <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 700, color: "#0E2238", margin: "0 0 10px" }}>
         Solicitudes de certificado
       </h3>
 
       {/* Demo preview */}
       <button onClick={() => setShowDemo(!showDemo)}
-        style={{ width: "100%", padding: "11px", borderRadius: 12, background: showDemo ? "#F0EBE3" : `linear-gradient(135deg, ${TEAL}22, ${TEAL}10)`, border: `1.5px dashed ${TEAL}`, color: TEAL, fontWeight: 700, fontSize: 13, cursor: "pointer", marginBottom: 16 }}>
+        style={{ width: "100%", padding: "11px", borderRadius: 12, background: showDemo ? "#E9F0F7" : `linear-gradient(135deg, ${TEAL}22, ${TEAL}10)`, border: `1.5px dashed ${TEAL}`, color: TEAL, fontWeight: 700, fontSize: 13, cursor: "pointer", marginBottom: 16 }}>
         {showDemo ? "🙈 Ocultar vista previa de muestra" : "👁 Ver certificado de muestra — Mario Imbett"}
       </button>
       {showDemo && (
@@ -449,8 +449,8 @@ export default function CertificateAdmin() {
           return (
             <button key={s} onClick={() => setFilter(s as any)}
               style={{ padding: "6px 12px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700,
-                background: active ? (meta ? meta.bg : TEAL + "20") : "#F0EBE3",
-                color: active ? (meta ? meta.color : TEAL) : "#6B7A7A" }}>
+                background: active ? (meta ? meta.bg : TEAL + "20") : "#E9F0F7",
+                color: active ? (meta ? meta.color : TEAL) : "#5B6B7F" }}>
               {s !== "Todas" && meta ? `${meta.emoji} ` : ""}{s === "Todas" ? `Todas (${certs.length})` : s}
             </button>
           );
@@ -460,7 +460,7 @@ export default function CertificateAdmin() {
       {filtered.length === 0 ? (
         <div style={{ textAlign: "center", padding: "32px 20px" }}>
           <p style={{ fontSize: 36, margin: "0 0 12px" }}>📭</p>
-          <p style={{ fontSize: 14, color: "#6B7A7A" }}>No hay solicitudes {filter !== "Todas" ? `con estado "${filter}"` : ""}.</p>
+          <p style={{ fontSize: 14, color: "#5B6B7F" }}>No hay solicitudes {filter !== "Todas" ? `con estado "${filter}"` : ""}.</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -468,16 +468,16 @@ export default function CertificateAdmin() {
             const meta = STATUS_META[c.status];
             return (
               <button key={c.id} onClick={() => { setSelected(c); setComment(""); setShowCert(false); }}
-                style={{ background: "white", border: "1px solid #E2DAD0", borderRadius: 14, padding: "13px 14px", display: "flex", alignItems: "center", gap: 12, cursor: "pointer", textAlign: "left" }}>
+                style={{ background: "white", border: "1px solid #D6E2EE", borderRadius: 14, padding: "13px 14px", display: "flex", alignItems: "center", gap: 12, cursor: "pointer", textAlign: "left" }}>
                 <div style={{ width: 44, height: 44, borderRadius: 12, background: meta.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>
                   {meta.emoji}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: 13, fontWeight: 800, color: "#162323", margin: "0 0 1px", fontFamily: "'Fraunces', serif" }}>{c.consecutive}</p>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "#162323", margin: "0 0 3px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.fullName}</p>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: "#0E2238", margin: "0 0 1px", fontFamily: "'Fraunces', serif" }}>{c.consecutive}</p>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "#0E2238", margin: "0 0 3px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.fullName}</p>
                   <span style={{ fontSize: 11, fontWeight: 700, color: meta.color, background: meta.bg, padding: "2px 8px", borderRadius: 100 }}>{c.status}</span>
                 </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#6B7A7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#5B6B7F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </button>
             );
           })}

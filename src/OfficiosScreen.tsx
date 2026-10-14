@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import { store, OfficioWorker, OfficioCategory, OfficioReview } from "./store";
 
-const TEAL = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL = "#0060A8";
+const CORAL = "#0088CC";
 const GREEN = "#16A34A";
 
 const ALL_CATEGORIES: { cat: OfficioCategory; icon: string }[] = [
@@ -34,7 +34,7 @@ function StarRow({ rating, count, small }: { rating: number; count?: number; sma
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
         </svg>
       ))}
-      {count !== undefined && <span style={{ fontSize: small ? 11 : 12, color: "#6B7A7A", marginLeft: 3 }}>({count})</span>}
+      {count !== undefined && <span style={{ fontSize: small ? 11 : 12, color: "#5B6B7F", marginLeft: 3 }}>({count})</span>}
     </div>
   );
 }
@@ -67,14 +67,14 @@ function WorkerCard({ worker, reviews, onClick }: { worker: OfficioWorker; revie
   const rCount = reviews.filter((r) => r.workerId === worker.id).length;
   const catIcon = ALL_CATEGORIES.find((c) => c.cat === worker.categories[0])?.icon ?? "🛠️";
   return (
-    <button onClick={onClick} style={{ width: "100%", background: "white", border: "1px solid #E2DAD0", borderRadius: 16, padding: "14px", display: "flex", gap: 12, alignItems: "flex-start", cursor: "pointer", textAlign: "left" }}>
+    <button onClick={onClick} style={{ width: "100%", background: "white", border: "1px solid #D6E2EE", borderRadius: 16, padding: "14px", display: "flex", gap: 12, alignItems: "flex-start", cursor: "pointer", textAlign: "left" }}>
       <Avatar worker={worker} size={56} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2 }}>
-          <span style={{ fontSize: 14, fontWeight: 800, color: "#162323", fontFamily: "'Fraunces', serif" }}>{worker.fullName}</span>
+          <span style={{ fontSize: 14, fontWeight: 800, color: "#0E2238", fontFamily: "'Fraunces', serif" }}>{worker.fullName}</span>
           {worker.verified && <span style={{ fontSize: 10, fontWeight: 700, color: TEAL, background: TEAL + "18", padding: "2px 7px", borderRadius: 100 }}>✓ Verificado JAC</span>}
         </div>
-        <p style={{ fontSize: 12, color: "#6B7A7A", margin: "0 0 4px" }}>{catIcon} {worker.categories.slice(0, 2).join(" · ")} · {worker.sector}</p>
+        <p style={{ fontSize: 12, color: "#5B6B7F", margin: "0 0 4px" }}>{catIcon} {worker.categories.slice(0, 2).join(" · ")} · {worker.sector}</p>
         <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
           <StarRow rating={rating} count={rCount} small />
           {worker.availableToday && (
@@ -118,7 +118,7 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
   }
 
   return (
-    <div style={{ minHeight: "100%", background: "#FAF6F0" }}>
+    <div style={{ minHeight: "100%", background: "#F4F8FC" }}>
       {/* Header */}
       <div style={{ background: "white", padding: "20px 20px 0" }}>
         <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: TEAL, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 0 14px" }}>
@@ -129,10 +129,10 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
           <Avatar worker={worker} size={72} />
           <div style={{ flex: 1 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 4 }}>
-              <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 800, color: "#162323", margin: 0 }}>{worker.fullName}</h1>
+              <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 800, color: "#0E2238", margin: 0 }}>{worker.fullName}</h1>
               {worker.verified && <span style={{ fontSize: 10, fontWeight: 700, color: TEAL, background: TEAL + "18", padding: "2px 8px", borderRadius: 100 }}>✓ Verificado JAC</span>}
             </div>
-            <p style={{ fontSize: 13, color: "#6B7A7A", margin: "0 0 6px" }}>{worker.categories.join(", ")}</p>
+            <p style={{ fontSize: 13, color: "#5B6B7F", margin: "0 0 6px" }}>{worker.categories.join(", ")}</p>
             <StarRow rating={rating} count={myReviews.length} />
           </div>
         </div>
@@ -141,19 +141,19 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
       <div style={{ padding: "16px 20px", display: "flex", flexDirection: "column", gap: 14 }}>
         {/* Owner: availability toggle */}
         {isOwner && (
-          <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #E2DAD0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #D6E2EE", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "#162323", margin: 0 }}>Disponible hoy</p>
-              <p style={{ fontSize: 12, color: "#6B7A7A", margin: 0 }}>Los vecinos verán tu disponibilidad</p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: "#0E2238", margin: 0 }}>Disponible hoy</p>
+              <p style={{ fontSize: 12, color: "#5B6B7F", margin: 0 }}>Los vecinos verán tu disponibilidad</p>
             </div>
-            <button onClick={onToggleAvailable} style={{ width: 48, height: 28, borderRadius: 100, background: worker.availableToday ? TEAL : "#E2DAD0", border: "none", cursor: "pointer", position: "relative", transition: "background 0.2s", flexShrink: 0 }}>
+            <button onClick={onToggleAvailable} style={{ width: 48, height: 28, borderRadius: 100, background: worker.availableToday ? TEAL : "#D6E2EE", border: "none", cursor: "pointer", position: "relative", transition: "background 0.2s", flexShrink: 0 }}>
               <div style={{ position: "absolute", top: 3, left: worker.availableToday ? 22 : 3, width: 22, height: 22, borderRadius: "50%", background: "white", transition: "left 0.2s", boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }} />
             </button>
           </div>
         )}
 
         {/* Info grid */}
-        <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #E2DAD0" }}>
+        <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #D6E2EE" }}>
           {[
             ["📍 Sector", worker.sector],
             ["⏰ Horario", worker.schedule],
@@ -161,13 +161,13 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
             worker.urgency ? ["🆘 Urgencias", "Atiende urgencias"] : null,
             ["👥 Contratado por", `${worker.hiredCount} vecino${worker.hiredCount !== 1 ? "s" : ""}`],
           ].filter((x): x is [string, string] => x !== null).map(([k, v]) => (
-            <div key={k} style={{ display: "flex", gap: 10, padding: "7px 0", borderBottom: "1px solid #F0EBE3" }}>
-              <span style={{ fontSize: 13, fontWeight: 700, color: "#6B7A7A", minWidth: 120 }}>{k}</span>
-              <span style={{ fontSize: 13, color: "#162323", fontWeight: 600 }}>{v}</span>
+            <div key={k} style={{ display: "flex", gap: 10, padding: "7px 0", borderBottom: "1px solid #E9F0F7" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#5B6B7F", minWidth: 120 }}>{k}</span>
+              <span style={{ fontSize: 13, color: "#0E2238", fontWeight: 600 }}>{v}</span>
             </div>
           ))}
           {worker.description && (
-            <p style={{ fontSize: 13, color: "#162323", margin: "10px 0 0", lineHeight: 1.6 }}>{worker.description}</p>
+            <p style={{ fontSize: 13, color: "#0E2238", margin: "10px 0 0", lineHeight: 1.6 }}>{worker.description}</p>
           )}
         </div>
 
@@ -184,7 +184,7 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
         {/* Work photos gallery */}
         {worker.workPhotos.length > 0 && (
           <div>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>Mis trabajos</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>Mis trabajos</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
               {worker.workPhotos.map((p, i) => (
                 <img key={i} src={p} alt="Trabajo" style={{ width: "100%", aspectRatio: "1", objectFit: "cover", borderRadius: 10 }} />
@@ -208,13 +208,13 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
         )}
 
         {isOwner && (
-          <p style={{ fontSize: 12, color: "#6B7A7A", textAlign: "center", margin: 0 }}>Este es tu perfil. Los vecinos pueden contactarte por WhatsApp y llamada.</p>
+          <p style={{ fontSize: 12, color: "#5B6B7F", textAlign: "center", margin: 0 }}>Este es tu perfil. Los vecinos pueden contactarte por WhatsApp y llamada.</p>
         )}
 
         {/* Reviews */}
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Reseñas</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>Reseñas</p>
             {!isOwner && !reviewSent && (
               <button onClick={() => {
                 if (!store.requireAccount("calificar un servicio")) return;
@@ -226,8 +226,8 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
           </div>
 
           {showReviewForm && (
-            <form onSubmit={submitReview} style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #E2DAD0", marginBottom: 10 }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#162323", margin: "0 0 10px" }}>Tu calificación</p>
+            <form onSubmit={submitReview} style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #D6E2EE", marginBottom: 10 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#0E2238", margin: "0 0 10px" }}>Tu calificación</p>
               <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
                 {[1,2,3,4,5].map((s) => (
                   <button key={s} type="button" onClick={() => setReviewStars(s)} style={{ background: "none", border: "none", cursor: "pointer", padding: 2 }}>
@@ -235,10 +235,10 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
                   </button>
                 ))}
               </div>
-              <input placeholder="Tu nombre (opcional)" value={reviewName} onChange={(e) => setReviewName(e.target.value)} style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #E2DAD0", fontSize: 13, fontFamily: "'Outfit', sans-serif", marginBottom: 8, boxSizing: "border-box" }} />
-              <textarea rows={3} required placeholder="Cuéntanos tu experiencia..." value={reviewComment} onChange={(e) => setReviewComment(e.target.value)} style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #E2DAD0", fontSize: 13, fontFamily: "'Outfit', sans-serif", resize: "vertical", marginBottom: 10, boxSizing: "border-box" }} />
+              <input placeholder="Tu nombre (opcional)" value={reviewName} onChange={(e) => setReviewName(e.target.value)} style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #D6E2EE", fontSize: 13, fontFamily: "'Outfit', sans-serif", marginBottom: 8, boxSizing: "border-box" }} />
+              <textarea rows={3} required placeholder="Cuéntanos tu experiencia..." value={reviewComment} onChange={(e) => setReviewComment(e.target.value)} style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #D6E2EE", fontSize: 13, fontFamily: "'Outfit', sans-serif", resize: "vertical", marginBottom: 10, boxSizing: "border-box" }} />
               <div style={{ display: "flex", gap: 8 }}>
-                <button type="button" onClick={() => setShowReviewForm(false)} style={{ flex: 1, padding: 10, borderRadius: 10, border: "1px solid #E2DAD0", background: "white", color: "#6B7A7A", fontWeight: 600, fontSize: 13, cursor: "pointer" }}>Cancelar</button>
+                <button type="button" onClick={() => setShowReviewForm(false)} style={{ flex: 1, padding: 10, borderRadius: 10, border: "1px solid #D6E2EE", background: "white", color: "#5B6B7F", fontWeight: 600, fontSize: 13, cursor: "pointer" }}>Cancelar</button>
                 <button type="submit" style={{ flex: 1, padding: 10, borderRadius: 10, background: TEAL, color: "white", fontWeight: 700, fontSize: 13, border: "none", cursor: "pointer" }}>Publicar</button>
               </div>
             </form>
@@ -251,24 +251,24 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
           )}
 
           {myReviews.length === 0 && !showReviewForm && (
-            <p style={{ fontSize: 13, color: "#6B7A7A", textAlign: "center", padding: "14px 0" }}>Sé el primero en calificar este servicio.</p>
+            <p style={{ fontSize: 13, color: "#5B6B7F", textAlign: "center", padding: "14px 0" }}>Sé el primero en calificar este servicio.</p>
           )}
 
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {myReviews.map((r) => (
-              <div key={r.id} style={{ background: "white", borderRadius: 12, padding: "12px 14px", border: "1px solid #E2DAD0" }}>
+              <div key={r.id} style={{ background: "white", borderRadius: 12, padding: "12px 14px", border: "1px solid #D6E2EE" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "#162323" }}>{r.authorName}</span>
-                  <span style={{ fontSize: 11, color: "#6B7A7A" }}>{r.date}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#0E2238" }}>{r.authorName}</span>
+                  <span style={{ fontSize: 11, color: "#5B6B7F" }}>{r.date}</span>
                 </div>
                 <StarRow rating={r.stars} small />
-                <p style={{ fontSize: 13, color: "#162323", margin: "6px 0 0", lineHeight: 1.5 }}>{r.comment}</p>
+                <p style={{ fontSize: 13, color: "#0E2238", margin: "6px 0 0", lineHeight: 1.5 }}>{r.comment}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <p style={{ fontSize: 11, color: "#6B7A7A", textAlign: "center", lineHeight: 1.6, margin: 0 }}>
+        <p style={{ fontSize: 11, color: "#5B6B7F", textAlign: "center", lineHeight: 1.6, margin: 0 }}>
           ⚠️ La JAC no garantiza los trabajos realizados. Acuerda precio y condiciones antes de iniciar.
         </p>
       </div>
@@ -363,23 +363,23 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
   const pct = (step / 3) * 100;
 
   return (
-    <div style={{ minHeight: "100%", background: "#FAF6F0" }}>
+    <div style={{ minHeight: "100%", background: "#F4F8FC" }}>
       <div style={{ background: "white", padding: "20px 20px 0" }}>
         <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: TEAL, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 0 12px" }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           Volver
         </button>
-        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 800, margin: "0 0 4px", color: "#162323" }}>Ofrece tus servicios</h1>
-        <p style={{ fontSize: 13, color: "#6B7A7A", margin: "0 0 14px" }}>Paso {step} de 3</p>
-        <div style={{ height: 5, background: "#F0EBE3", borderRadius: 10, marginBottom: 20 }}>
-          <div style={{ height: "100%", width: `${pct}%`, background: `linear-gradient(90deg, ${TEAL}, #0A4F4F)`, borderRadius: 10, transition: "width 0.3s" }} />
+        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 800, margin: "0 0 4px", color: "#0E2238" }}>Ofrece tus servicios</h1>
+        <p style={{ fontSize: 13, color: "#5B6B7F", margin: "0 0 14px" }}>Paso {step} de 3</p>
+        <div style={{ height: 5, background: "#E9F0F7", borderRadius: 10, marginBottom: 20 }}>
+          <div style={{ height: "100%", width: `${pct}%`, background: `linear-gradient(90deg, ${TEAL}, #003078)`, borderRadius: 10, transition: "width 0.3s" }} />
         </div>
       </div>
 
       <form onSubmit={handleSubmit} style={{ padding: "16px 20px 32px", display: "flex", flexDirection: "column", gap: 14 }}>
         {step === 1 && (
           <>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#162323", margin: 0 }}>Datos personales</p>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#0E2238", margin: 0 }}>Datos personales</p>
             {[
               { label: "Nombre completo", key: "fullName", placeholder: "Tu nombre" },
               { label: "Cédula (solo verificación, no es pública)", key: "cedula", placeholder: "Número de cédula" },
@@ -387,22 +387,22 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
               { label: "WhatsApp (si es diferente)", key: "whatsapp", placeholder: "300 000 0000", type: "tel" },
             ].map(({ label, key, placeholder, type }) => (
               <div key={key}>
-                <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>{label}</label>
-                <input type={type ?? "text"} placeholder={placeholder} value={(form as any)[key]} onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))} required style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }} />
+                <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>{label}</label>
+                <input type={type ?? "text"} placeholder={placeholder} value={(form as any)[key]} onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))} required style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }} />
               </div>
             ))}
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Sector del barrio</label>
-              <select value={form.sector} onChange={(e) => setForm((f) => ({ ...f, sector: e.target.value }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }}>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Sector del barrio</label>
+              <select value={form.sector} onChange={(e) => setForm((f) => ({ ...f, sector: e.target.value }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }}>
                 {SECTORS.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
               <input type="checkbox" checked={form.isAdult} onChange={(e) => setForm((f) => ({ ...f, isAdult: e.target.checked }))} required />
-              <span style={{ fontSize: 13, color: "#162323" }}>Confirmo que soy mayor de 18 años</span>
+              <span style={{ fontSize: 13, color: "#0E2238" }}>Confirmo que soy mayor de 18 años</span>
             </label>
             <button type="button" disabled={!form.fullName || !form.cedula || !form.phone || !form.isAdult} onClick={() => setStep(2)}
-              style={{ padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", opacity: (!form.fullName || !form.cedula || !form.phone || !form.isAdult) ? 0.5 : 1 }}>
+              style={{ padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", opacity: (!form.fullName || !form.cedula || !form.phone || !form.isAdult) ? 0.5 : 1 }}>
               Siguiente →
             </button>
           </>
@@ -410,40 +410,40 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
 
         {step === 2 && (
           <>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#162323", margin: 0 }}>Tus servicios</p>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#0E2238", margin: 0 }}>Tus servicios</p>
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }}>Oficios (selecciona los que ofreces)</label>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }}>Oficios (selecciona los que ofreces)</label>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
                 {ALL_CATEGORIES.map(({ cat, icon }) => (
                   <button key={cat} type="button" onClick={() => toggleCat(cat)}
                     style={{ padding: "7px 12px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700,
-                      background: form.categories.includes(cat) ? TEAL : "#F0EBE3",
-                      color: form.categories.includes(cat) ? "white" : "#6B7A7A" }}>
+                      background: form.categories.includes(cat) ? TEAL : "#E9F0F7",
+                      color: form.categories.includes(cat) ? "white" : "#5B6B7F" }}>
                     {icon} {cat}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Años de experiencia</label>
-              <input type="number" min={0} max={50} value={form.yearsExp} onChange={(e) => setForm((f) => ({ ...f, yearsExp: Number(e.target.value) }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }} />
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Años de experiencia</label>
+              <input type="number" min={0} max={50} value={form.yearsExp} onChange={(e) => setForm((f) => ({ ...f, yearsExp: Number(e.target.value) }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }} />
             </div>
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Horario de atención</label>
-              <input type="text" placeholder="Lun–Sáb 8 a.m.–5 p.m." value={form.schedule} onChange={(e) => setForm((f) => ({ ...f, schedule: e.target.value }))} required style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }} />
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Horario de atención</label>
+              <input type="text" placeholder="Lun–Sáb 8 a.m.–5 p.m." value={form.schedule} onChange={(e) => setForm((f) => ({ ...f, schedule: e.target.value }))} required style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }} />
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
               <input type="checkbox" checked={form.urgency} onChange={(e) => setForm((f) => ({ ...f, urgency: e.target.checked }))} />
-              <span style={{ fontSize: 13, color: "#162323" }}>Atiende urgencias (fuera de horario)</span>
+              <span style={{ fontSize: 13, color: "#0E2238" }}>Atiende urgencias (fuera de horario)</span>
             </label>
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Descripción corta de tus servicios</label>
-              <textarea rows={3} placeholder="Cuéntale a los vecinos qué haces y cómo trabajas..." value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Descripción corta de tus servicios</label>
+              <textarea rows={3} placeholder="Cuéntale a los vecinos qué haces y cómo trabajas..." value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
             </div>
             <div style={{ display: "flex", gap: 10 }}>
-              <button type="button" onClick={() => setStep(1)} style={{ flex: 1, padding: 13, borderRadius: 12, border: "1px solid #E2DAD0", background: "white", color: "#6B7A7A", fontWeight: 600, fontSize: 14, cursor: "pointer" }}>← Volver</button>
+              <button type="button" onClick={() => setStep(1)} style={{ flex: 1, padding: 13, borderRadius: 12, border: "1px solid #D6E2EE", background: "white", color: "#5B6B7F", fontWeight: 600, fontSize: 14, cursor: "pointer" }}>← Volver</button>
               <button type="button" disabled={form.categories.length === 0 || !form.schedule} onClick={() => setStep(3)}
-                style={{ flex: 2, padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", opacity: (form.categories.length === 0 || !form.schedule) ? 0.5 : 1 }}>
+                style={{ flex: 2, padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", opacity: (form.categories.length === 0 || !form.schedule) ? 0.5 : 1 }}>
                 Siguiente →
               </button>
             </div>
@@ -452,16 +452,16 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
 
         {step === 3 && (
           <>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#162323", margin: 0 }}>Fotos y autorización</p>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#0E2238", margin: 0 }}>Fotos y autorización</p>
 
             {/* Profile photo */}
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }}>Foto de perfil</label>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }}>Foto de perfil</label>
               <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                 {form.photo
                   ? <img src={form.photo} alt="Perfil" style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover" }} />
-                  : <div style={{ width: 60, height: 60, borderRadius: "50%", background: "#F0EBE3", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>👤</div>}
-                <button type="button" onClick={() => photoRef.current?.click()} style={{ padding: "9px 16px", borderRadius: 10, border: "1.5px solid #E2DAD0", background: "white", color: TEAL, fontWeight: 600, fontSize: 13, cursor: "pointer" }}>
+                  : <div style={{ width: 60, height: 60, borderRadius: "50%", background: "#E9F0F7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>👤</div>}
+                <button type="button" onClick={() => photoRef.current?.click()} style={{ padding: "9px 16px", borderRadius: 10, border: "1.5px solid #D6E2EE", background: "white", color: TEAL, fontWeight: 600, fontSize: 13, cursor: "pointer" }}>
                   {form.photo ? "Cambiar" : "Subir foto"}
                 </button>
                 <input ref={photoRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handlePhoto} />
@@ -470,7 +470,7 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
 
             {/* Work photos */}
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }}>Fotos de mis trabajos (máx. 6)</label>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }}>Fotos de mis trabajos (máx. 6)</label>
               {form.workPhotos.length > 0 && (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, marginBottom: 10 }}>
                   {form.workPhotos.map((p, i) => (
@@ -494,7 +494,7 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
 
             <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
               <input type="checkbox" checked={form.authorizeData} onChange={(e) => setForm((f) => ({ ...f, authorizeData: e.target.checked }))} required style={{ marginTop: 2, flexShrink: 0 }} />
-              <span style={{ fontSize: 13, color: "#162323", lineHeight: 1.5 }}>
+              <span style={{ fontSize: 13, color: "#0E2238", lineHeight: 1.5 }}>
                 Autorizo el tratamiento de mis datos personales conforme a la{" "}
                 <strong>Ley 1581 de 2012</strong>. La JAC usará mis datos únicamente para gestionar mi perfil en el directorio de Oficios del Barrio.
               </span>
@@ -505,9 +505,9 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
             </div>
 
             <div style={{ display: "flex", gap: 10 }}>
-              <button type="button" onClick={() => setStep(2)} style={{ flex: 1, padding: 13, borderRadius: 12, border: "1px solid #E2DAD0", background: "white", color: "#6B7A7A", fontWeight: 600, fontSize: 14, cursor: "pointer" }}>← Volver</button>
+              <button type="button" onClick={() => setStep(2)} style={{ flex: 1, padding: 13, borderRadius: 12, border: "1px solid #D6E2EE", background: "white", color: "#5B6B7F", fontWeight: 600, fontSize: 14, cursor: "pointer" }}>← Volver</button>
               <button type="submit" disabled={!form.authorizeData}
-                style={{ flex: 2, padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", opacity: !form.authorizeData ? 0.5 : 1 }}>
+                style={{ flex: 2, padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", opacity: !form.authorizeData ? 0.5 : 1 }}>
                 Enviar solicitud
               </button>
             </div>
@@ -619,16 +619,16 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
   // ── Submitted ──
   if (view === "submitted") {
     return (
-      <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 32px", textAlign: "center", background: "#FAF6F0" }}>
+      <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 32px", textAlign: "center", background: "#F4F8FC" }}>
         <div style={{ fontSize: 56, marginBottom: 16 }}>🧰</div>
-        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 800, color: "#162323", margin: "0 0 10px" }}>¡Solicitud enviada!</h2>
-        <p style={{ fontSize: 15, color: "#6B7A7A", lineHeight: 1.6, margin: "0 0 28px" }}>
+        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 800, color: "#0E2238", margin: "0 0 10px" }}>¡Solicitud enviada!</h2>
+        <p style={{ fontSize: 15, color: "#5B6B7F", lineHeight: 1.6, margin: "0 0 28px" }}>
           Tu solicitud está en revisión. La JAC la aprobará pronto. Te contactaremos por WhatsApp cuando esté activa.
         </p>
         <div style={{ background: TEAL + "15", borderRadius: 14, padding: "14px 20px", marginBottom: 28, width: "100%" }}>
           <p style={{ fontSize: 13, color: TEAL, fontWeight: 600, margin: 0 }}>📋 Estado: <strong>En revisión</strong></p>
         </div>
-        <button onClick={() => setView("home")} style={{ padding: "13px 28px", borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontWeight: 700, fontSize: 15, border: "none", cursor: "pointer" }}>
+        <button onClick={() => setView("home")} style={{ padding: "13px 28px", borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontWeight: 700, fontSize: 15, border: "none", cursor: "pointer" }}>
           Volver al inicio
         </button>
       </div>
@@ -640,26 +640,26 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
     const catWorkers = getCategoryWorkers(activeCategory);
     const catIcon = ALL_CATEGORIES.find((c) => c.cat === activeCategory)?.icon ?? "🛠️";
     return (
-      <div style={{ height: "100%", overflowY: "auto", background: "#FAF6F0" }}>
-        <div style={{ background: "white", padding: "20px 20px 16px", borderBottom: "1px solid #E2DAD0" }}>
+      <div style={{ height: "100%", overflowY: "auto", background: "#F4F8FC" }}>
+        <div style={{ background: "white", padding: "20px 20px 16px", borderBottom: "1px solid #D6E2EE" }}>
           <button onClick={() => setView("home")} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: TEAL, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 0 10px" }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             Categorías
           </button>
-          <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 800, margin: "0 0 4px", color: "#162323" }}>{catIcon} {activeCategory}</h1>
-          <p style={{ fontSize: 13, color: "#6B7A7A", margin: 0 }}>{catWorkers.length} vecino{catWorkers.length !== 1 ? "s" : ""} disponible{catWorkers.length !== 1 ? "s" : ""}</p>
+          <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 800, margin: "0 0 4px", color: "#0E2238" }}>{catIcon} {activeCategory}</h1>
+          <p style={{ fontSize: 13, color: "#5B6B7F", margin: 0 }}>{catWorkers.length} vecino{catWorkers.length !== 1 ? "s" : ""} disponible{catWorkers.length !== 1 ? "s" : ""}</p>
         </div>
         <div style={{ padding: "16px 20px", display: "flex", flexDirection: "column", gap: 10 }}>
           {catWorkers.length === 0 ? (
             <div style={{ textAlign: "center", padding: "40px 20px" }}>
               <p style={{ fontSize: 36, margin: "0 0 12px" }}>🔍</p>
-              <p style={{ fontSize: 14, color: "#6B7A7A" }}>No hay vecinos registrados en esta categoría todavía.</p>
+              <p style={{ fontSize: 14, color: "#5B6B7F" }}>No hay vecinos registrados en esta categoría todavía.</p>
             </div>
           ) : catWorkers.map((w) => (
             <WorkerCard key={w.id} worker={w} reviews={reviews} onClick={() => { setSelectedWorker(w); setView("profile"); }} />
           ))}
         </div>
-        <p style={{ fontSize: 11, color: "#6B7A7A", textAlign: "center", padding: "0 20px 24px", lineHeight: 1.6 }}>
+        <p style={{ fontSize: 11, color: "#5B6B7F", textAlign: "center", padding: "0 20px 24px", lineHeight: 1.6 }}>
           ⚠️ La JAC no garantiza los trabajos realizados. Acuerda precio y condiciones antes de iniciar.
         </p>
       </div>
@@ -671,20 +671,20 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
   const filteredAll = getAllWorkers();
 
   return (
-    <div style={{ height: "100%", overflowY: "auto", background: "#FAF6F0" }}>
+    <div style={{ height: "100%", overflowY: "auto", background: "#F4F8FC" }}>
       {/* Header */}
-      <div style={{ background: "white", padding: "20px 20px 16px", borderBottom: "1px solid #E2DAD0" }}>
+      <div style={{ background: "white", padding: "20px 20px 16px", borderBottom: "1px solid #D6E2EE" }}>
         <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: TEAL, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 0 10px" }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           Inicio
         </button>
-        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 800, margin: "0 0 4px", color: "#162323" }}>Oficios del Barrio</h1>
-        <p style={{ fontSize: 13, color: "#6B7A7A", margin: "0 0 14px" }}>Vecinos que ofrecen sus servicios en Las Gaviotas</p>
+        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 800, margin: "0 0 4px", color: "#0E2238" }}>Oficios del Barrio</h1>
+        <p style={{ fontSize: 13, color: "#5B6B7F", margin: "0 0 14px" }}>Vecinos que ofrecen sus servicios en Las Gaviotas</p>
 
         {/* Search */}
         <div style={{ position: "relative", marginBottom: 12 }}>
-          <svg style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)" }} width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#6B7A7A" strokeWidth="2" /><path d="M21 21l-4.35-4.35" stroke="#6B7A7A" strokeWidth="2" strokeLinecap="round" /></svg>
-          <input type="text" placeholder="¿Qué necesitas? plomero, electricista…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: "100%", padding: "12px 14px 12px 40px", borderRadius: 12, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box", background: "#FAF6F0" }} />
+          <svg style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)" }} width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#5B6B7F" strokeWidth="2" /><path d="M21 21l-4.35-4.35" stroke="#5B6B7F" strokeWidth="2" strokeLinecap="round" /></svg>
+          <input type="text" placeholder="¿Qué necesitas? plomero, electricista…" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: "100%", padding: "12px 14px 12px 40px", borderRadius: 12, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box", background: "#F4F8FC" }} />
         </div>
 
         {/* Filter chips */}
@@ -694,7 +694,7 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
             { label: "Urgencias 24h", active: filterUrgency, toggle: () => setFilterUrgency((v) => !v) },
             { label: "Mejor calificados", active: filterTopRated, toggle: () => setFilterTopRated((v) => !v) },
           ].map(({ label, active, toggle }) => (
-            <button key={label} onClick={toggle} style={{ flexShrink: 0, padding: "7px 14px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, background: active ? TEAL : "#F0EBE3", color: active ? "white" : "#6B7A7A", transition: "background 0.2s" }}>
+            <button key={label} onClick={toggle} style={{ flexShrink: 0, padding: "7px 14px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, background: active ? TEAL : "#E9F0F7", color: active ? "white" : "#5B6B7F", transition: "background 0.2s" }}>
               {label}
             </button>
           ))}
@@ -708,8 +708,8 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
           <div style={{ background: myProfile.status === "aprobado" ? TEAL + "18" : "#FEF3C7", border: `1px solid ${myProfile.status === "aprobado" ? TEAL + "40" : "#D97706"}`, borderRadius: 14, padding: "12px 16px", display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 24 }}>🧰</span>
             <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#162323", margin: 0 }}>Tu perfil: {myProfile.fullName}</p>
-              <p style={{ fontSize: 12, color: "#6B7A7A", margin: 0 }}>Estado: <strong>{myProfile.status === "pendiente" ? "En revisión" : myProfile.status === "aprobado" ? "Activo ✓" : myProfile.status === "rechazado" ? "Rechazado" : "Pausado"}</strong></p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#0E2238", margin: 0 }}>Tu perfil: {myProfile.fullName}</p>
+              <p style={{ fontSize: 12, color: "#5B6B7F", margin: 0 }}>Estado: <strong>{myProfile.status === "pendiente" ? "En revisión" : myProfile.status === "aprobado" ? "Activo ✓" : myProfile.status === "rechazado" ? "Rechazado" : "Pausado"}</strong></p>
             </div>
             {myProfile.status === "aprobado" && (
               <button onClick={() => { setSelectedWorker(myProfile); setView("profile"); }} style={{ padding: "7px 12px", borderRadius: 9, background: TEAL, color: "white", fontWeight: 700, fontSize: 12, border: "none", cursor: "pointer" }}>
@@ -722,11 +722,11 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
         {/* Search results */}
         {searchResults ? (
           <div>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Resultados ({filteredAll.length})</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Resultados ({filteredAll.length})</p>
             {filteredAll.length === 0 ? (
               <div style={{ textAlign: "center", padding: "32px 0" }}>
                 <p style={{ fontSize: 32, margin: "0 0 10px" }}>🔍</p>
-                <p style={{ fontSize: 14, color: "#6B7A7A" }}>No se encontraron vecinos con esos criterios.</p>
+                <p style={{ fontSize: 14, color: "#5B6B7F" }}>No se encontraron vecinos con esos criterios.</p>
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -740,15 +740,15 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
           <>
             {/* Categories grid */}
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 12px" }}>Categorías</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 12px" }}>Categorías</p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
                 {ALL_CATEGORIES.map(({ cat, icon }) => {
                   const count = workers.filter((w) => w.categories.includes(cat)).length;
                   return (
                     <button key={cat} onClick={() => { setActiveCategory(cat); setView("category"); }}
-                      style={{ background: "white", border: "1px solid #E2DAD0", borderRadius: 14, padding: "14px 10px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: "pointer", textAlign: "center" }}>
+                      style={{ background: "white", border: "1px solid #D6E2EE", borderRadius: 14, padding: "14px 10px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: "pointer", textAlign: "center" }}>
                       <span style={{ fontSize: 26 }}>{icon}</span>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: "#162323", lineHeight: 1.3 }}>{cat}</span>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: "#0E2238", lineHeight: 1.3 }}>{cat}</span>
                       {count > 0 && <span style={{ fontSize: 10, color: TEAL, fontWeight: 700 }}>{count} vecino{count !== 1 ? "s" : ""}</span>}
                     </button>
                   );
@@ -759,7 +759,7 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
             {/* Ofrece tus servicios CTA */}
             {!myProfile && (
               <button onClick={() => { if (store.requireAccount("inscribirte en Oficios del barrio")) setView("register"); }}
-                style={{ width: "100%", padding: "16px", borderRadius: 16, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 14, textAlign: "left" }}>
+                style={{ width: "100%", padding: "16px", borderRadius: 16, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 14, textAlign: "left" }}>
                 <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }}>🧰</div>
                 <div>
                   <p style={{ fontSize: 15, fontWeight: 800, margin: "0 0 2px" }}>¿Ofreces un servicio?</p>
@@ -771,7 +771,7 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
           </>
         )}
 
-        <p style={{ fontSize: 11, color: "#6B7A7A", textAlign: "center", lineHeight: 1.6, margin: 0 }}>
+        <p style={{ fontSize: 11, color: "#5B6B7F", textAlign: "center", lineHeight: 1.6, margin: 0 }}>
           ⚠️ La JAC no garantiza los trabajos realizados. Acuerda precio y condiciones antes de iniciar.
         </p>
       </div>

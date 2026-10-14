@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import { store, CertificateRequest, CertStatus } from "./store";
 
-const TEAL = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL = "#0060A8";
+const CORAL = "#0088CC";
 
 const STATUS_META: Record<CertStatus, { color: string; bg: string; emoji: string }> = {
   "Enviada":            { color: "#2E86AB", bg: "#E8F4F8", emoji: "📤" },
@@ -69,7 +69,7 @@ function PhotoUploader({ label, value, onChange, required }: PhotoField) {
 
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, alignItems: "center", marginBottom: 6 }}>
+      <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, alignItems: "center", marginBottom: 6 }}>
         {label} {required && <span style={{ color: CORAL }}>*</span>}
       </label>
       <input ref={ref} type="file" accept="image/*" style={{ display: "none" }}
@@ -98,13 +98,13 @@ function Field({ label, value, onChange, type = "text", placeholder = "", requir
 }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, alignItems: "center", marginBottom: 6 }}>
+      <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, alignItems: "center", marginBottom: 6 }}>
         {label} {required && <span style={{ color: CORAL }}>*</span>}
       </label>
       {children ?? (
         <input type={type} value={value ?? ""} placeholder={placeholder}
           onChange={(e) => onChange?.(e.target.value)}
-          style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: "#162323", boxSizing: "border-box" }} />
+          style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: "#0E2238", boxSizing: "border-box" }} />
       )}
     </div>
   );
@@ -115,11 +115,11 @@ function Select({ label, value, onChange, options, required = true }: {
 }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, alignItems: "center", marginBottom: 6 }}>
+      <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", gap: 4, alignItems: "center", marginBottom: 6 }}>
         {label} {required && <span style={{ color: CORAL }}>*</span>}
       </label>
       <select value={value} onChange={(e) => onChange(e.target.value)}
-        style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #E2DAD0", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: "#162323", appearance: "auto" }}>
+        style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: "white", color: "#0E2238", appearance: "auto" }}>
         <option value="">Selecciona...</option>
         {options.map((o) => <option key={o} value={o}>{o}</option>)}
       </select>
@@ -237,7 +237,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
               {cert?.consecutive}
             </div>
           </div>
-          <p style={{ fontSize: 13, color: "#6B7A7A", textAlign: "center", marginBottom: 20 }}>
+          <p style={{ fontSize: 13, color: "#5B6B7F", textAlign: "center", marginBottom: 20 }}>
             La JAC revisará tu solicitud. Recibirás una actualización de estado en esta sección.
           </p>
           <button onClick={() => { setView("requests"); setSubmitted(false); }}
@@ -261,7 +261,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             {step > 1 ? "Atrás" : "Cancelar"}
           </button>
-          <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 700, color: "#162323", margin: 0, flex: 1 }}>
+          <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 700, color: "#0E2238", margin: 0, flex: 1 }}>
             Certificado de vecindad
           </h2>
         </div>
@@ -269,10 +269,10 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
         {/* Progress */}
         <div style={{ display: "flex", gap: 6, marginBottom: 24 }}>
           {[1, 2, 3].map((s) => (
-            <div key={s} style={{ flex: 1, height: 4, borderRadius: 100, background: s <= step ? TEAL : "#E2DAD0" }} />
+            <div key={s} style={{ flex: 1, height: 4, borderRadius: 100, background: s <= step ? TEAL : "#D6E2EE" }} />
           ))}
         </div>
-        <p style={{ fontSize: 13, color: "#6B7A7A", margin: "0 0 20px", fontWeight: 600 }}>
+        <p style={{ fontSize: 13, color: "#5B6B7F", margin: "0 0 20px", fontWeight: 600 }}>
           Paso {step} de 3 — {step === 1 ? "Datos personales" : step === 2 ? "Fotos de documentos" : "Resumen y autorización"}
         </p>
 
@@ -300,7 +300,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
 
         {step === 2 && (
           <div>
-            <p style={{ fontSize: 13, color: "#6B7A7A", marginBottom: 16 }}>
+            <p style={{ fontSize: 13, color: "#5B6B7F", marginBottom: 16 }}>
               Sube fotos nítidas de cada documento. Asegúrate de que el texto sea legible.
             </p>
             <PhotoUploader label="Cédula — cara frontal" value={photoCedulaFront} onChange={setPhotoCedulaFront} required />
@@ -316,7 +316,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
         {step === 3 && (
           <div>
             <div style={{ background: "#F0FAF5", borderRadius: 14, padding: "16px", marginBottom: 16 }}>
-              <p style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Resumen de la solicitud</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Resumen de la solicitud</p>
               {[
                 ["Nombre", fullName],
                 ["Documento", `${docType} ${docNumber} (exp. ${docPlace})`],
@@ -327,9 +327,9 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
                 ["Teléfono", phone],
                 ["Correo", email],
               ].map(([k, v]) => (
-                <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid #E2DAD0" }}>
-                  <span style={{ fontSize: 13, color: "#6B7A7A", fontWeight: 600 }}>{k}</span>
-                  <span style={{ fontSize: 13, color: "#162323", fontWeight: 600, textAlign: "right", maxWidth: "55%" }}>{v}</span>
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid #D6E2EE" }}>
+                  <span style={{ fontSize: 13, color: "#5B6B7F", fontWeight: 600 }}>{k}</span>
+                  <span style={{ fontSize: 13, color: "#0E2238", fontWeight: 600, textAlign: "right", maxWidth: "55%" }}>{v}</span>
                 </div>
               ))}
             </div>
@@ -343,8 +343,8 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
                 ...(photoSelfie ? [{ label: "Selfie", img: photoSelfie }] : []),
               ].map(({ label, img }) => (
                 <div key={label} style={{ width: 80 }}>
-                  <img src={img} alt={label} style={{ width: 80, height: 60, objectFit: "cover", borderRadius: 8, border: "1.5px solid #E2DAD0" }} />
-                  <p style={{ fontSize: 10, color: "#6B7A7A", textAlign: "center", margin: "3px 0 0" }}>{label}</p>
+                  <img src={img} alt={label} style={{ width: 80, height: 60, objectFit: "cover", borderRadius: 8, border: "1.5px solid #D6E2EE" }} />
+                  <p style={{ fontSize: 10, color: "#5B6B7F", textAlign: "center", margin: "3px 0 0" }}>{label}</p>
                 </div>
               ))}
             </div>
@@ -363,7 +363,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
         )}
 
         <button onClick={step < 3 ? goNext : handleSubmit}
-          style={{ width: "100%", padding: "15px", borderRadius: 14, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontWeight: 700, fontSize: 16, border: "none", cursor: "pointer" }}>
+          style={{ width: "100%", padding: "15px", borderRadius: 14, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontWeight: 700, fontSize: 16, border: "none", cursor: "pointer" }}>
           {step < 3 ? "Siguiente →" : "Enviar solicitud"}
         </button>
       </div>
@@ -381,23 +381,23 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
 
       <div style={{ textAlign: "center", marginBottom: 28 }}>
         <div style={{ width: 72, height: 72, borderRadius: 20, background: TEAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36, margin: "0 auto 16px" }}>📋</div>
-        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 700, color: "#162323", margin: "0 0 6px" }}>Certificado de vecindad</h1>
-        <p style={{ fontSize: 14, color: "#6B7A7A", margin: 0, lineHeight: 1.6 }}>
+        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 700, color: "#0E2238", margin: "0 0 6px" }}>Certificado de vecindad</h1>
+        <p style={{ fontSize: 14, color: "#5B6B7F", margin: 0, lineHeight: 1.6 }}>
           Solicita tu certificado expedido por la JAC Barrio Las Gaviotas · Cartagena de Indias
         </p>
       </div>
 
-      <div style={{ background: "#F0EBE3", borderRadius: 16, padding: "16px", marginBottom: 20 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: "#162323", margin: "0 0 8px" }}>¿Qué necesitas?</p>
+      <div style={{ background: "#E9F0F7", borderRadius: 16, padding: "16px", marginBottom: 20 }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: "#0E2238", margin: "0 0 8px" }}>¿Qué necesitas?</p>
         {["Cédula de ciudadanía (frontal y posterior)", "Recibo de servicio público reciente", "Contrato de arriendo (solo arrendatarios)"].map((r) => (
-          <p key={r} style={{ fontSize: 13, color: "#6B7A7A", margin: "4px 0", display: "flex", gap: 6 }}>
+          <p key={r} style={{ fontSize: 13, color: "#5B6B7F", margin: "4px 0", display: "flex", gap: 6 }}>
             <span style={{ color: TEAL, fontWeight: 700 }}>✓</span> {r}
           </p>
         ))}
       </div>
 
       <button onClick={() => { if (!store.requireAccount("solicitar un certificado")) return; setView("form"); setStep(1); setSubmitted(false); setErrors([]); }}
-        style={{ width: "100%", padding: "16px", borderRadius: 14, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontWeight: 700, fontSize: 16, border: "none", cursor: "pointer", marginBottom: 12 }}>
+        style={{ width: "100%", padding: "16px", borderRadius: 14, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontWeight: 700, fontSize: 16, border: "none", cursor: "pointer", marginBottom: 12 }}>
         📋 Solicitar certificado
       </button>
       <button onClick={() => setView("requests")}
@@ -421,7 +421,7 @@ function RequestsView({ onBack }: { onBack: () => void }) {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           Mis solicitudes
         </button>
-        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 700, color: "#162323", margin: "0 0 16px" }}>{selected.consecutive}</h2>
+        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 700, color: "#0E2238", margin: "0 0 16px" }}>{selected.consecutive}</h2>
         <div style={{ background: meta.bg, borderRadius: 12, padding: "10px 14px", display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
           <span style={{ fontSize: 20 }}>{meta.emoji}</span>
           <div>
@@ -437,12 +437,12 @@ function RequestsView({ onBack }: { onBack: () => void }) {
           ["Calidad", selected.quality],
           ["Propósito", selected.purpose],
         ].map(([k, v]) => (
-          <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #E2DAD0" }}>
-            <span style={{ fontSize: 13, color: "#6B7A7A", fontWeight: 600 }}>{k}</span>
-            <span style={{ fontSize: 13, color: "#162323", fontWeight: 600 }}>{v}</span>
+          <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #D6E2EE" }}>
+            <span style={{ fontSize: 13, color: "#5B6B7F", fontWeight: 600 }}>{k}</span>
+            <span style={{ fontSize: 13, color: "#0E2238", fontWeight: 600 }}>{v}</span>
           </div>
         ))}
-        <p style={{ fontSize: 11, color: "#6B7A7A", marginTop: 16, textAlign: "center" }}>
+        <p style={{ fontSize: 11, color: "#5B6B7F", marginTop: 16, textAlign: "center" }}>
           Enviada el {new Date(selected.createdAt).toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" })}
         </p>
       </div>
@@ -456,12 +456,12 @@ function RequestsView({ onBack }: { onBack: () => void }) {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
         Volver
       </button>
-      <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 700, color: "#162323", margin: "0 0 16px" }}>Mis solicitudes</h2>
+      <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 700, color: "#0E2238", margin: "0 0 16px" }}>Mis solicitudes</h2>
 
       {certs.length === 0 ? (
         <div style={{ textAlign: "center", padding: "40px 20px" }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>📁</div>
-          <p style={{ fontSize: 14, color: "#6B7A7A" }}>No tienes solicitudes aún.</p>
+          <p style={{ fontSize: 14, color: "#5B6B7F" }}>No tienes solicitudes aún.</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -469,16 +469,16 @@ function RequestsView({ onBack }: { onBack: () => void }) {
             const meta = STATUS_META[c.status];
             return (
               <button key={c.id} onClick={() => setSelected(c)}
-                style={{ background: "white", border: "1px solid #E2DAD0", borderRadius: 14, padding: "14px 16px", display: "flex", alignItems: "center", gap: 12, cursor: "pointer", textAlign: "left" }}>
+                style={{ background: "white", border: "1px solid #D6E2EE", borderRadius: 14, padding: "14px 16px", display: "flex", alignItems: "center", gap: 12, cursor: "pointer", textAlign: "left" }}>
                 <div style={{ width: 44, height: 44, borderRadius: 12, background: meta.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
                   {meta.emoji}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: "#162323", margin: "0 0 2px" }}>{c.consecutive}</p>
-                  <p style={{ fontSize: 12, color: "#6B7A7A", margin: "0 0 4px" }}>{c.fullName}</p>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#0E2238", margin: "0 0 2px" }}>{c.consecutive}</p>
+                  <p style={{ fontSize: 12, color: "#5B6B7F", margin: "0 0 4px" }}>{c.fullName}</p>
                   <span style={{ fontSize: 11, fontWeight: 700, color: meta.color, background: meta.bg, padding: "3px 9px", borderRadius: 100 }}>{c.status}</span>
                 </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#6B7A7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#5B6B7F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </button>
             );
           })}

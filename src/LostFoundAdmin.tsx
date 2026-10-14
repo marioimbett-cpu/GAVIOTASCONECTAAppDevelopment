@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { store, LostFoundItem, LFStatus, LFType, LFCategory } from "./store";
 
-const TEAL = "#0D6E6E";
+const TEAL = "#0060A8";
 const RED = "#DC2626";
 const GREEN = "#16A34A";
 const ORANGE = "#D97706";
@@ -9,7 +9,7 @@ const ORANGE = "#D97706";
 const STATUS_META: Record<LFStatus, { color: string; bg: string; label: string }> = {
   activo:    { color: TEAL,   bg: TEAL + "18",   label: "Activo" },
   resuelto:  { color: GREEN,  bg: "#DCFCE7",      label: "Resuelto" },
-  archivado: { color: "#6B7A7A", bg: "#F0EBE3",   label: "Archivado" },
+  archivado: { color: "#5B6B7F", bg: "#E9F0F7",   label: "Archivado" },
   oculto:    { color: RED,    bg: "#FEE2E2",      label: "Oculto" },
 };
 
@@ -84,7 +84,7 @@ export default function LostFoundAdmin() {
           )}
         </div>
 
-        <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 800, color: "#162323", margin: "0 0 12px" }}>{title}</h3>
+        <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 800, color: "#0E2238", margin: "0 0 12px" }}>{title}</h3>
 
         {/* Photos */}
         {selected.photos.length > 0 && (
@@ -115,9 +115,9 @@ export default function LostFoundAdmin() {
           isPet && selected.reward ? ["Recompensa", selected.rewardNote || "Sí"] : null,
           [`Publicado`, `hace ${days} día${days !== 1 ? "s" : ""}`],
         ] as ([string, string] | null)[]).filter((x): x is [string, string] => x !== null).map(([k, v]) => (
-          <div key={k as string} style={{ display: "flex", gap: 10, padding: "7px 0", borderBottom: "1px solid #F0EBE3" }}>
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", minWidth: 110 }}>{k as string}</span>
-            <span style={{ fontSize: 13, color: "#162323", fontWeight: 600, flex: 1 }}>{v as string}</span>
+          <div key={k as string} style={{ display: "flex", gap: 10, padding: "7px 0", borderBottom: "1px solid #E9F0F7" }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", minWidth: 110 }}>{k as string}</span>
+            <span style={{ fontSize: 13, color: "#0E2238", fontWeight: 600, flex: 1 }}>{v as string}</span>
           </div>
         ))}
 
@@ -130,18 +130,18 @@ export default function LostFoundAdmin() {
 
         {/* Actions */}
         <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 4px" }}>Acciones</p>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 4px" }}>Acciones</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <button onClick={() => updateStatus("activo")} disabled={selected.status === "activo"}
-              style={{ flex: 1, minWidth: 100, padding: "10px 8px", borderRadius: 12, border: "none", cursor: selected.status === "activo" ? "not-allowed" : "pointer", background: selected.status === "activo" ? "#F0EBE3" : TEAL + "18", color: TEAL, fontWeight: 700, fontSize: 13 }}>
+              style={{ flex: 1, minWidth: 100, padding: "10px 8px", borderRadius: 12, border: "none", cursor: selected.status === "activo" ? "not-allowed" : "pointer", background: selected.status === "activo" ? "#E9F0F7" : TEAL + "18", color: TEAL, fontWeight: 700, fontSize: 13 }}>
               ✅ Activar
             </button>
             <button onClick={() => updateStatus("oculto")} disabled={selected.status === "oculto"}
-              style={{ flex: 1, minWidth: 100, padding: "10px 8px", borderRadius: 12, border: "none", cursor: selected.status === "oculto" ? "not-allowed" : "pointer", background: selected.status === "oculto" ? "#F0EBE3" : "#FEE2E2", color: RED, fontWeight: 700, fontSize: 13 }}>
+              style={{ flex: 1, minWidth: 100, padding: "10px 8px", borderRadius: 12, border: "none", cursor: selected.status === "oculto" ? "not-allowed" : "pointer", background: selected.status === "oculto" ? "#E9F0F7" : "#FEE2E2", color: RED, fontWeight: 700, fontSize: 13 }}>
               🚫 Ocultar
             </button>
             <button onClick={() => updateStatus("archivado")} disabled={selected.status === "archivado"}
-              style={{ flex: 1, minWidth: 100, padding: "10px 8px", borderRadius: 12, border: "none", cursor: selected.status === "archivado" ? "not-allowed" : "pointer", background: selected.status === "archivado" ? "#F0EBE3" : "#F5F5F5", color: "#6B7A7A", fontWeight: 700, fontSize: 13 }}>
+              style={{ flex: 1, minWidth: 100, padding: "10px 8px", borderRadius: 12, border: "none", cursor: selected.status === "archivado" ? "not-allowed" : "pointer", background: selected.status === "archivado" ? "#E9F0F7" : "#F5F5F5", color: "#5B6B7F", fontWeight: 700, fontSize: 13 }}>
               📁 Archivar
             </button>
           </div>
@@ -152,7 +152,7 @@ export default function LostFoundAdmin() {
 
   return (
     <div>
-      <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 700, color: "#162323", margin: "0 0 12px" }}>
+      <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 700, color: "#0E2238", margin: "0 0 12px" }}>
         Perdidos y Encontrados
       </h3>
 
@@ -171,16 +171,16 @@ export default function LostFoundAdmin() {
         {(["Todos", "Perdido", "Encontrado"] as const).map((t) => (
           <button key={t} onClick={() => setFilterType(t as any)}
             style={{ padding: "6px 12px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700,
-              background: filterType === t ? (t === "Perdido" ? RED : t === "Encontrado" ? GREEN : TEAL) : "#F0EBE3",
-              color: filterType === t ? "white" : "#6B7A7A" }}>
+              background: filterType === t ? (t === "Perdido" ? RED : t === "Encontrado" ? GREEN : TEAL) : "#E9F0F7",
+              color: filterType === t ? "white" : "#5B6B7F" }}>
             {t}
           </button>
         ))}
-        <span style={{ alignSelf: "center", color: "#E2DAD0" }}>|</span>
+        <span style={{ alignSelf: "center", color: "#D6E2EE" }}>|</span>
         {(["Todos", "Mascota", "Objeto"] as const).map((c) => (
           <button key={c} onClick={() => setFilterCat(c as any)}
             style={{ padding: "6px 12px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700,
-              background: filterCat === c ? TEAL + "22" : "#F0EBE3", color: filterCat === c ? TEAL : "#6B7A7A" }}>
+              background: filterCat === c ? TEAL + "22" : "#E9F0F7", color: filterCat === c ? TEAL : "#5B6B7F" }}>
             {c === "Mascota" ? "🐾 " : c === "Objeto" ? "📦 " : ""}{c}
           </button>
         ))}
@@ -192,8 +192,8 @@ export default function LostFoundAdmin() {
           return (
             <button key={s} onClick={() => setFilterStatus(s as any)}
               style={{ padding: "5px 11px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 11, fontWeight: 700,
-                background: filterStatus === s ? (meta ? meta.bg : "#E2DAD0") : "#F0EBE3",
-                color: filterStatus === s ? (meta ? meta.color : "#162323") : "#6B7A7A" }}>
+                background: filterStatus === s ? (meta ? meta.bg : "#D6E2EE") : "#E9F0F7",
+                color: filterStatus === s ? (meta ? meta.color : "#0E2238") : "#5B6B7F" }}>
               {s === "Todos" ? `Todos (${items.length})` : meta!.label}
             </button>
           );
@@ -203,7 +203,7 @@ export default function LostFoundAdmin() {
       {filtered.length === 0 ? (
         <div style={{ textAlign: "center", padding: "32px 20px" }}>
           <p style={{ fontSize: 36, margin: "0 0 12px" }}>📭</p>
-          <p style={{ fontSize: 14, color: "#6B7A7A" }}>No hay publicaciones con estos filtros.</p>
+          <p style={{ fontSize: 14, color: "#5B6B7F" }}>No hay publicaciones con estos filtros.</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -214,8 +214,8 @@ export default function LostFoundAdmin() {
             const meta = STATUS_META[item.status];
             return (
               <button key={item.id} onClick={() => { setSelected(item); setPhotoIdx(0); }}
-                style={{ background: "white", border: `1px solid ${days >= 30 && item.status === "activo" ? ORANGE : "#E2DAD0"}`, borderRadius: 14, padding: "12px 14px", display: "flex", gap: 12, alignItems: "center", cursor: "pointer", textAlign: "left" }}>
-                <div style={{ width: 52, height: 52, borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "#F0EBE3" }}>
+                style={{ background: "white", border: `1px solid ${days >= 30 && item.status === "activo" ? ORANGE : "#D6E2EE"}`, borderRadius: 14, padding: "12px 14px", display: "flex", gap: 12, alignItems: "center", cursor: "pointer", textAlign: "left" }}>
+                <div style={{ width: 52, height: 52, borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "#E9F0F7" }}>
                   {item.photos[0]
                     ? <img src={item.photos[0]} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     : <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>{isPet ? "🐾" : "📦"}</div>}
@@ -230,10 +230,10 @@ export default function LostFoundAdmin() {
                       <span style={{ fontSize: 10, fontWeight: 700, color: ORANGE }}>⏰ +30 días</span>
                     )}
                   </div>
-                  <p style={{ fontSize: 14, fontWeight: 800, color: "#162323", margin: "0 0 1px", fontFamily: "'Fraunces', serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</p>
-                  <p style={{ fontSize: 12, color: "#6B7A7A", margin: 0 }}>{item.sector} · hace {days} día{days !== 1 ? "s" : ""}</p>
+                  <p style={{ fontSize: 14, fontWeight: 800, color: "#0E2238", margin: "0 0 1px", fontFamily: "'Fraunces', serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</p>
+                  <p style={{ fontSize: 12, color: "#5B6B7F", margin: 0 }}>{item.sector} · hace {days} día{days !== 1 ? "s" : ""}</p>
                 </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#6B7A7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#5B6B7F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </button>
             );
           })}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { store, OfficioWorker, OfficioReview, OfficioStatus, OfficioCategory } from "./store";
 
-const TEAL = "#0D6E6E";
+const TEAL = "#0060A8";
 const RED = "#DC2626";
 const GREEN = "#16A34A";
 const ORANGE = "#D97706";
@@ -18,7 +18,7 @@ const ALL_CATEGORIES: { cat: OfficioCategory; icon: string }[] = [
 const STATUS_META: Record<OfficioStatus, { color: string; bg: string; label: string }> = {
   pendiente: { color: ORANGE,    bg: "#FEF3C7", label: "Pendiente" },
   aprobado:  { color: GREEN,     bg: "#DCFCE7", label: "Aprobado" },
-  pausado:   { color: "#6B7A7A", bg: "#F0EBE3", label: "Pausado" },
+  pausado:   { color: "#5B6B7F", bg: "#E9F0F7", label: "Pausado" },
   rechazado: { color: RED,       bg: "#FEE2E2", label: "Rechazado" },
 };
 
@@ -100,7 +100,7 @@ export default function OfficiosAdmin() {
           <Avatar worker={selected} size={56} />
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 4 }}>
-              <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 800, color: "#162323", margin: 0 }}>{selected.fullName}</h3>
+              <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 800, color: "#0E2238", margin: 0 }}>{selected.fullName}</h3>
               {selected.verified && <span style={{ fontSize: 10, fontWeight: 700, color: TEAL, background: TEAL + "18", padding: "2px 8px", borderRadius: 100 }}>✓ Verificado JAC</span>}
             </div>
             <span style={{ fontSize: 12, fontWeight: 700, color: meta.color, background: meta.bg, padding: "3px 10px", borderRadius: 100 }}>{meta.label}</span>
@@ -108,8 +108,8 @@ export default function OfficiosAdmin() {
         </div>
 
         {/* Info */}
-        <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #E2DAD0", marginBottom: 12 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>Datos del solicitante</p>
+        <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #D6E2EE", marginBottom: 12 }}>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>Datos del solicitante</p>
           {[
             ["Cédula (privado)", selected.cedula],
             ["Teléfono", selected.phone],
@@ -122,9 +122,9 @@ export default function OfficiosAdmin() {
             ["Descripción", selected.description || "—"],
             ["Registrado", new Date(selected.createdAt).toLocaleDateString("es-CO")],
           ].map(([k, v]) => (
-            <div key={k} style={{ display: "flex", gap: 10, padding: "6px 0", borderBottom: "1px solid #F0EBE3" }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", minWidth: 110 }}>{k}</span>
-              <span style={{ fontSize: 13, color: "#162323", fontWeight: 600, flex: 1, wordBreak: "break-word" }}>{v}</span>
+            <div key={k} style={{ display: "flex", gap: 10, padding: "6px 0", borderBottom: "1px solid #E9F0F7" }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", minWidth: 110 }}>{k}</span>
+              <span style={{ fontSize: 13, color: "#0E2238", fontWeight: 600, flex: 1, wordBreak: "break-word" }}>{v}</span>
             </div>
           ))}
         </div>
@@ -132,7 +132,7 @@ export default function OfficiosAdmin() {
         {/* Work photos */}
         {selected.workPhotos.length > 0 && (
           <div style={{ marginBottom: 12 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>Fotos de trabajos</p>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>Fotos de trabajos</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
               {selected.workPhotos.map((p, i) => (
                 <img key={i} src={p} alt="Trabajo" style={{ width: "100%", aspectRatio: "1", objectFit: "cover", borderRadius: 10 }} />
@@ -149,8 +149,8 @@ export default function OfficiosAdmin() {
         )}
 
         {/* Actions */}
-        <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #E2DAD0", marginBottom: 12 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Acciones</p>
+        <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #D6E2EE", marginBottom: 12 }}>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Acciones</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {selected.status !== "aprobado" && (
               <button onClick={() => updateStatus("aprobado")}
@@ -164,7 +164,7 @@ export default function OfficiosAdmin() {
             </button>
             {selected.status !== "pausado" && (
               <button onClick={() => updateStatus("pausado")}
-                style={{ padding: "11px", borderRadius: 11, background: "#F0EBE3", color: "#6B7A7A", fontWeight: 700, fontSize: 13, border: "none", cursor: "pointer" }}>
+                style={{ padding: "11px", borderRadius: 11, background: "#E9F0F7", color: "#5B6B7F", fontWeight: 700, fontSize: 13, border: "none", cursor: "pointer" }}>
                 ⏸️ Pausar perfil
               </button>
             )}
@@ -174,7 +174,7 @@ export default function OfficiosAdmin() {
                   <textarea rows={2} placeholder="Motivo del rechazo (obligatorio)" value={rejectReason} onChange={(e) => setRejectReason(e.target.value)}
                     style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid #FECACA", fontSize: 13, fontFamily: "'Outfit', sans-serif", resize: "vertical", marginBottom: 8, boxSizing: "border-box" }} />
                   <div style={{ display: "flex", gap: 8 }}>
-                    <button onClick={() => setShowRejectInput(false)} style={{ flex: 1, padding: "9px", borderRadius: 10, border: "1px solid #E2DAD0", background: "white", color: "#6B7A7A", fontWeight: 600, fontSize: 13, cursor: "pointer" }}>Cancelar</button>
+                    <button onClick={() => setShowRejectInput(false)} style={{ flex: 1, padding: "9px", borderRadius: 10, border: "1px solid #D6E2EE", background: "white", color: "#5B6B7F", fontWeight: 600, fontSize: 13, cursor: "pointer" }}>Cancelar</button>
                     <button disabled={!rejectReason.trim()} onClick={() => updateStatus("rechazado", rejectReason.trim())}
                       style={{ flex: 1, padding: "9px", borderRadius: 10, background: rejectReason.trim() ? "#FEE2E2" : "#F5F5F5", color: rejectReason.trim() ? RED : "#9CA3AF", fontWeight: 700, fontSize: 13, border: "none", cursor: rejectReason.trim() ? "pointer" : "not-allowed" }}>
                       Rechazar
@@ -194,23 +194,23 @@ export default function OfficiosAdmin() {
         {/* Reviews */}
         {workerReviews.length > 0 && (
           <div>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>Reseñas ({workerReviews.length})</p>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>Reseñas ({workerReviews.length})</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {workerReviews.map((r) => (
-                <div key={r.id} style={{ background: "white", borderRadius: 12, padding: "12px 14px", border: "1px solid #E2DAD0" }}>
+                <div key={r.id} style={{ background: "white", borderRadius: 12, padding: "12px 14px", border: "1px solid #D6E2EE" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
                     <div>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: "#162323" }}>{r.authorName}</span>
-                      <span style={{ fontSize: 11, color: "#6B7A7A", marginLeft: 8 }}>{r.date}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: "#0E2238" }}>{r.authorName}</span>
+                      <span style={{ fontSize: 11, color: "#5B6B7F", marginLeft: 8 }}>{r.date}</span>
                       <div style={{ display: "flex", gap: 1, marginTop: 3 }}>
-                        {[1,2,3,4,5].map((s) => <span key={s} style={{ fontSize: 12, color: s <= r.stars ? "#E8643A" : "#E2DAD0" }}>★</span>)}
+                        {[1,2,3,4,5].map((s) => <span key={s} style={{ fontSize: 12, color: s <= r.stars ? "#0088CC" : "#D6E2EE" }}>★</span>)}
                       </div>
                     </div>
                     <button onClick={() => hideReview(r.id)} style={{ fontSize: 11, fontWeight: 700, color: RED, background: "#FEE2E2", padding: "4px 8px", borderRadius: 100, border: "none", cursor: "pointer", flexShrink: 0 }}>
                       Ocultar
                     </button>
                   </div>
-                  <p style={{ fontSize: 13, color: "#162323", margin: 0, lineHeight: 1.5 }}>{r.comment}</p>
+                  <p style={{ fontSize: 13, color: "#0E2238", margin: 0, lineHeight: 1.5 }}>{r.comment}</p>
                 </div>
               ))}
             </div>
@@ -222,7 +222,7 @@ export default function OfficiosAdmin() {
 
   return (
     <div>
-      <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 700, color: "#162323", margin: "0 0 12px" }}>
+      <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 700, color: "#0E2238", margin: "0 0 12px" }}>
         Oficios del Barrio
       </h3>
 
@@ -243,8 +243,8 @@ export default function OfficiosAdmin() {
           return (
             <button key={b} onClick={() => setBandeja(b)}
               style={{ padding: "6px 12px", borderRadius: 100, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700,
-                background: bandeja === b ? (meta ? meta.bg : "#E2DAD0") : "#F0EBE3",
-                color: bandeja === b ? (meta ? meta.color : "#162323") : "#6B7A7A" }}>
+                background: bandeja === b ? (meta ? meta.bg : "#D6E2EE") : "#E9F0F7",
+                color: bandeja === b ? (meta ? meta.color : "#0E2238") : "#5B6B7F" }}>
               {b === "Todos" ? `Todos (${count})` : `${STATUS_META[b as OfficioStatus].label} (${count})`}
             </button>
           );
@@ -254,7 +254,7 @@ export default function OfficiosAdmin() {
       {filtered.length === 0 ? (
         <div style={{ textAlign: "center", padding: "32px 20px" }}>
           <p style={{ fontSize: 36, margin: "0 0 12px" }}>🧰</p>
-          <p style={{ fontSize: 14, color: "#6B7A7A" }}>No hay solicitudes en esta bandeja.</p>
+          <p style={{ fontSize: 14, color: "#5B6B7F" }}>No hay solicitudes en esta bandeja.</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -262,19 +262,19 @@ export default function OfficiosAdmin() {
             const meta = STATUS_META[w.status];
             return (
               <button key={w.id} onClick={() => { setSelected(w); setPhotoIdx(0); }}
-                style={{ background: "white", border: `1px solid ${w.status === "pendiente" ? ORANGE : "#E2DAD0"}`, borderRadius: 14, padding: "12px 14px", display: "flex", gap: 12, alignItems: "center", cursor: "pointer", textAlign: "left" }}>
+                style={{ background: "white", border: `1px solid ${w.status === "pendiente" ? ORANGE : "#D6E2EE"}`, borderRadius: 14, padding: "12px 14px", display: "flex", gap: 12, alignItems: "center", cursor: "pointer", textAlign: "left" }}>
                 <Avatar worker={w} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: 14, fontWeight: 800, color: "#162323", fontFamily: "'Fraunces', serif" }}>{w.fullName}</span>
+                    <span style={{ fontSize: 14, fontWeight: 800, color: "#0E2238", fontFamily: "'Fraunces', serif" }}>{w.fullName}</span>
                     {w.verified && <span style={{ fontSize: 10, fontWeight: 700, color: TEAL }}>✓</span>}
                     <span style={{ fontSize: 11, fontWeight: 700, color: meta.color, background: meta.bg, padding: "1px 8px", borderRadius: 100 }}>{meta.label}</span>
                   </div>
-                  <p style={{ fontSize: 12, color: "#6B7A7A", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <p style={{ fontSize: 12, color: "#5B6B7F", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {w.categories.slice(0, 2).map((c) => `${catIcon(c)} ${c}`).join(" · ")} · {w.sector}
                   </p>
                 </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#6B7A7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#5B6B7F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </button>
             );
           })}

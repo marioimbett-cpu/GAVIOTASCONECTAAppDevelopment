@@ -9,8 +9,8 @@ import LostFoundAdmin from "./LostFoundAdmin";
 import OfficiosAdmin from "./OfficiosAdmin";
 import EyeToggle from "./EyeToggle";
 
-const TEAL = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL = "#0060A8";
+const CORAL = "#0088CC";
 
 type AdminTab = "news" | "events" | "places" | "directory" | "gallery" | "chatbot" | "emergency" | "settings" | "certificates" | "lostfound" | "oficios";
 
@@ -61,10 +61,10 @@ function ImageUploader({ value, onChange, label = "Imagen" }: {
 
   return (
     <div style={{ marginBottom: 12 }}>
-      <label style={{ fontSize: 11, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>{label}</label>
+      <label style={{ fontSize: 11, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>{label}</label>
       <input ref={inputRef} type="file" accept="image/png,image/jpeg,image/webp" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
       {value ? (
-        <div style={{ position: "relative" as const, borderRadius: 12, overflow: "hidden", border: "1.5px solid #E2DAD0" }}>
+        <div style={{ position: "relative" as const, borderRadius: 12, overflow: "hidden", border: "1.5px solid #D6E2EE" }}>
           <img src={value} alt="preview" style={{ width: "100%", maxHeight: 160, objectFit: "cover" as const, display: "block" }} />
           <div style={{ position: "absolute" as const, bottom: 0, left: 0, right: 0, display: "flex", gap: 8, padding: 8, background: "rgba(0,0,0,0.45)" }}>
             <button onClick={() => inputRef.current?.click()} style={{ flex: 1, padding: "7px", borderRadius: 8, background: "white", border: "none", fontSize: 12, fontWeight: 700, cursor: "pointer", color: TEAL }}>🔄 Cambiar</button>
@@ -72,10 +72,10 @@ function ImageUploader({ value, onChange, label = "Imagen" }: {
           </div>
         </div>
       ) : (
-        <button onClick={() => inputRef.current?.click()} disabled={loading} style={{ width: "100%", padding: "20px", borderRadius: 12, border: "2px dashed #E2DAD0", background: loading ? "#F0EBE3" : "white", cursor: loading ? "default" : "pointer", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 6 }}>
+        <button onClick={() => inputRef.current?.click()} disabled={loading} style={{ width: "100%", padding: "20px", borderRadius: 12, border: "2px dashed #D6E2EE", background: loading ? "#E9F0F7" : "white", cursor: loading ? "default" : "pointer", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 6 }}>
           <span style={{ fontSize: 28 }}>{loading ? "⏳" : "📷"}</span>
           <span style={{ fontSize: 13, fontWeight: 700, color: TEAL }}>{loading ? "Procesando..." : "Toca para subir imagen"}</span>
-          <span style={{ fontSize: 11, color: "#6B7A7A" }}>PNG, JPG o WEBP · Se ajusta a 800px automáticamente</span>
+          <span style={{ fontSize: 11, color: "#5B6B7F" }}>PNG, JPG o WEBP · Se ajusta a 800px automáticamente</span>
         </button>
       )}
     </div>
@@ -91,13 +91,13 @@ function AField({ label, value, onChange, type = "text", placeholder = "", multi
   const isPwd = type === "password";
   const base: React.CSSProperties = {
     width: "100%", padding: "10px 12px", borderRadius: 10,
-    border: "1.5px solid #E2DAD0", fontSize: 13,
+    border: "1.5px solid #D6E2EE", fontSize: 13,
     fontFamily: "'Outfit', sans-serif", outline: "none",
-    background: "#FFFFFF", color: "#162323", boxSizing: "border-box",
+    background: "#FFFFFF", color: "#0E2238", boxSizing: "border-box",
   };
   return (
     <div style={{ marginBottom: 10 }}>
-      <label style={{ fontSize: 11, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 4 }}>{label}</label>
+      <label style={{ fontSize: 11, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 4 }}>{label}</label>
       {multiline
         ? <textarea value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} rows={3} style={{ ...base, resize: "vertical" as const }} />
         : <div style={{ position: "relative" as const }}>
@@ -124,7 +124,7 @@ function ABtn({ children, onClick, color = TEAL, small = false, danger = false }
 
 function ACard({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <div style={{ background: "white", borderRadius: 14, border: "1px solid #E2DAD0", padding: "14px 16px", marginBottom: 10, ...style }}>
+    <div style={{ background: "white", borderRadius: 14, border: "1px solid #D6E2EE", padding: "14px 16px", marginBottom: 10, ...style }}>
       {children}
     </div>
   );
@@ -171,16 +171,16 @@ function NewsManager() {
     <div>
       <SaveBanner saved={saved} />
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-        <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#162323" }}>{editing.id ? "Editar" : "Nueva"} publicación</h3>
+        <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0E2238" }}>{editing.id ? "Editar" : "Nueva"} publicación</h3>
         <ABtn small onClick={() => setEditing(null)} danger>Cancelar</ABtn>
       </div>
       <AField label="Título" value={editing.title} onChange={(v) => setEditing({ ...editing, title: v })} placeholder="Título de la noticia" />
       <AField label="Resumen" value={editing.summary} onChange={(v) => setEditing({ ...editing, summary: v })} placeholder="Descripción breve" multiline />
       <div style={{ marginBottom: 10 }}>
-        <label style={{ fontSize: 11, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 4 }}>Categoría</label>
+        <label style={{ fontSize: 11, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 4 }}>Categoría</label>
         <div style={{ display: "flex", gap: 8 }}>
           {(["Noticia", "Comunicado", "Proyecto"] as const).map((c) => (
-            <button key={c} onClick={() => setEditing({ ...editing, category: c, color: catColor[c] })} style={{ flex: 1, padding: "8px", borderRadius: 9, border: `2px solid ${editing.category === c ? catColor[c] : "#E2DAD0"}`, background: editing.category === c ? catColor[c] + "18" : "white", color: editing.category === c ? catColor[c] : "#6B7A7A", fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
+            <button key={c} onClick={() => setEditing({ ...editing, category: c, color: catColor[c] })} style={{ flex: 1, padding: "8px", borderRadius: 9, border: `2px solid ${editing.category === c ? catColor[c] : "#D6E2EE"}`, background: editing.category === c ? catColor[c] + "18" : "white", color: editing.category === c ? catColor[c] : "#5B6B7F", fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
               {c}
             </button>
           ))}
@@ -197,7 +197,7 @@ function NewsManager() {
     <div>
       <SaveBanner saved={saved} />
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-        <span style={{ fontSize: 14, color: "#6B7A7A" }}>{items.length} publicaciones</span>
+        <span style={{ fontSize: 14, color: "#5B6B7F" }}>{items.length} publicaciones</span>
         <ABtn small onClick={() => setEditing({ ...empty })}>+ Nueva</ABtn>
       </div>
       {items.map((item) => (
@@ -205,8 +205,8 @@ function NewsManager() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <span style={{ fontSize: 10, fontWeight: 700, color: item.color, background: item.color + "18", padding: "2px 8px", borderRadius: 100 }}>{item.category}</span>
-              <p style={{ margin: "6px 0 2px", fontWeight: 700, fontSize: 13, color: "#162323" }}>{item.title}</p>
-              <p style={{ margin: 0, fontSize: 11, color: "#6B7A7A" }}>{item.date} · {item.readTime}</p>
+              <p style={{ margin: "6px 0 2px", fontWeight: 700, fontSize: 13, color: "#0E2238" }}>{item.title}</p>
+              <p style={{ margin: 0, fontSize: 11, color: "#5B6B7F" }}>{item.date} · {item.readTime}</p>
             </div>
             <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
               <ABtn small onClick={() => setEditing(item)}>✏️</ABtn>
@@ -260,7 +260,7 @@ function EventsManager() {
     <div>
       <SaveBanner saved={saved} />
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-        <span style={{ fontSize: 14, color: "#6B7A7A" }}>{items.length} eventos</span>
+        <span style={{ fontSize: 14, color: "#5B6B7F" }}>{items.length} eventos</span>
         <ABtn small onClick={() => setEditing({ ...empty })}>+ Nuevo</ABtn>
       </div>
       {items.map((item) => (
@@ -268,7 +268,7 @@ function EventsManager() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div style={{ flex: 1 }}>
               <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: 13 }}>{item.emoji} {item.title}</p>
-              <p style={{ margin: 0, fontSize: 11, color: "#6B7A7A" }}>{item.date} · {item.time} · {item.location}</p>
+              <p style={{ margin: 0, fontSize: 11, color: "#5B6B7F" }}>{item.date} · {item.time} · {item.location}</p>
             </div>
             <div style={{ display: "flex", gap: 6 }}>
               <ABtn small onClick={() => setEditing(item)}>✏️</ABtn>
@@ -318,10 +318,10 @@ function PlacesManager() {
       <AField label="Nombre" value={editing.name} onChange={(v) => setEditing({ ...editing, name: v })} />
       <AField label="Descripción" value={editing.desc} onChange={(v) => setEditing({ ...editing, desc: v })} multiline />
       <div style={{ marginBottom: 10 }}>
-        <label style={{ fontSize: 11, fontWeight: 700, color: "#6B7A7A", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 4 }}>Categoría</label>
+        <label style={{ fontSize: 11, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 4 }}>Categoría</label>
         <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 6 }}>
           {PLACE_CATEGORIES.map((c) => (
-            <button key={c.id} onClick={() => setEditing({ ...editing, category: c.id, emoji: c.emoji })} style={{ padding: "6px 12px", borderRadius: 9, border: `2px solid ${editing.category === c.id ? TEAL : "#E2DAD0"}`, background: editing.category === c.id ? TEAL + "15" : "white", color: editing.category === c.id ? TEAL : "#6B7A7A", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
+            <button key={c.id} onClick={() => setEditing({ ...editing, category: c.id, emoji: c.emoji })} style={{ padding: "6px 12px", borderRadius: 9, border: `2px solid ${editing.category === c.id ? TEAL : "#D6E2EE"}`, background: editing.category === c.id ? TEAL + "15" : "white", color: editing.category === c.id ? TEAL : "#5B6B7F", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
               {c.emoji} {c.label}
             </button>
           ))}
@@ -334,7 +334,7 @@ function PlacesManager() {
         <AField label="Latitud" value={String(editing.lat)} onChange={(v) => setEditing({ ...editing, lat: parseFloat(v) || editing.lat })} placeholder="ej. 10.4004" />
         <AField label="Longitud" value={String(editing.lng)} onChange={(v) => setEditing({ ...editing, lng: parseFloat(v) || editing.lng })} placeholder="ej. -75.4893" />
       </div>
-      <div style={{ background: "#F0EBE3", borderRadius: 10, padding: "10px 12px", marginBottom: 12, fontSize: 12, color: "#6B7A7A" }}>
+      <div style={{ background: "#E9F0F7", borderRadius: 10, padding: "10px 12px", marginBottom: 12, fontSize: 12, color: "#5B6B7F" }}>
         💡 Para obtener coordenadas: abre Google Maps, presiona largo sobre el punto y copia las coordenadas.
       </div>
       <ImageUploader label="Foto del lugar (opcional)" value={editing.image ?? null} onChange={(v) => setEditing({ ...editing, image: v })} />
@@ -346,7 +346,7 @@ function PlacesManager() {
     <div>
       <SaveBanner saved={saved} />
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-        <span style={{ fontSize: 14, color: "#6B7A7A" }}>{items.length} lugares</span>
+        <span style={{ fontSize: 14, color: "#5B6B7F" }}>{items.length} lugares</span>
         <ABtn small onClick={() => setEditing({ ...empty })}>+ Nuevo</ABtn>
       </div>
       {items.map((item) => (
@@ -356,7 +356,7 @@ function PlacesManager() {
               <div style={{ width: 36, height: 36, borderRadius: 10, background: item.color + "18", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>{item.emoji}</div>
               <div>
                 <p style={{ margin: "0 0 1px", fontWeight: 700, fontSize: 13 }}>{item.name}</p>
-                <p style={{ margin: 0, fontSize: 11, color: "#6B7A7A" }}>{item.category} · {item.lat.toFixed(4)}, {item.lng.toFixed(4)}</p>
+                <p style={{ margin: 0, fontSize: 11, color: "#5B6B7F" }}>{item.category} · {item.lat.toFixed(4)}, {item.lng.toFixed(4)}</p>
               </div>
             </div>
             <div style={{ display: "flex", gap: 6 }}>
@@ -408,7 +408,7 @@ function DirectoryManager() {
     <div>
       <SaveBanner saved={saved} />
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-        <span style={{ fontSize: 14, color: "#6B7A7A" }}>{items.length} negocios</span>
+        <span style={{ fontSize: 14, color: "#5B6B7F" }}>{items.length} negocios</span>
         <ABtn small onClick={() => setEditing({ ...empty })}>+ Nuevo</ABtn>
       </div>
       {items.map((item) => (
@@ -418,7 +418,7 @@ function DirectoryManager() {
               <span style={{ fontSize: 22 }}>{item.emoji}</span>
               <div>
                 <p style={{ margin: "0 0 1px", fontWeight: 700, fontSize: 13 }}>{item.name}</p>
-                <p style={{ margin: 0, fontSize: 11, color: "#6B7A7A" }}>{item.category} · {item.phone}</p>
+                <p style={{ margin: 0, fontSize: 11, color: "#5B6B7F" }}>{item.category} · {item.phone}</p>
               </div>
             </div>
             <div style={{ display: "flex", gap: 6 }}>
@@ -468,16 +468,16 @@ function GalleryManager() {
     <div>
       <SaveBanner saved={saved} />
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-        <span style={{ fontSize: 14, color: "#6B7A7A" }}>{items.length} fotos</span>
+        <span style={{ fontSize: 14, color: "#5B6B7F" }}>{items.length} fotos</span>
         <ABtn small onClick={() => setEditing({ ...empty })}>+ Nueva foto</ABtn>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 10 }}>
         {items.map((item) => (
-          <div key={item.id} style={{ background: "white", borderRadius: 12, border: "1px solid #E2DAD0", overflow: "hidden" }}>
+          <div key={item.id} style={{ background: "white", borderRadius: 12, border: "1px solid #D6E2EE", overflow: "hidden" }}>
             <img src={item.url} alt={item.caption} style={{ width: "100%", height: 90, objectFit: "cover" as const }} onError={(e) => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1519689680058-324335573bb0?w=300&h=200&fit=crop"; }} />
             <div style={{ padding: "8px 10px" }}>
-              <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 700, color: "#162323" }}>{item.caption || "Sin leyenda"}</p>
-              <p style={{ margin: "0 0 6px", fontSize: 10, color: "#6B7A7A" }}>{item.category}</p>
+              <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 700, color: "#0E2238" }}>{item.caption || "Sin leyenda"}</p>
+              <p style={{ margin: "0 0 6px", fontSize: 10, color: "#5B6B7F" }}>{item.category}</p>
               <div style={{ display: "flex", gap: 5 }}>
                 <ABtn small onClick={() => setEditing(item)}>✏️</ABtn>
                 <ABtn small danger onClick={() => del(item.id)}>🗑</ABtn>
@@ -516,7 +516,7 @@ function ChatbotManager() {
       </div>
       <AField label="Palabras clave (separadas por coma)" value={editing.patterns} onChange={(v) => setEditing({ ...editing, patterns: v })} placeholder="ej. jac, junta, reunion, asamblea" />
       <AField label="Respuesta del bot (usa *texto* para negrita)" value={editing.answer} onChange={(v) => setEditing({ ...editing, answer: v })} multiline placeholder="Escribe la respuesta que dará el bot..." />
-      <div style={{ background: "#F0EBE3", borderRadius: 10, padding: "10px 12px", marginBottom: 12, fontSize: 12, color: "#6B7A7A" }}>
+      <div style={{ background: "#E9F0F7", borderRadius: 10, padding: "10px 12px", marginBottom: 12, fontSize: 12, color: "#5B6B7F" }}>
         💡 El bot busca si el mensaje del usuario contiene alguna de las palabras clave y responde con el texto configurado. Usa *texto* para poner en negrita.
       </div>
       <ABtn onClick={save}>💾 Guardar respuesta</ABtn>
@@ -527,7 +527,7 @@ function ChatbotManager() {
     <div>
       <SaveBanner saved={saved} />
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-        <span style={{ fontSize: 14, color: "#6B7A7A" }}>{items.length} respuestas configuradas</span>
+        <span style={{ fontSize: 14, color: "#5B6B7F" }}>{items.length} respuestas configuradas</span>
         <ABtn small onClick={() => setEditing({ ...empty })}>+ Nueva</ABtn>
       </div>
       {items.map((item) => (
@@ -535,7 +535,7 @@ function ChatbotManager() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 700, color: TEAL }}>🔑 {item.patterns}</p>
-              <p style={{ margin: 0, fontSize: 12, color: "#162323", whiteSpace: "pre-line" as const, overflow: "hidden", maxHeight: 48, textOverflow: "ellipsis" }}>{item.answer.slice(0, 80)}{item.answer.length > 80 ? "…" : ""}</p>
+              <p style={{ margin: 0, fontSize: 12, color: "#0E2238", whiteSpace: "pre-line" as const, overflow: "hidden", maxHeight: 48, textOverflow: "ellipsis" }}>{item.answer.slice(0, 80)}{item.answer.length > 80 ? "…" : ""}</p>
             </div>
             <div style={{ display: "flex", gap: 6, marginLeft: 10 }}>
               <ABtn small onClick={() => setEditing(item)}>✏️</ABtn>
@@ -584,7 +584,7 @@ function EmergencyManager() {
     <div>
       <SaveBanner saved={saved} />
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-        <span style={{ fontSize: 14, color: "#6B7A7A" }}>{items.length} líneas</span>
+        <span style={{ fontSize: 14, color: "#5B6B7F" }}>{items.length} líneas</span>
         <ABtn small onClick={() => setEditing({ ...empty })}>+ Nueva</ABtn>
       </div>
       {items.map((item) => (
@@ -594,7 +594,7 @@ function EmergencyManager() {
               <span style={{ fontSize: 22 }}>{item.emoji}</span>
               <div>
                 <p style={{ margin: "0 0 1px", fontWeight: 700, fontSize: 13 }}>{item.label}</p>
-                <p style={{ margin: 0, fontSize: 12, color: CORAL, fontWeight: 700 }}>{item.num} <span style={{ color: "#6B7A7A", fontWeight: 400 }}>· {item.desc}</span></p>
+                <p style={{ margin: 0, fontSize: 12, color: CORAL, fontWeight: 700 }}>{item.num} <span style={{ color: "#5B6B7F", fontWeight: 400 }}>· {item.desc}</span></p>
               </div>
             </div>
             <div style={{ display: "flex", gap: 6 }}>
@@ -632,9 +632,9 @@ function SettingsManager() {
     <div>
       <SaveBanner saved={saved} />
       <ACard>
-        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#162323" }}>Identidad de la App</p>
+        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#0E2238" }}>Identidad de la App</p>
         <AField label="Nombre de la app" value={settings.appName} onChange={(v) => setSettings({ ...settings, appName: v })} placeholder="Gaviotas Conecta" />
-        <div style={{ background: "#F0EBE3", borderRadius: 12, padding: "14px", textAlign: "center" as const, marginBottom: 10 }}>
+        <div style={{ background: "#E9F0F7", borderRadius: 12, padding: "14px", textAlign: "center" as const, marginBottom: 10 }}>
           <img src="/logo-app.png" alt="Logo" style={{ width: 72, height: 72, objectFit: "contain", borderRadius: 14, background: "#FFFFFF", marginBottom: 6 }} />
           <p style={{ margin: 0, fontWeight: 700, fontSize: 16, color: TEAL }}>{settings.appName || "Gaviotas Conecta"}</p>
         </div>
@@ -642,20 +642,20 @@ function SettingsManager() {
         <AField label="Ciudad" value={settings.city} onChange={(v) => setSettings({ ...settings, city: v })} />
       </ACard>
       <ACard>
-        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#162323" }}>📋 Certificados de vecindad</p>
+        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#0E2238" }}>📋 Certificados de vecindad</p>
         <AField label="Nombre del presidente JAC" value={settings.presidentName ?? ""} onChange={(v) => setSettings({ ...settings, presidentName: v })} placeholder="Ej: Juan Carlos Pérez" />
         <AField label="Correo del presidente" value={settings.presidentEmail ?? ""} onChange={(v) => setSettings({ ...settings, presidentEmail: v })} placeholder="jac.lasgaviotas@correo.com" />
         <AField label="Resolución No." value={settings.resolutionNumber ?? ""} onChange={(v) => setSettings({ ...settings, resolutionNumber: v })} placeholder="Ej: 001-2026" />
         <AField label="NIT" value={settings.nit ?? ""} onChange={(v) => setSettings({ ...settings, nit: v })} placeholder="Ej: 900.000.000-1" />
 
-        <p style={{ margin: "14px 0 8px", fontWeight: 700, fontSize: 13, color: "#162323" }}>✍️ Firma digital del presidente</p>
+        <p style={{ margin: "14px 0 8px", fontWeight: 700, fontSize: 13, color: "#0E2238" }}>✍️ Firma digital del presidente</p>
         <ImageUploader
           label="Firma (PNG o JPG con fondo transparente o blanco)"
           value={settings.presidentSignature ?? null}
           onChange={(v) => setSettings({ ...settings, presidentSignature: v ?? "" })}
         />
 
-        <p style={{ margin: "14px 0 8px", fontWeight: 700, fontSize: 13, color: "#162323" }}>📝 Textos del certificado</p>
+        <p style={{ margin: "14px 0 8px", fontWeight: 700, fontSize: 13, color: "#0E2238" }}>📝 Textos del certificado</p>
         <AField
           label="Párrafo 2 — reconocimiento de vecindad"
           value={settings.certTextP2 ?? ""}
@@ -673,7 +673,7 @@ function SettingsManager() {
       </ACard>
       <ABtn onClick={save}>💾 Guardar ajustes</ABtn>
       <ACard>
-        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#162323" }}>🔐 Tu contraseña de administrador</p>
+        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#0E2238" }}>🔐 Tu contraseña de administrador</p>
         <AField label="Nueva contraseña" type="password" value={newPwd} onChange={setNewPwd} placeholder="Mínimo 8 caracteres" />
         {pwdMsg && <p style={{ fontSize: 12, color: pwdMsg.startsWith("✅") ? "#16A34A" : "#DC2626", margin: "0 0 10px" }}>{pwdMsg}</p>}
         <ABtn onClick={changePassword}>Cambiar contraseña</ABtn>
@@ -710,9 +710,9 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
   const current = TABS.find((t) => t.id === tab)!;
 
   return (
-    <div style={{ position: "fixed" as const, inset: 0, zIndex: 99999, background: "#FAF6F0", display: "flex", flexDirection: "column" as const, fontFamily: "'Outfit', sans-serif" }}>
+    <div style={{ position: "fixed" as const, inset: 0, zIndex: 99999, background: "#F4F8FC", display: "flex", flexDirection: "column" as const, fontFamily: "'Outfit', sans-serif" }}>
       {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #062E2E)`, padding: "16px 20px 14px", flexShrink: 0 }}>
+      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #00245C)`, padding: "16px 20px 14px", flexShrink: 0 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>⚙️</div>
@@ -728,12 +728,12 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
       </div>
 
       {/* Tab bar */}
-      <div style={{ background: "white", borderBottom: "1px solid #E2DAD0", flexShrink: 0, display: "grid", gridTemplateColumns: "repeat(6, 1fr)" }}>
+      <div style={{ background: "white", borderBottom: "1px solid #D6E2EE", flexShrink: 0, display: "grid", gridTemplateColumns: "repeat(6, 1fr)" }}>
         {TABS.map((t) => (
           <button key={t.id} onClick={() => setTab(t.id)} style={{
             padding: "9px 4px", border: "none", background: tab === t.id ? TEAL + "12" : "none",
             borderBottom: `3px solid ${tab === t.id ? TEAL : "transparent"}`,
-            color: tab === t.id ? TEAL : "#6B7A7A", fontWeight: 700, fontSize: 11,
+            color: tab === t.id ? TEAL : "#5B6B7F", fontWeight: 700, fontSize: 11,
             cursor: "pointer", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 2,
           }}>
             <span style={{ fontSize: 18 }}>{t.emoji}</span>
@@ -744,7 +744,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
 
       {/* Section title */}
       <div style={{ padding: "14px 20px 0", flexShrink: 0 }}>
-        <h2 style={{ margin: 0, fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 700, color: "#162323" }}>
+        <h2 style={{ margin: 0, fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 700, color: "#0E2238" }}>
           {current.emoji} {current.label}
         </h2>
       </div>

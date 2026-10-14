@@ -1,6 +1,6 @@
 // Botón de ojito para mostrar u ocultar una contraseña.
 // Se coloca dentro de un contenedor con position: relative, sobre el borde derecho del input.
-export default function EyeToggle({ visible, onToggle, color = "#6B7A7A" }: { visible: boolean; onToggle: () => void; color?: string }) {
+export default function EyeToggle({ visible, onToggle, color = "#5B6B7F" }: { visible: boolean; onToggle: () => void; color?: string }) {
   const label = visible ? "Ocultar contraseña" : "Mostrar contraseña";
   return (
     <button

@@ -9,20 +9,20 @@
 .leaflet-popup-tip-container { margin-top: -1px; }
 
 @theme inline {
-  --color-background: #FAF6F0;
-  --color-foreground: #162323;
+  --color-background: #F4F8FC;
+  --color-foreground: #0E2238;
   --color-card: #FFFFFF;
-  --color-card-foreground: #162323;
-  --color-primary: #0D6E6E;
+  --color-card-foreground: #0E2238;
+  --color-primary: #0060A8;
   --color-primary-foreground: #FFFFFF;
-  --color-secondary: #E8F5F5;
-  --color-secondary-foreground: #0D6E6E;
-  --color-muted: #F0EBE3;
-  --color-muted-foreground: #6B7A7A;
-  --color-accent: #E8643A;
+  --color-secondary: #E6F1FA;
+  --color-secondary-foreground: #0060A8;
+  --color-muted: #E9F0F7;
+  --color-muted-foreground: #5B6B7F;
+  --color-accent: #0088CC;
   --color-accent-foreground: #FFFFFF;
-  --color-border: #E2DAD0;
-  --color-ring: #0D6E6E;
+  --color-border: #D6E2EE;
+  --color-ring: #0060A8;
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Outfit', system-ui, sans-serif;
   --radius: 1rem;

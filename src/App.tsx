@@ -24,20 +24,20 @@ interface Theme {
 }
 
 const ThemeCtx = createContext<{ theme: Theme; toggle: () => void }>({
-  theme: { dark: false, bg: "#FAF6F0", card: "#FFFFFF", border: "#E2DAD0", ink: "#162323", muted: "#6B7A7A", surface: "#F0EBE3", inputBg: "#FFFFFF" },
+  theme: { dark: false, bg: "#F4F8FC", card: "#FFFFFF", border: "#D6E2EE", ink: "#0E2238", muted: "#5B6B7F", surface: "#E9F0F7", inputBg: "#FFFFFF" },
   toggle: () => {},
 });
 const useTheme = () => useContext(ThemeCtx);
 
 function makeTheme(dark: boolean): Theme {
   return dark
-    ? { dark, bg: "#0E1A1A", card: "#172525", border: "#263535", ink: "#EEF4F4", muted: "#7A9898", surface: "#1E2E2E", inputBg: "#1E2E2E" }
-    : { dark, bg: "#FAF6F0", card: "#FFFFFF", border: "#E2DAD0", ink: "#162323", muted: "#6B7A7A", surface: "#F0EBE3", inputBg: "#FFFFFF" };
+    ? { dark, bg: "#0A1626", card: "#122136", border: "#22344D", ink: "#EEF4FA", muted: "#8AA0BA", surface: "#1A2B42", inputBg: "#1A2B42" }
+    : { dark, bg: "#F4F8FC", card: "#FFFFFF", border: "#D6E2EE", ink: "#0E2238", muted: "#5B6B7F", surface: "#E9F0F7", inputBg: "#FFFFFF" };
 }
 
 // ── Brand Colors (always) ──────────────────────────────────────────────────
-const TEAL = "#0D6E6E";
-const CORAL = "#E8643A";
+const TEAL = "#0060A8";
+const CORAL = "#0088CC";
 
 // ── Static notifications (admin panel doesn't manage these yet) ────────────
 const NOTIFICATIONS_DATA: Notification[] = [
@@ -106,22 +106,22 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 // ── Icons ──────────────────────────────────────────────────────────────────
 function IconHome({ active }: { active: boolean }) {
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" fill={active ? TEAL : "none"} stroke={active ? TEAL : "#7A9898"} strokeWidth="1.8" strokeLinejoin="round" /><path d="M9 21V12h6v9" stroke={active ? "white" : "#7A9898"} strokeWidth="1.8" strokeLinecap="round" /></svg>;
+  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" fill={active ? TEAL : "none"} stroke={active ? TEAL : "#8AA0BA"} strokeWidth="1.8" strokeLinejoin="round" /><path d="M9 21V12h6v9" stroke={active ? "white" : "#8AA0BA"} strokeWidth="1.8" strokeLinecap="round" /></svg>;
 }
 function IconNews({ active }: { active: boolean }) {
-  const c = active ? TEAL : "#7A9898";
+  const c = active ? TEAL : "#8AA0BA";
   return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><line x1="7" y1="9" x2="17" y2="9" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="7" y1="13" x2="14" y2="13" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="7" y1="17" x2="11" y2="17" stroke={c} strokeWidth="1.8" strokeLinecap="round" /></svg>;
 }
 function IconEvents({ active }: { active: boolean }) {
-  const c = active ? TEAL : "#7A9898";
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><line x1="16" y1="3" x2="16" y2="7" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="3" x2="8" y2="7" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke={c} strokeWidth="1.8" /><circle cx="12" cy="15" r="2" fill={active ? TEAL : "#7A9898"} /></svg>;
+  const c = active ? TEAL : "#8AA0BA";
+  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><line x1="16" y1="3" x2="16" y2="7" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="3" x2="8" y2="7" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke={c} strokeWidth="1.8" /><circle cx="12" cy="15" r="2" fill={active ? TEAL : "#8AA0BA"} /></svg>;
 }
 function IconDirectory({ active }: { active: boolean }) {
-  const c = active ? TEAL : "#7A9898";
+  const c = active ? TEAL : "#8AA0BA";
   return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><path d="M3 20c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="8" x2="21" y2="8" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="12" x2="21" y2="12" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="16" x2="21" y2="16" stroke={c} strokeWidth="1.8" strokeLinecap="round" /></svg>;
 }
 function IconMore({ active }: { active: boolean }) {
-  const c = active ? TEAL : "#7A9898";
+  const c = active ? TEAL : "#8AA0BA";
   return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.8" fill={c} /><circle cx="12" cy="12" r="1.8" fill={c} /><circle cx="19" cy="12" r="1.8" fill={c} /></svg>;
 }
 
@@ -132,7 +132,7 @@ function StarIcon({ filled }: { filled: boolean }) {
 function BellIcon({ unread }: { unread: number }) {
   return (
     <div style={{ position: "relative" as const }}>
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A9898" strokeWidth="1.8">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8AA0BA" strokeWidth="1.8">
         <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       {unread > 0 && (
@@ -220,7 +220,7 @@ function LoginScreen({ onLogin, onGoRegister, onRecover, onSkip }: { onLogin: (u
 
   return (
     <div style={{ height: "100%", overflowY: "auto" as const, background: theme.bg }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0A4F4F 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
+      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
         <AppLogo size={72} radius={18} style={{ margin: "0 auto 16px" }} />
         <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 26, fontWeight: 700, margin: "0 0 4px" }}>Bienvenido</h2>
         <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Inicia sesión en Gaviotas Conecta</p>
@@ -234,7 +234,7 @@ function LoginScreen({ onLogin, onGoRegister, onRecover, onSkip }: { onLogin: (u
             <button type="button" onClick={onRecover} style={{ background: "none", border: "none", color: TEAL, fontSize: 13, fontWeight: 600, cursor: "pointer", textAlign: "right" as const, padding: 0 }}>
               ¿Olvidaste tu contraseña?
             </button>
-            <button type="submit" disabled={loading} style={{ padding: "14px", borderRadius: 12, background: loading ? theme.muted : `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
+            <button type="submit" disabled={loading} style={{ padding: "14px", borderRadius: 12, background: loading ? theme.muted : `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
               {loading ? "Iniciando sesión..." : "Iniciar sesión"}
             </button>
             <p style={{ textAlign: "center" as const, fontSize: 14, color: theme.muted, margin: 0 }}>
@@ -279,7 +279,7 @@ function RegisterScreen({ onRegister, onGoLogin }: { onRegister: (u: User) => vo
 
   return (
     <div style={{ height: "100%", overflowY: "auto" as const, background: theme.bg }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0A4F4F 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
+      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
         <AppLogo size={72} radius={18} style={{ margin: "0 auto 16px" }} />
         <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 26, fontWeight: 700, margin: "0 0 4px" }}>Crear cuenta</h2>
         <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Únete a la comunidad de Las Gaviotas</p>
@@ -296,7 +296,7 @@ function RegisterScreen({ onRegister, onGoLogin }: { onRegister: (u: User) => vo
             <p style={{ fontSize: 12, color: theme.muted, margin: 0, lineHeight: 1.5 }}>
               Al registrarte aceptas nuestra <span style={{ color: TEAL, fontWeight: 600 }}>Política de Privacidad</span> y el tratamiento de tus datos conforme a la Ley 1581 de 2012.
             </p>
-            <button type="submit" disabled={loading} style={{ padding: "14px", borderRadius: 12, background: loading ? theme.muted : `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
+            <button type="submit" disabled={loading} style={{ padding: "14px", borderRadius: 12, background: loading ? theme.muted : `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
               {loading ? "Creando cuenta..." : "Crear cuenta"}
             </button>
             <p style={{ textAlign: "center" as const, fontSize: 14, color: theme.muted, margin: 0 }}>
@@ -329,7 +329,7 @@ function RecoverScreen({ onBack }: { onBack: () => void }) {
 
   return (
     <div style={{ height: "100%", background: theme.bg, overflowY: "auto" as const }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0A4F4F 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
+      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
         <div style={{ width: 60, height: 60, borderRadius: 16, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 16px" }}>🔑</div>
         <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 24, fontWeight: 700, margin: "0 0 4px" }}>Recuperar contraseña</h2>
         <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Te enviaremos un enlace a tu correo</p>
@@ -353,7 +353,7 @@ function RecoverScreen({ onBack }: { onBack: () => void }) {
             <div style={{ padding: "24px 20px", display: "flex", flexDirection: "column" as const, gap: 16 }}>
               <InputField label="Correo registrado" type="email" placeholder="tucorreo@email.com" value={email} onChange={(v) => { setEmail(v); setError(""); }} />
               {error && <p style={{ color: "#DC2626", fontSize: 13, margin: 0 }}>{error}</p>}
-              <button onClick={send} disabled={loading} style={{ padding: "14px", borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
+              <button onClick={send} disabled={loading} style={{ padding: "14px", borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
                 Enviar enlace de recuperación
               </button>
               <button onClick={onBack} style={{ background: "none", border: "none", color: theme.muted, fontSize: 13, cursor: "pointer" }}>
@@ -387,7 +387,7 @@ function NewPasswordScreen({ onDone }: { onDone: () => void }) {
 
   return (
     <div style={{ height: "100%", background: theme.bg, overflowY: "auto" as const }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0A4F4F 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
+      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
         <div style={{ width: 60, height: 60, borderRadius: 16, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 16px" }}>🔑</div>
         <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 24, fontWeight: 700, margin: "0 0 4px" }}>Nueva contraseña</h2>
         <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Escribe la contraseña que usarás de ahora en adelante</p>
@@ -398,7 +398,7 @@ function NewPasswordScreen({ onDone }: { onDone: () => void }) {
             <InputField label="Nueva contraseña" type="password" placeholder="Mínimo 6 caracteres" value={password} onChange={(v) => { setPassword(v); setError(""); }} />
             <InputField label="Confirmar contraseña" type="password" placeholder="Repite la contraseña" value={confirm} onChange={(v) => { setConfirm(v); setError(""); }} />
             {error && <p style={{ color: "#DC2626", fontSize: 13, margin: 0 }}>{error}</p>}
-            <button onClick={save} disabled={loading} style={{ padding: "14px", borderRadius: 12, background: loading ? theme.muted : `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
+            <button onClick={save} disabled={loading} style={{ padding: "14px", borderRadius: 12, background: loading ? theme.muted : `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
               {loading ? "Guardando..." : "Guardar contraseña"}
             </button>
           </div>
@@ -509,14 +509,14 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
     { icon: "📰", label: "Noticias", color: TEAL, action: onGoNews },
     { icon: "📅", label: "Eventos", color: CORAL, action: onGoEvents },
     { icon: "🗺️", label: "Mapa", color: "#2E86AB", action: onOpenMap },
-    { icon: "🤖", label: "Chatbot", color: "#0D6E6E", action: onOpenChat },
+    { icon: "🤖", label: "Chatbot", color: "#0060A8", action: onOpenChat },
   ];
 
   return (
     <div style={{ paddingBottom: 8 }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0A4F4F 100%)`, padding: "28px 20px 24px", position: "relative" as const, overflow: "hidden" }}>
+      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "28px 20px 24px", position: "relative" as const, overflow: "hidden" }}>
         <div style={{ position: "absolute" as const, right: -30, top: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.06)" }} />
-        <div style={{ position: "absolute" as const, right: 40, top: 40, width: 80, height: 80, borderRadius: "50%", background: "rgba(232,100,58,0.22)" }} />
+        <div style={{ position: "absolute" as const, right: 40, top: 40, width: 80, height: 80, borderRadius: "50%", background: "rgba(0,136,204,0.22)" }} />
         <div style={{ position: "relative" as const, zIndex: 1 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
             <AppLogo size={40} radius={10} />
@@ -524,7 +524,7 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
           </div>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: "0 0 3px" }}>{greeting}</p>
           <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 25, fontWeight: 700, lineHeight: 1.2, margin: 0 }}>
-            Gaviotas <span style={{ color: "#F5B49A" }}>Conecta</span>
+            Gaviotas <span style={{ color: "#7FD3F5" }}>Conecta</span>
           </h1>
           <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, margin: "5px 0 0" }}>Tu comunidad, siempre cerca</p>
         </div>
@@ -583,9 +583,9 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
       {/* Community image */}
       <div style={{ padding: "16px 20px 0" }}>
         <Card>
-          <div style={{ position: "relative" as const, height: 140, background: "#E8F5F5" }}>
+          <div style={{ position: "relative" as const, height: 140, background: "#E6F1FA" }}>
             <img src="https://images.unsplash.com/photo-1519817650390-64a93db51149?w=600&h=280&fit=crop&auto=format" alt="Barrio Las Gaviotas, Cartagena de Indias" style={{ width: "100%", height: "100%", objectFit: "cover" as const }} />
-            <div style={{ position: "absolute" as const, inset: 0, background: "linear-gradient(to top, rgba(13,110,110,0.85) 0%, transparent 50%)" }} />
+            <div style={{ position: "absolute" as const, inset: 0, background: "linear-gradient(to top, rgba(0,96,168,0.85) 0%, transparent 50%)" }} />
             <div style={{ position: "absolute" as const, bottom: 12, left: 14 }}>
               <p style={{ color: "white", fontSize: 14, fontWeight: 700, margin: 0, fontFamily: "'Fraunces', serif" }}>Barrio Las Gaviotas 🏝</p>
               <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 12, margin: "2px 0 0" }}>Cartagena de Indias, Colombia</p>
@@ -625,7 +625,7 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
       </div>
 
       <div style={{ padding: "12px 20px 0" }}>
-        <button onClick={() => setShowEmergency(true)} style={{ width: "100%", background: `linear-gradient(135deg, ${CORAL} 0%, #C94E25 100%)`, borderRadius: 14, padding: "14px 18px", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, boxShadow: "0 4px 20px rgba(232,100,58,0.35)" }}>
+        <button onClick={() => setShowEmergency(true)} style={{ width: "100%", background: `linear-gradient(135deg, ${CORAL} 0%, #C94E25 100%)`, borderRadius: 14, padding: "14px 18px", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, boxShadow: "0 4px 20px rgba(0,136,204,0.35)" }}>
           <span style={{ fontSize: 24 }}>🚨</span>
           <div style={{ flex: 1, textAlign: "left" as const }}>
             <p style={{ color: "white", fontWeight: 700, fontSize: 14, margin: 0 }}>Líneas de Emergencia</p>
@@ -958,7 +958,7 @@ function ParticipateScreen({ onBack }: { onBack: () => void }) {
                       <label style={{ fontSize: 12, fontWeight: 700, color: theme.muted, textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>Descripción del problema</label>
                       <textarea rows={4} value={reportForm.desc} onChange={(e) => setReportForm({ ...reportForm, desc: e.target.value })} placeholder="Describe el problema con el mayor detalle posible..." style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink, resize: "vertical" as const }} />
                     </div>
-                    <button onClick={() => { if (reportForm.type && reportForm.desc) setReportSent(true); }} style={{ padding: "13px", borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
+                    <button onClick={() => { if (reportForm.type && reportForm.desc) setReportSent(true); }} style={{ padding: "13px", borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
                       Enviar reporte
                     </button>
                   </div>
@@ -1018,7 +1018,7 @@ function GalleryScreen({ onBack }: { onBack: () => void }) {
 function AboutScreen({ onBack }: { onBack: () => void }) {
   const { theme } = useTheme();
   const sections = [
-    { icon: <img src="/gaviota.png" alt="" style={{ width: 24, height: 24, filter: "brightness(0) saturate(100%) invert(27%) sepia(61%) saturate(749%) hue-rotate(141deg)" }} />, title: "Gaviotas Conecta", desc: "Plataforma digital comunitaria del Barrio Las Gaviotas de Cartagena de Indias. Creada para facilitar la comunicación, participación y acceso a la información de los habitantes." },
+    { icon: <img src="/gaviota.png" alt="" style={{ width: 26, height: 26, background: "#0060A8", borderRadius: 7, padding: 3 }} />, title: "Gaviotas Conecta", desc: "Plataforma digital comunitaria del Barrio Las Gaviotas de Cartagena de Indias. Creada para facilitar la comunicación, participación y acceso a la información de los habitantes." },
     { icon: "🏘", title: "Barrio Las Gaviotas", desc: "Las Gaviotas es un barrio de Cartagena de Indias con una comunidad activa y participativa. [Información detallada pendiente de confirmación con la JAC.]" },
     { icon: "🏛", title: "Junta de Acción Comunal", desc: "La JAC del Barrio Las Gaviotas representa los intereses de los residentes ante las autoridades locales. [Datos de la JAC pendientes de confirmación.]" },
     { icon: "🎯", title: "Misión", desc: "Conectar digitalmente a los habitantes de Las Gaviotas para fortalecer la participación ciudadana, la comunicación y el acceso a la información local." },
@@ -1028,7 +1028,7 @@ function AboutScreen({ onBack }: { onBack: () => void }) {
     <div>
       <div style={{ padding: "24px 20px 0" }}>
         <BackButton onBack={onBack} />
-        <div style={{ background: `linear-gradient(135deg, ${TEAL} 0%, #0A4F4F 100%)`, borderRadius: 18, padding: "24px 20px", textAlign: "center" as const, marginBottom: 20 }}>
+        <div style={{ background: `linear-gradient(135deg, ${TEAL} 0%, #003078 100%)`, borderRadius: 18, padding: "24px 20px", textAlign: "center" as const, marginBottom: 20 }}>
           <AppLogo size={84} radius={20} style={{ margin: "0 auto 14px" }} />
           <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 22, fontWeight: 700, margin: "0 0 4px" }}>Gaviotas Conecta</h1>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: "0 0 14px" }}>Barrio Las Gaviotas · Cartagena de Indias</p>
@@ -1128,7 +1128,7 @@ function ContactScreen({ onBack }: { onBack: () => void }) {
         <Card style={{ marginBottom: 18 }}>
           <div style={{ padding: 16, borderBottom: `1px solid ${theme.border}` }}>
             <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>🏛</div>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>🏛</div>
               <div>
                 <p style={{ fontSize: 15, fontWeight: 700, margin: 0, fontFamily: "'Fraunces', serif", color: theme.ink }}>Junta de Acción Comunal</p>
                 <p style={{ fontSize: 12, color: theme.muted, margin: 0 }}>Barrio Las Gaviotas</p>
@@ -1180,7 +1180,7 @@ function ContactScreen({ onBack }: { onBack: () => void }) {
                 <label style={{ fontSize: 12, fontWeight: 700, color: theme.muted, textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>Mensaje</label>
                 <textarea rows={4} placeholder="Escribe tu consulta, sugerencia o reporte..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", resize: "vertical" as const, background: theme.inputBg, color: theme.ink }} />
               </div>
-              <button type="submit" style={{ padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #0A4F4F)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
+              <button type="submit" style={{ padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}>
                 Enviar mensaje
               </button>
             </form>
@@ -1260,12 +1260,12 @@ function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, onGoN
     { icon: "📋", label: "Certificado de vecindad", desc: "Solicita tu certificado digital a la JAC", sub: "certificate" as SubScreen, color: TEAL },
     { icon: "🐾", label: "Perdidos y Encontrados", desc: "Mascotas y objetos perdidos en el barrio", sub: "lostfound" as SubScreen, color: CORAL },
     { icon: "🧰", label: "Oficios del Barrio", desc: "Vecinos que ofrecen sus servicios aquí", sub: "oficios" as SubScreen, color: TEAL },
-    { icon: "🤖", label: "Asistente Virtual", desc: "GaviotaBot responde tus preguntas", sub: "chat" as SubScreen, color: "#0D6E6E" },
+    { icon: "🤖", label: "Asistente Virtual", desc: "GaviotaBot responde tus preguntas", sub: "chat" as SubScreen, color: "#0060A8" },
     { icon: "🗳️", label: "Participar", desc: "Encuestas y reportes comunitarios", sub: "participate" as SubScreen, color: "#7B4FBF" },
     { icon: "💬", label: "Contacto JAC", desc: "Escribe a la Junta de Acción Comunal", sub: "contact" as SubScreen, color: TEAL },
     { icon: "🖼", label: "Galería", desc: "Fotos del barrio Las Gaviotas", sub: "gallery" as SubScreen, color: "#2E86AB" },
     { icon: "ℹ️", label: "Acerca de", desc: "Información de la app y la comunidad", sub: "about" as SubScreen, color: "#7B4FBF" },
-    { icon: "🔒", label: "Política de Privacidad", desc: "Tratamiento de datos — Ley 1581/2012", sub: "privacy" as SubScreen, color: "#6B7A7A" },
+    { icon: "🔒", label: "Política de Privacidad", desc: "Tratamiento de datos — Ley 1581/2012", sub: "privacy" as SubScreen, color: "#5B6B7F" },
   ];
 
   return (
