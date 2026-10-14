@@ -145,32 +145,52 @@ function BellIcon({ unread }: { unread: number }) {
 }
 
 // ── Auth: Splash ───────────────────────────────────────────────────────────
-function SplashScreen({ onNext }: { onNext: (v: "login" | "register") => void }) {
+// Colores del logo de la JAC Urbanización Las Gaviotas
+const NAVY = "#003078";
+const SKY = "#0078C0";
+
+function SplashScreen({ onNext }: { onNext: (v: "login" | "register" | "app") => void }) {
   return (
-    <div style={{ height: "100%", background: `linear-gradient(160deg, ${TEAL} 0%, #062E2E 100%)`, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", padding: "40px 32px", position: "relative" as const, overflow: "hidden" }}>
-      <div style={{ position: "absolute" as const, top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
-      <div style={{ position: "absolute" as const, bottom: 40, left: -80, width: 220, height: 220, borderRadius: "50%", background: "rgba(232,100,58,0.15)" }} />
-      <div style={{ textAlign: "center" as const, position: "relative" as const, zIndex: 1, maxWidth: 320 }}>
-        <AppLogo size={112} radius={28} style={{ margin: "0 auto 28px", boxShadow: "0 24px 64px rgba(0,0,0,0.35)" }} />
-        <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 40, fontWeight: 700, margin: "0 0 10px", lineHeight: 1.1 }}>
-          Gaviotas<br /><span style={{ color: "#F5B49A" }}>Conecta</span>
+    <div style={{ minHeight: "100%", height: "100%", display: "flex", flexDirection: "column" as const, background: "#FFFFFF", overflowY: "auto" as const }}>
+      {/* Logo y nombre sobre fondo blanco, como el logo */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", padding: "36px 28px 8px", textAlign: "center" as const }}>
+        <img src="/logo-app.png" alt="Junta de Acción Comunal Urbanización Las Gaviotas" style={{ width: "min(62vw, 230px)", height: "auto", display: "block", marginBottom: 22 }} />
+        <h1 style={{ fontFamily: "'Fraunces', serif", color: NAVY, fontSize: 34, fontWeight: 700, margin: "0 0 8px", lineHeight: 1.1, letterSpacing: "-0.01em" }}>
+          Gaviotas <span style={{ color: SKY }}>Conecta</span>
         </h1>
-        <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 15, margin: "0 0 6px", lineHeight: 1.6 }}>
+        <p style={{ color: "#3D5A80", fontSize: 15, margin: 0, lineHeight: 1.55, maxWidth: 300 }}>
           La plataforma digital de la comunidad del Barrio Las Gaviotas
         </p>
-        <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, margin: "0 0 48px" }}>Cartagena de Indias · Colombia</p>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
-          <button onClick={() => onNext("login")} style={{ padding: "16px", borderRadius: 14, background: "white", color: TEAL, fontSize: 16, fontWeight: 700, border: "none", cursor: "pointer", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}>
-            Iniciar sesión
-          </button>
-          <button onClick={() => onNext("register")} style={{ padding: "16px", borderRadius: 14, background: "rgba(255,255,255,0.12)", color: "white", fontSize: 16, fontWeight: 600, border: "1.5px solid rgba(255,255,255,0.3)", cursor: "pointer" }}>
-            Crear cuenta
-          </button>
-          <button onClick={() => onNext("login")} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 13, cursor: "pointer", marginTop: 4 }}>
-            Explorar sin cuenta →
-          </button>
+      </div>
+
+      {/* Ola del logo que sostiene las acciones */}
+      <div style={{ position: "relative" as const, flexShrink: 0 }}>
+        <svg viewBox="0 0 390 70" preserveAspectRatio="none" aria-hidden="true" style={{ display: "block", width: "100%", height: 70 }}>
+          <defs>
+            <linearGradient id="olaClara" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stopColor="#7FD3F5" />
+              <stop offset="1" stopColor="#2AA8E0" />
+            </linearGradient>
+          </defs>
+          <path d="M0,38 C70,8 150,8 215,30 C280,52 340,46 390,22 L390,70 L0,70 Z" fill="url(#olaClara)" opacity="0.55" />
+          <path d="M0,52 C80,24 160,26 230,44 C295,60 345,56 390,40 L390,70 L0,70 Z" fill={NAVY} />
+        </svg>
+        <div style={{ background: `linear-gradient(180deg, ${NAVY} 0%, #00245C 100%)`, padding: "6px 28px 28px", marginTop: -1 }}>
+          <div style={{ maxWidth: 340, margin: "0 auto", display: "flex", flexDirection: "column" as const, gap: 12 }}>
+            <button onClick={() => onNext("login")} style={{ padding: "16px", borderRadius: 14, background: "#FFFFFF", color: NAVY, fontSize: 16, fontWeight: 700, border: "none", cursor: "pointer", boxShadow: "0 10px 30px rgba(0,0,0,0.25)" }}>
+              Iniciar sesión
+            </button>
+            <button onClick={() => onNext("register")} style={{ padding: "16px", borderRadius: 14, background: SKY, color: "#FFFFFF", fontSize: 16, fontWeight: 700, border: "none", cursor: "pointer" }}>
+              Crear cuenta
+            </button>
+            <button onClick={() => onNext("app")} style={{ background: "none", border: "none", color: "#BFDDF2", fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "8px 0 0" }}>
+              Explorar sin cuenta →
+            </button>
+            <p style={{ color: "rgba(191,221,242,0.6)", fontSize: 11, margin: "10px 0 0", textAlign: "center" as const, lineHeight: 1.6 }}>
+              Cartagena de Indias · Colombia<br />Versión 1.0 · JAC Urbanización Las Gaviotas
+            </p>
+          </div>
         </div>
-        <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: "28px 0 0" }}>Versión 1.0 · Comunidad Las Gaviotas</p>
       </div>
     </div>
   );
