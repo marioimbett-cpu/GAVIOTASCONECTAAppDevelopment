@@ -39,3 +39,12 @@ store.init().then(() => {
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}) })
 }
+
+// Al cerrar el teclado del iPhone, la página puede quedar corrida hacia arriba y
+// esconder la barra superior: se devuelve a su posición.
+document.addEventListener('focusout', (e) => {
+  const t = e.target as HTMLElement | null
+  if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) {
+    setTimeout(() => { if (!document.activeElement || document.activeElement === document.body) window.scrollTo(0, 0) }, 80)
+  }
+})

@@ -48,3 +48,12 @@ html, body, #root {
   width: 0;
   background: transparent;
 }
+
+/* iPhone hace zoom automático al escribir en campos con letra menor a 16px y la
+   pantalla queda agrandada y cortada. Con 16px en celulares no se hace ese zoom. */
+@media (max-width: 820px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+/* Evita que el texto se agrande solo al girar el celular */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
