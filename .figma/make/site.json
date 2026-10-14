@@ -9,7 +9,7 @@
     "icon": "/favicon.png"
   },
   "openGraph": {
-    "image": "/icon-512.png"
+    "image": "https://gaviotas-conecta.vercel.app/og-image.png"
   },
   "accessibility": {
     "addBypassLinks": false,

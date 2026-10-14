@@ -634,9 +634,8 @@ function SettingsManager() {
       <ACard>
         <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#162323" }}>🦅 Identidad de la App</p>
         <AField label="Nombre de la app" value={settings.appName} onChange={(v) => setSettings({ ...settings, appName: v })} placeholder="Gaviotas Conecta" />
-        <AField label="Emoji / logo" value={settings.logoEmoji} onChange={(v) => setSettings({ ...settings, logoEmoji: v })} placeholder="🦅" />
         <div style={{ background: "#F0EBE3", borderRadius: 12, padding: "14px", textAlign: "center" as const, marginBottom: 10 }}>
-          <div style={{ fontSize: 48, marginBottom: 4 }}>{settings.logoEmoji || "🦅"}</div>
+          <img src="/logo-app.png" alt="Logo" style={{ width: 72, height: 72, objectFit: "contain", borderRadius: 14, background: "#FFFFFF", marginBottom: 6 }} />
           <p style={{ margin: 0, fontWeight: 700, fontSize: 16, color: TEAL }}>{settings.appName || "Gaviotas Conecta"}</p>
         </div>
         <AField label="Nombre del barrio" value={settings.neighborhood} onChange={(v) => setSettings({ ...settings, neighborhood: v })} />

@@ -57,6 +57,15 @@ function Badge({ text, color = TEAL }: { text: string; color?: string }) {
   );
 }
 
+// Logo de la JAC Urbanización Las Gaviotas (public/logo-app.png)
+function AppLogo({ size, radius, style }: { size: number; radius: number; style?: React.CSSProperties }) {
+  return (
+    <div style={{ width: size, height: size, borderRadius: radius, background: "#FFFFFF", overflow: "hidden", flexShrink: 0, ...style }}>
+      <img src="/logo-app.png" alt="JAC Las Gaviotas" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
+    </div>
+  );
+}
+
 function Card({ children, style, onClick }: { children: React.ReactNode; style?: React.CSSProperties; onClick?: () => void }) {
   const { theme } = useTheme();
   return (
@@ -142,7 +151,7 @@ function SplashScreen({ onNext }: { onNext: (v: "login" | "register") => void })
       <div style={{ position: "absolute" as const, top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
       <div style={{ position: "absolute" as const, bottom: 40, left: -80, width: 220, height: 220, borderRadius: "50%", background: "rgba(232,100,58,0.15)" }} />
       <div style={{ textAlign: "center" as const, position: "relative" as const, zIndex: 1, maxWidth: 320 }}>
-        <div style={{ width: 96, height: 96, borderRadius: 26, background: CORAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, margin: "0 auto 28px", boxShadow: "0 24px 64px rgba(232,100,58,0.45)" }}>🦅</div>
+        <AppLogo size={112} radius={28} style={{ margin: "0 auto 28px", boxShadow: "0 24px 64px rgba(0,0,0,0.35)" }} />
         <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 40, fontWeight: 700, margin: "0 0 10px", lineHeight: 1.1 }}>
           Gaviotas<br /><span style={{ color: "#F5B49A" }}>Conecta</span>
         </h1>
@@ -192,7 +201,7 @@ function LoginScreen({ onLogin, onGoRegister, onRecover, onSkip }: { onLogin: (u
   return (
     <div style={{ height: "100%", overflowY: "auto" as const, background: theme.bg }}>
       <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0A4F4F 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
-        <div style={{ width: 60, height: 60, borderRadius: 16, background: CORAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 16px" }}>🦅</div>
+        <AppLogo size={72} radius={18} style={{ margin: "0 auto 16px" }} />
         <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 26, fontWeight: 700, margin: "0 0 4px" }}>Bienvenido</h2>
         <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Inicia sesión en Gaviotas Conecta</p>
       </div>
@@ -251,7 +260,7 @@ function RegisterScreen({ onRegister, onGoLogin }: { onRegister: (u: User) => vo
   return (
     <div style={{ height: "100%", overflowY: "auto" as const, background: theme.bg }}>
       <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0A4F4F 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
-        <div style={{ width: 60, height: 60, borderRadius: 16, background: CORAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 16px" }}>🦅</div>
+        <AppLogo size={72} radius={18} style={{ margin: "0 auto 16px" }} />
         <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 26, fontWeight: 700, margin: "0 0 4px" }}>Crear cuenta</h2>
         <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Únete a la comunidad de Las Gaviotas</p>
       </div>
@@ -490,7 +499,7 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
         <div style={{ position: "absolute" as const, right: 40, top: 40, width: 80, height: 80, borderRadius: "50%", background: "rgba(232,100,58,0.22)" }} />
         <div style={{ position: "relative" as const, zIndex: 1 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 9, background: CORAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>🦅</div>
+            <AppLogo size={40} radius={10} />
             <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase" as const }}>Barrio Las Gaviotas · Cartagena</div>
           </div>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: "0 0 3px" }}>{greeting}</p>
@@ -1000,7 +1009,7 @@ function AboutScreen({ onBack }: { onBack: () => void }) {
       <div style={{ padding: "24px 20px 0" }}>
         <BackButton onBack={onBack} />
         <div style={{ background: `linear-gradient(135deg, ${TEAL} 0%, #0A4F4F 100%)`, borderRadius: 18, padding: "24px 20px", textAlign: "center" as const, marginBottom: 20 }}>
-          <div style={{ width: 70, height: 70, borderRadius: 18, background: CORAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 34, margin: "0 auto 14px" }}>🦅</div>
+          <AppLogo size={84} radius={20} style={{ margin: "0 auto 14px" }} />
           <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 22, fontWeight: 700, margin: "0 0 4px" }}>Gaviotas Conecta</h1>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: "0 0 14px" }}>Barrio Las Gaviotas · Cartagena de Indias</p>
           <div style={{ display: "flex", justifyContent: "center", gap: 24 }}>
@@ -1448,7 +1457,7 @@ export default function App() {
         {/* App header */}
         <div style={{ background: theme.card, padding: "12px 20px 8px", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, borderBottom: `1px solid ${theme.border}` }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 9, background: TEAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>🦅</div>
+            <AppLogo size={34} radius={9} />
             <div>
               <div style={{ fontSize: 13, fontWeight: 700, color: theme.ink, fontFamily: "'Fraunces', serif", lineHeight: 1 }}>Gaviotas Conecta</div>
               <div style={{ fontSize: 10, color: theme.muted, letterSpacing: "0.04em" }}>Las Gaviotas · Cartagena</div>
