@@ -25,7 +25,7 @@ export default function VerifyScreen({ certId }: { certId: string }) {
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, background: "#F4F8FC", fontFamily: "'Outfit', system-ui, sans-serif", color: "#0E2238" }}>
       <div style={box}>
-        <p style={{ margin: "0 0 4px", fontSize: 12, letterSpacing: "0.08em", color: "#5B6B7F", textTransform: "uppercase" }}>JAC Barrio Las Gaviotas · Cartagena</p>
+        <p style={{ margin: "0 0 4px", fontSize: 12, letterSpacing: "0.08em", color: "#5B6B7F", textTransform: "uppercase" }}>JAC Urbanización Las Gaviotas · Cartagena</p>
         <h1 style={{ margin: "0 0 20px", fontSize: 22, color: TEAL }}>Verificación de certificado</h1>
 
         {state === "loading" && <p>Verificando…</p>}

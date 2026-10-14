@@ -43,8 +43,8 @@ const CORAL = "#0088CC";
 const NOTIFICATIONS_DATA: Notification[] = [
   { id: 1, icon: "📢", title: "Corte de agua mañana", body: "El 13 de septiembre habrá suspensión del servicio en el sector norte de 8 a.m. a 4 p.m.", time: "Hace 2 horas", read: false },
   { id: 2, icon: "📅", title: "Evento este domingo", body: "Jornada de limpieza del Parque Central — 14 sep a las 7:00 a.m. ¡Anímate a participar!", time: "Hace 5 horas", read: false },
-  { id: 3, icon: "🌱", title: "Nuevo proyecto aprobado", body: "La Alcaldía aprobó el presupuesto para la cancha sintética del barrio.", time: "Ayer", read: true },
-  { id: 4, icon: "📋", title: "Encuesta activa", body: "¿Cómo calificarías la seguridad del barrio? Tu opinión es importante.", time: "Hace 2 días", read: true },
+  { id: 3, icon: "🌱", title: "Nuevo proyecto aprobado", body: "La Alcaldía aprobó el presupuesto para la cancha sintética de la urbanización.", time: "Ayer", read: true },
+  { id: 4, icon: "📋", title: "Encuesta activa", body: "¿Cómo calificarías la seguridad de la urbanización? Tu opinión es importante.", time: "Hace 2 días", read: true },
   { id: 5, icon: "🎓", title: "Becas SENA disponibles", body: "Se abrieron 40 cupos de formación técnica gratuita para jóvenes de Las Gaviotas.", time: "Hace 3 días", read: true },
 ];
 
@@ -159,7 +159,7 @@ function SplashScreen({ onNext }: { onNext: (v: "login" | "register" | "app") =>
           Gaviotas <span style={{ color: SKY }}>Conecta</span>
         </h1>
         <p style={{ color: "#3D5A80", fontSize: 15, margin: 0, lineHeight: 1.55, maxWidth: 300 }}>
-          La plataforma digital de la comunidad del Barrio Las Gaviotas
+          La plataforma digital de la comunidad de la Urbanización Las Gaviotas
         </p>
       </div>
 
@@ -520,7 +520,7 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
         <div style={{ position: "relative" as const, zIndex: 1 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
             <AppLogo size={40} radius={10} />
-            <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase" as const }}>Barrio Las Gaviotas · Cartagena</div>
+            <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase" as const }}>Urbanización Las Gaviotas · Cartagena</div>
           </div>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: "0 0 3px" }}>{greeting}</p>
           <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 25, fontWeight: 700, lineHeight: 1.2, margin: 0 }}>
@@ -584,10 +584,10 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
       <div style={{ padding: "16px 20px 0" }}>
         <Card>
           <div style={{ position: "relative" as const, height: 140, background: "#E6F1FA" }}>
-            <img src="https://images.unsplash.com/photo-1519817650390-64a93db51149?w=600&h=280&fit=crop&auto=format" alt="Barrio Las Gaviotas, Cartagena de Indias" style={{ width: "100%", height: "100%", objectFit: "cover" as const }} />
+            <img src="https://images.unsplash.com/photo-1519817650390-64a93db51149?w=600&h=280&fit=crop&auto=format" alt="Urbanización Las Gaviotas, Cartagena de Indias" style={{ width: "100%", height: "100%", objectFit: "cover" as const }} />
             <div style={{ position: "absolute" as const, inset: 0, background: "linear-gradient(to top, rgba(0,96,168,0.85) 0%, transparent 50%)" }} />
             <div style={{ position: "absolute" as const, bottom: 12, left: 14 }}>
-              <p style={{ color: "white", fontSize: 14, fontWeight: 700, margin: 0, fontFamily: "'Fraunces', serif" }}>Barrio Las Gaviotas 🏝</p>
+              <p style={{ color: "white", fontSize: 14, fontWeight: 700, margin: 0, fontFamily: "'Fraunces', serif" }}>Urbanización Las Gaviotas 🏝</p>
               <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 12, margin: "2px 0 0" }}>Cartagena de Indias, Colombia</p>
             </div>
           </div>
@@ -597,7 +597,7 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
       {/* Services grid — all "Más" items */}
       <div style={{ padding: "20px 20px 0" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
-          <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 19, fontWeight: 600, margin: 0, color: theme.ink }}>Servicios del barrio</h2>
+          <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 19, fontWeight: 600, margin: 0, color: theme.ink }}>Servicios de la urbanización</h2>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 8 }}>
           {[
@@ -664,7 +664,7 @@ function NewsScreen({ favorites, onToggleFav }: { favorites: Set<number>; onTogg
             <StarIcon filled={showFavs} /> Guardados
           </button>
         </div>
-        <p style={{ color: theme.muted, fontSize: 14, margin: "0 0 14px" }}>Información actualizada del barrio</p>
+        <p style={{ color: theme.muted, fontSize: 14, margin: "0 0 14px" }}>Información actualizada de la urbanización</p>
         {!showFavs && (
           <div style={{ display: "flex", gap: 8, overflowX: "auto" as const, paddingBottom: 4, marginBottom: 2 }}>
             {filters.map((f) => (
@@ -788,7 +788,7 @@ function DirectoryScreen() {
     <div>
       <div style={{ padding: "24px 20px 0" }}>
         <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 700, margin: "0 0 4px", color: theme.ink }}>Directorio</h1>
-        <p style={{ color: theme.muted, fontSize: 14, margin: "0 0 14px" }}>Negocios y servicios del barrio</p>
+        <p style={{ color: theme.muted, fontSize: 14, margin: "0 0 14px" }}>Negocios y servicios de la urbanización</p>
         <div style={{ position: "relative" as const, marginBottom: 12 }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ position: "absolute" as const, left: 14, top: "50%", transform: "translateY(-50%)" }}><circle cx="11" cy="11" r="7" stroke={theme.muted} strokeWidth="2" /><path d="m21 21-4.35-4.35" stroke={theme.muted} strokeWidth="2" strokeLinecap="round" /></svg>
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar negocio o servicio..." style={{ width: "100%", padding: "12px 14px 12px 42px", borderRadius: 12, border: `1.5px solid ${theme.border}`, fontSize: 14, background: theme.inputBg, outline: "none", fontFamily: "'Outfit', sans-serif", color: theme.ink }} />
@@ -847,8 +847,8 @@ function ParticipateScreen({ onBack }: { onBack: () => void }) {
   const [pollSubmitted, setPollSubmitted] = useState<Set<number>>(new Set());
 
   const surveys = [
-    { id: 1, question: "¿Cómo calificarías la seguridad del barrio Las Gaviotas?", options: ["Excelente", "Buena", "Regular", "Deficiente"], votes: [12, 34, 45, 18], total: 109, active: true },
-    { id: 2, question: "¿Qué servicio necesita más mejora en el barrio?", options: ["Recolección de basuras", "Alumbrado público", "Vías y andenes", "Zonas verdes"], votes: [28, 41, 35, 22], total: 126, active: true },
+    { id: 1, question: "¿Cómo calificarías la seguridad de la urbanización Las Gaviotas?", options: ["Excelente", "Buena", "Regular", "Deficiente"], votes: [12, 34, 45, 18], total: 109, active: true },
+    { id: 2, question: "¿Qué servicio necesita más mejora en la urbanización?", options: ["Recolección de basuras", "Alumbrado público", "Vías y andenes", "Zonas verdes"], votes: [28, 41, 35, 22], total: 126, active: true },
     { id: 3, question: "¿Participarías en una actividad de siembra de árboles?", options: ["Sí, definitivamente", "Probablemente sí", "Probablemente no", "No"], votes: [67, 29, 8, 5], total: 109, active: false },
   ];
 
@@ -868,7 +868,7 @@ function ParticipateScreen({ onBack }: { onBack: () => void }) {
       <div style={{ padding: "24px 20px 0" }}>
         <BackButton onBack={onBack} />
         <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 700, margin: "0 0 4px", color: theme.ink }}>Participar</h1>
-        <p style={{ color: theme.muted, fontSize: 14, margin: "0 0 16px" }}>Tu voz y reportes construyen un mejor barrio</p>
+        <p style={{ color: theme.muted, fontSize: 14, margin: "0 0 16px" }}>Tu voz y reportes construyen una mejor urbanización</p>
 
         <div style={{ display: "flex", gap: 0, background: theme.surface, borderRadius: 12, padding: 4, marginBottom: 20 }}>
           {(["encuestas", "reportes"] as const).map((t) => (
@@ -1007,7 +1007,7 @@ function GalleryScreen({ onBack }: { onBack: () => void }) {
       </div>
       <div style={{ padding: "16px 20px" }}>
         <div style={{ background: theme.surface, borderRadius: 14, padding: "14px 16px", textAlign: "center" as const }}>
-          <p style={{ fontSize: 13, color: theme.muted, margin: 0 }}>📸 ¿Tienes fotos del barrio? Compártelas contactando a la JAC.</p>
+          <p style={{ fontSize: 13, color: theme.muted, margin: 0 }}>📸 ¿Tienes fotos de la urbanización? Compártelas contactando a la JAC.</p>
         </div>
       </div>
     </div>
@@ -1018,9 +1018,9 @@ function GalleryScreen({ onBack }: { onBack: () => void }) {
 function AboutScreen({ onBack }: { onBack: () => void }) {
   const { theme } = useTheme();
   const sections = [
-    { icon: <img src="/gaviota.png" alt="" style={{ width: 26, height: 26, background: "#0060A8", borderRadius: 7, padding: 3 }} />, title: "Gaviotas Conecta", desc: "Plataforma digital comunitaria del Barrio Las Gaviotas de Cartagena de Indias. Creada para facilitar la comunicación, participación y acceso a la información de los habitantes." },
-    { icon: "🏘", title: "Barrio Las Gaviotas", desc: "Las Gaviotas es un barrio de Cartagena de Indias con una comunidad activa y participativa. [Información detallada pendiente de confirmación con la JAC.]" },
-    { icon: "🏛", title: "Junta de Acción Comunal", desc: "La JAC del Barrio Las Gaviotas representa los intereses de los residentes ante las autoridades locales. [Datos de la JAC pendientes de confirmación.]" },
+    { icon: <img src="/gaviota.png" alt="" style={{ width: 26, height: 26, background: "#0060A8", borderRadius: 7, padding: 3 }} />, title: "Gaviotas Conecta", desc: "Plataforma digital comunitaria de la Urbanización Las Gaviotas de Cartagena de Indias. Creada para facilitar la comunicación, participación y acceso a la información de los habitantes." },
+    { icon: "🏘", title: "Urbanización Las Gaviotas", desc: "Las Gaviotas es una urbanización de Cartagena de Indias con una comunidad activa y participativa. [Información detallada pendiente de confirmación con la JAC.]" },
+    { icon: "🏛", title: "Junta de Acción Comunal", desc: "La JAC de la Urbanización Las Gaviotas representa los intereses de los residentes ante las autoridades locales. [Datos de la JAC pendientes de confirmación.]" },
     { icon: "🎯", title: "Misión", desc: "Conectar digitalmente a los habitantes de Las Gaviotas para fortalecer la participación ciudadana, la comunicación y el acceso a la información local." },
     { icon: "👁", title: "Visión", desc: "Ser la plataforma de referencia para la comunidad, contribuyendo al desarrollo, la transparencia y el bienestar de sus habitantes." },
   ];
@@ -1031,7 +1031,7 @@ function AboutScreen({ onBack }: { onBack: () => void }) {
         <div style={{ background: `linear-gradient(135deg, ${TEAL} 0%, #003078 100%)`, borderRadius: 18, padding: "24px 20px", textAlign: "center" as const, marginBottom: 20 }}>
           <AppLogo size={84} radius={20} style={{ margin: "0 auto 14px" }} />
           <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 22, fontWeight: 700, margin: "0 0 4px" }}>Gaviotas Conecta</h1>
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: "0 0 14px" }}>Barrio Las Gaviotas · Cartagena de Indias</p>
+          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: "0 0 14px" }}>Urbanización Las Gaviotas · Cartagena de Indias</p>
           <div style={{ display: "flex", justifyContent: "center", gap: 24 }}>
             {[["v1.0", "Versión"], ["MVP", "Fase"], ["2026", "Año"]].map(([val, lbl]) => (
               <div key={lbl} style={{ textAlign: "center" as const }}>
@@ -1066,14 +1066,14 @@ function AboutScreen({ onBack }: { onBack: () => void }) {
 function PrivacyScreen({ onBack }: { onBack: () => void }) {
   const { theme } = useTheme();
   const sections = [
-    { title: "1. Responsable del tratamiento", content: "La Junta de Acción Comunal del Barrio Las Gaviotas de Cartagena de Indias es la entidad responsable del tratamiento de los datos personales recopilados a través de esta aplicación." },
+    { title: "1. Responsable del tratamiento", content: "La Junta de Acción Comunal de la Urbanización Las Gaviotas de Cartagena de Indias es la entidad responsable del tratamiento de los datos personales recopilados a través de esta aplicación." },
     { title: "2. Datos que recopilamos", content: "Recopilamos únicamente los datos necesarios: nombre completo, correo electrónico, número de teléfono (opcional) y mensajes del formulario de contacto. No recopilamos datos sensibles sin consentimiento explícito." },
-    { title: "3. Finalidad del tratamiento", content: "Los datos se utilizan para: gestionar tu cuenta, enviar notificaciones sobre noticias y eventos del barrio, responder consultas enviadas a la JAC, y mejorar los servicios de la aplicación." },
+    { title: "3. Finalidad del tratamiento", content: "Los datos se utilizan para: gestionar tu cuenta, enviar notificaciones sobre noticias y eventos de la urbanización, responder consultas enviadas a la JAC, y mejorar los servicios de la aplicación." },
     { title: "4. Base legal", content: "El tratamiento se fundamenta en la Ley 1581 de 2012 y el Decreto 1377 de 2013. Al registrarte, otorgas tu consentimiento libre, previo, expreso e informado." },
     { title: "5. Derechos del titular", content: "Puedes ejercer tus derechos de acceso, rectificación, cancelación, oposición, portabilidad y supresión contactando a la JAC a través del formulario de contacto de esta aplicación." },
     { title: "6. Conservación de datos", content: "Los datos se conservan mientras la cuenta esté activa o durante el tiempo necesario para cumplir obligaciones legales. Puedes solicitar la eliminación de tu cuenta en cualquier momento." },
     { title: "7. Seguridad", content: "Implementamos medidas técnicas y organizativas para proteger tus datos contra accesos no autorizados, pérdida o alteración." },
-    { title: "8. Contacto", content: "Para consultas sobre privacidad, contáctanos a través de la sección de Contacto o visita el Salón Comunal del Barrio Las Gaviotas. [Correo JAC pendiente de confirmación.]" },
+    { title: "8. Contacto", content: "Para consultas sobre privacidad, contáctanos a través de la sección de Contacto o visita el Salón Comunal de la Urbanización Las Gaviotas. [Correo JAC pendiente de confirmación.]" },
   ];
   return (
     <div>
@@ -1114,7 +1114,7 @@ function ContactScreen({ onBack }: { onBack: () => void }) {
   const channels = [
     { icon: "📱", label: "WhatsApp comunidad", value: "+57 300 000 0000", color: "#25D366" },
     { icon: "📘", label: "Facebook", value: "Las Gaviotas Cartagena", color: "#1877F2" },
-    { icon: "📍", label: "Dirección", value: "Barrio Las Gaviotas, Cartagena", color: TEAL },
+    { icon: "📍", label: "Dirección", value: "Urbanización Las Gaviotas, Cartagena", color: TEAL },
   ];
   const jac = [{ role: "Presidente JAC", name: "[Nombre pendiente]" }, { role: "Secretaria", name: "[Nombre pendiente]" }, { role: "Tesorero", name: "[Nombre pendiente]" }];
   const types = [{ value: "consulta", label: "Consulta general" }, { value: "reporte", label: "Reporte o problema" }, { value: "sugerencia", label: "Sugerencia" }, { value: "solicitud", label: "Solicitud comunitaria" }];
@@ -1131,7 +1131,7 @@ function ContactScreen({ onBack }: { onBack: () => void }) {
               <div style={{ width: 44, height: 44, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>🏛</div>
               <div>
                 <p style={{ fontSize: 15, fontWeight: 700, margin: 0, fontFamily: "'Fraunces', serif", color: theme.ink }}>Junta de Acción Comunal</p>
-                <p style={{ fontSize: 12, color: theme.muted, margin: 0 }}>Barrio Las Gaviotas</p>
+                <p style={{ fontSize: 12, color: theme.muted, margin: 0 }}>Urbanización Las Gaviotas</p>
               </div>
             </div>
             {jac.map((j) => (
@@ -1256,14 +1256,14 @@ function AdminAccess({ onOpen, theme }: { onOpen: () => void; theme: ReturnType<
 function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, onGoNews, onGoEvents, onGoDirectory, onOpenAdmin }: { user: User | null; onSubScreen: (s: SubScreen) => void; onLogout: () => void; darkMode: boolean; onToggleDark: () => void; onGoNews: () => void; onGoEvents: () => void; onGoDirectory: () => void; onOpenAdmin: () => void; }) {
   const { theme } = useTheme();
   const menuItems = [
-    { icon: "🗺️", label: "Mapa del Barrio", desc: "Lugares e instalaciones de Las Gaviotas", sub: "map" as SubScreen, color: "#2E86AB" },
+    { icon: "🗺️", label: "Mapa de la Urbanización", desc: "Lugares e instalaciones de Las Gaviotas", sub: "map" as SubScreen, color: "#2E86AB" },
     { icon: "📋", label: "Certificado de vecindad", desc: "Solicita tu certificado digital a la JAC", sub: "certificate" as SubScreen, color: TEAL },
-    { icon: "🐾", label: "Perdidos y Encontrados", desc: "Mascotas y objetos perdidos en el barrio", sub: "lostfound" as SubScreen, color: CORAL },
-    { icon: "🧰", label: "Oficios del Barrio", desc: "Vecinos que ofrecen sus servicios aquí", sub: "oficios" as SubScreen, color: TEAL },
+    { icon: "🐾", label: "Perdidos y Encontrados", desc: "Mascotas y objetos perdidos en la urbanización", sub: "lostfound" as SubScreen, color: CORAL },
+    { icon: "🧰", label: "Oficios de la Urbanización", desc: "Vecinos que ofrecen sus servicios aquí", sub: "oficios" as SubScreen, color: TEAL },
     { icon: "🤖", label: "Asistente Virtual", desc: "GaviotaBot responde tus preguntas", sub: "chat" as SubScreen, color: "#0060A8" },
     { icon: "🗳️", label: "Participar", desc: "Encuestas y reportes comunitarios", sub: "participate" as SubScreen, color: "#7B4FBF" },
     { icon: "💬", label: "Contacto JAC", desc: "Escribe a la Junta de Acción Comunal", sub: "contact" as SubScreen, color: TEAL },
-    { icon: "🖼", label: "Galería", desc: "Fotos del barrio Las Gaviotas", sub: "gallery" as SubScreen, color: "#2E86AB" },
+    { icon: "🖼", label: "Galería", desc: "Fotos de la urbanización Las Gaviotas", sub: "gallery" as SubScreen, color: "#2E86AB" },
     { icon: "ℹ️", label: "Acerca de", desc: "Información de la app y la comunidad", sub: "about" as SubScreen, color: "#7B4FBF" },
     { icon: "🔒", label: "Política de Privacidad", desc: "Tratamiento de datos — Ley 1581/2012", sub: "privacy" as SubScreen, color: "#5B6B7F" },
   ];
@@ -1354,7 +1354,7 @@ function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, onGoN
         <div style={{ padding: "14px 16px", background: theme.card, borderRadius: 14, border: `1px solid ${theme.border}` }}>
           <p style={{ fontSize: 12, color: theme.muted, textAlign: "center" as const, margin: 0, lineHeight: 1.6 }}>
             Gaviotas Conecta v1.0 · MVP<br />
-            Barrio Las Gaviotas · Cartagena de Indias<br />
+            Urbanización Las Gaviotas · Cartagena de Indias<br />
             Comunidad · 2026
           </p>
         </div>

@@ -392,7 +392,7 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
               </div>
             ))}
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Sector del barrio</label>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Sector de la urbanización</label>
               <select value={form.sector} onChange={(e) => setForm((f) => ({ ...f, sector: e.target.value }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }}>
                 {SECTORS.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
@@ -496,12 +496,12 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
               <input type="checkbox" checked={form.authorizeData} onChange={(e) => setForm((f) => ({ ...f, authorizeData: e.target.checked }))} required style={{ marginTop: 2, flexShrink: 0 }} />
               <span style={{ fontSize: 13, color: "#0E2238", lineHeight: 1.5 }}>
                 Autorizo el tratamiento de mis datos personales conforme a la{" "}
-                <strong>Ley 1581 de 2012</strong>. La JAC usará mis datos únicamente para gestionar mi perfil en el directorio de Oficios del Barrio.
+                <strong>Ley 1581 de 2012</strong>. La JAC usará mis datos únicamente para gestionar mi perfil en el directorio de Oficios de la Urbanización.
               </span>
             </label>
 
             <div style={{ background: "#FEF3C7", borderRadius: 12, padding: "10px 14px", fontSize: 12, color: "#92400E" }}>
-              ⚠️ Tu cédula solo la verá la JAC para confirmar que eres vecino del barrio. No se mostrará públicamente.
+              ⚠️ Tu cédula solo la verá la JAC para confirmar que eres vecino de la urbanización. No se mostrará públicamente.
             </div>
 
             <div style={{ display: "flex", gap: 10 }}>
@@ -678,7 +678,7 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           Inicio
         </button>
-        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 800, margin: "0 0 4px", color: "#0E2238" }}>Oficios del Barrio</h1>
+        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 800, margin: "0 0 4px", color: "#0E2238" }}>Oficios de la Urbanización</h1>
         <p style={{ fontSize: 13, color: "#5B6B7F", margin: "0 0 14px" }}>Vecinos que ofrecen sus servicios en Las Gaviotas</p>
 
         {/* Search */}
@@ -758,12 +758,12 @@ export default function OfficiosScreen({ onBack }: { onBack: () => void }) {
 
             {/* Ofrece tus servicios CTA */}
             {!myProfile && (
-              <button onClick={() => { if (store.requireAccount("inscribirte en Oficios del barrio")) setView("register"); }}
+              <button onClick={() => { if (store.requireAccount("inscribirte en Oficios de la urbanización")) setView("register"); }}
                 style={{ width: "100%", padding: "16px", borderRadius: 16, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 14, textAlign: "left" }}>
                 <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }}>🧰</div>
                 <div>
                   <p style={{ fontSize: 15, fontWeight: 800, margin: "0 0 2px" }}>¿Ofreces un servicio?</p>
-                  <p style={{ fontSize: 13, margin: 0, opacity: 0.85 }}>Regístrate y conecta con vecinos del barrio</p>
+                  <p style={{ fontSize: 13, margin: 0, opacity: 0.85 }}>Regístrate y conecta con vecinos de la urbanización</p>
                 </div>
                 <svg style={{ marginLeft: "auto", flexShrink: 0 }} width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </button>

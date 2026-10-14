@@ -165,7 +165,7 @@ const CORAL = "#0088CC";
 const DEFAULT_NEWS: NewsItem[] = [
   { id: 1, category: "Proyecto", color: "#7B4FBF", title: "Nueva cancha de microfútbol para Las Gaviotas", summary: "La JAC gestiona la construcción de una cancha sintética en el sector sur, con presupuesto aprobado por la Alcaldía de Cartagena.", date: "10 sep 2026", image: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=600&h=300&fit=crop&auto=format", readTime: "3 min" },
   { id: 2, category: "Comunicado", color: CORAL, title: "Suspensión de agua — 13 de septiembre", summary: "Aguas de Cartagena informa suspensión entre las 8 a.m. y las 4 p.m. del jueves 13 de septiembre por mantenimiento de redes.", date: "9 sep 2026", image: null, readTime: "2 min" },
-  { id: 3, category: "Noticia", color: TEAL, title: "Programa de becas para jóvenes del barrio", summary: "El SENA abre 40 cupos de formación técnica gratuita para jóvenes entre 16 y 28 años residentes en Las Gaviotas y barrios aledaños.", date: "7 sep 2026", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=300&fit=crop&auto=format", readTime: "4 min" },
+  { id: 3, category: "Noticia", color: TEAL, title: "Programa de becas para jóvenes de la urbanización", summary: "El SENA abre 40 cupos de formación técnica gratuita para jóvenes entre 16 y 28 años residentes en Las Gaviotas y barrios aledaños.", date: "7 sep 2026", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=300&fit=crop&auto=format", readTime: "4 min" },
   { id: 4, category: "Comunicado", color: CORAL, title: "Asamblea general de copropietarios — sep 18", summary: "Se convoca a todos los residentes a la asamblea ordinaria. Temas: seguridad, zonas comunes y presupuesto 2027.", date: "6 sep 2026", image: null, readTime: "2 min" },
   { id: 5, category: "Noticia", color: TEAL, title: "Brigada de salud gratuita este sábado", summary: "La Secretaría de Salud Distrital realizará jornada de vacunación, toma de presión y consulta médica gratuita para residentes.", date: "5 sep 2026", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=300&fit=crop&auto=format", readTime: "3 min" },
 ];
@@ -182,9 +182,9 @@ const DEFAULT_PLACES: Place[] = [
   { id: 2, name: "Parque Principal", desc: "Zona verde central.", category: "deporte", emoji: "🌳", color: "#16A34A", lat: 10.4010, lng: -75.4880 },
   { id: 3, name: "Cancha de Microfútbol", desc: "Cancha deportiva barrial.", category: "deporte", emoji: "⚽", color: CORAL, lat: 10.3995, lng: -75.4870, hours: "6 a.m.–10 p.m." },
   { id: 4, name: "Puesto de Salud", desc: "Atención médica básica.", category: "salud", emoji: "🏥", color: "#DC2626", lat: 10.4020, lng: -75.4910, hours: "Lun–Vie 7 a.m.–4 p.m." },
-  { id: 5, name: "Institución Educativa", desc: "Centro educativo del barrio.", category: "educacion", emoji: "🏫", color: "#7B4FBF", lat: 10.4015, lng: -75.4895 },
+  { id: 5, name: "Institución Educativa", desc: "Centro educativo de la urbanización.", category: "educacion", emoji: "🏫", color: "#7B4FBF", lat: 10.4015, lng: -75.4895 },
   { id: 6, name: "Biblioteca Barrial", desc: "Lectura, formación y talleres.", category: "educacion", emoji: "📚", color: "#2E86AB", lat: 10.3988, lng: -75.4905, hours: "Lun–Sáb 8 a.m.–6 p.m." },
-  { id: 7, name: "Iglesia Comunitaria", desc: "Parroquia del barrio.", category: "religion", emoji: "⛪", color: "#B45309", lat: 10.4025, lng: -75.4875 },
+  { id: 7, name: "Iglesia Comunitaria", desc: "Parroquia de la urbanización.", category: "religion", emoji: "⛪", color: "#B45309", lat: 10.4025, lng: -75.4875 },
   { id: 8, name: "Tienda Doña Carmen", desc: "Abarrotes y víveres.", category: "comercio", emoji: "🛒", color: "#16A34A", lat: 10.3992, lng: -75.4888, phone: "300 123 4567", hours: "6 a.m.–9 p.m." },
   { id: 9, name: "Droguería San Rafael", desc: "Farmacia comunitaria.", category: "salud", emoji: "💊", color: "#DC2626", lat: 10.4000, lng: -75.4878, phone: "306 789 0123", hours: "8 a.m.–8 p.m." },
   { id: 10, name: "Polideportivo Comunal", desc: "Instalaciones deportivas.", category: "deporte", emoji: "🏟", color: CORAL, lat: 10.4030, lng: -75.4900 },
@@ -202,7 +202,7 @@ const DEFAULT_DIRECTORY: DirectoryBusiness[] = [
 ];
 
 const DEFAULT_GALLERY: GalleryPhoto[] = [
-  { id: "1", url: "https://images.unsplash.com/photo-1519689680058-324335573bb0?w=600&h=600&fit=crop&auto=format", caption: "Vista del barrio Las Gaviotas", category: "Barrio" },
+  { id: "1", url: "https://images.unsplash.com/photo-1519689680058-324335573bb0?w=600&h=600&fit=crop&auto=format", caption: "Vista de la urbanización Las Gaviotas", category: "Urbanización" },
   { id: "2", url: "https://images.unsplash.com/photo-1583900985737-3f9fd8e62aef?w=600&h=600&fit=crop&auto=format", caption: "Parque principal", category: "Espacios" },
   { id: "3", url: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=600&h=600&fit=crop&auto=format", caption: "Cancha deportiva", category: "Deporte" },
   { id: "4", url: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=600&fit=crop&auto=format", caption: "Jóvenes en actividad formativa", category: "Comunidad" },
@@ -233,7 +233,7 @@ const DEFAULT_EMERGENCY: EmergencyLine[] = [
 const DEFAULT_SETTINGS: AppSettings = {
   appName: "Gaviotas Conecta",
   logoEmoji: "🦅",
-  neighborhood: "Barrio Las Gaviotas",
+  neighborhood: "Urbanización Las Gaviotas",
   city: "Cartagena de Indias",
   presidentName: "[Nombre del Presidente]",
   presidentEmail: "jac.lasgaviotas@correo.com",
@@ -244,7 +244,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   certTextDisclaimer: "Este certificado se expide con base en la información suministrada por el(la) solicitante, quien responde por su veracidad. Cualquier alteración lo invalida.",
 };
 
-// ── Oficios del Barrio ────────────────────────────────────────────────────────
+// ── Oficios de la Urbanización ────────────────────────────────────────────────────────
 export type OfficioStatus = "pendiente" | "aprobado" | "pausado" | "rechazado";
 export type OfficioCategory =
   | "Plomería" | "Electricidad" | "Albañilería" | "Pintura" | "Carpintería"

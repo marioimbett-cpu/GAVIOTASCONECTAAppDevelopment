@@ -289,7 +289,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
             <Select label="Tipo de documento" value={docType} onChange={setDocType} options={["Cédula de ciudadanía", "Cédula de extranjería", "Tarjeta de identidad", "Pasaporte"]} />
             <Field label="Número de documento" value={docNumber} onChange={setDocNumber} placeholder="Ej: 1234567890" />
             <Field label="Lugar de expedición" value={docPlace} onChange={setDocPlace} placeholder="Ej: Cartagena de Indias" />
-            <Field label="Dirección de residencia" value={address} onChange={setAddress} placeholder="Calle, carrera, barrio..." />
+            <Field label="Dirección de residencia" value={address} onChange={setAddress} placeholder="Calle, carrera, urbanización..." />
             <Field label="Tiempo de residencia" value={residenceTime} onChange={setResidenceTime} placeholder="Ej: 5 años" />
             <Select label="Calidad" value={quality} onChange={(v) => setQuality(v as any)} options={["Propietario", "Arrendatario", "Familiar"]} />
             <Select label="Propósito del certificado" value={purpose} onChange={setPurpose} options={PURPOSES} />
@@ -383,7 +383,7 @@ export default function CertificateScreen({ onBack }: { onBack: () => void }) {
         <div style={{ width: 72, height: 72, borderRadius: 20, background: TEAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36, margin: "0 auto 16px" }}>📋</div>
         <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 700, color: "#0E2238", margin: "0 0 6px" }}>Certificado de vecindad</h1>
         <p style={{ fontSize: 14, color: "#5B6B7F", margin: 0, lineHeight: 1.6 }}>
-          Solicita tu certificado expedido por la JAC Barrio Las Gaviotas · Cartagena de Indias
+          Solicita tu certificado expedido por la JAC Urbanización Las Gaviotas · Cartagena de Indias
         </p>
       </div>
 

@@ -223,7 +223,7 @@ export default function OfficiosAdmin() {
   return (
     <div>
       <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 700, color: "#0E2238", margin: "0 0 12px" }}>
-        Oficios del Barrio
+        Oficios de la Urbanización
       </h3>
 
       {pendingCount > 0 && (

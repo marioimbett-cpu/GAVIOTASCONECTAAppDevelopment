@@ -459,7 +459,7 @@ function GalleryManager() {
       </div>
       <ImageUploader label="Foto" value={editing.url || null} onChange={(v) => setEditing({ ...editing, url: v || "" })} />
       <AField label="Descripción / leyenda" value={editing.caption} onChange={(v) => setEditing({ ...editing, caption: v })} placeholder="ej. Jornada de limpieza" />
-      <AField label="Categoría" value={editing.category} onChange={(v) => setEditing({ ...editing, category: v })} placeholder="ej. Barrio, Deporte, Comunidad" />
+      <AField label="Categoría" value={editing.category} onChange={(v) => setEditing({ ...editing, category: v })} placeholder="ej. Urbanización, Deporte, Comunidad" />
       <ABtn onClick={save}>💾 Guardar foto</ABtn>
     </div>
   );
@@ -638,7 +638,7 @@ function SettingsManager() {
           <img src="/logo-app.png" alt="Logo" style={{ width: 72, height: 72, objectFit: "contain", borderRadius: 14, background: "#FFFFFF", marginBottom: 6 }} />
           <p style={{ margin: 0, fontWeight: 700, fontSize: 16, color: TEAL }}>{settings.appName || "Gaviotas Conecta"}</p>
         </div>
-        <AField label="Nombre del barrio" value={settings.neighborhood} onChange={(v) => setSettings({ ...settings, neighborhood: v })} />
+        <AField label="Nombre de la urbanización" value={settings.neighborhood} onChange={(v) => setSettings({ ...settings, neighborhood: v })} />
         <AField label="Ciudad" value={settings.city} onChange={(v) => setSettings({ ...settings, city: v })} />
       </ACard>
       <ACard>

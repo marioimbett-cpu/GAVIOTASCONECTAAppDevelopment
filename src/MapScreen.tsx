@@ -21,11 +21,11 @@ L.Marker.prototype.options.icon = L.icon({
 const TEAL  = "#0060A8";
 const CORAL = "#0088CC";
 
-// ── Coordenadas del Barrio Las Gaviotas, Cartagena de Indias ─────────────
-// Fuente: OpenStreetMap / Nominatim (polígono oficial del barrio)
+// ── Coordenadas de la Urbanización Las Gaviotas, Cartagena de Indias ─────────────
+// Fuente: OpenStreetMap / Nominatim (polígono oficial de la urbanización)
 const CENTER: [number, number] = [10.4004, -75.4893];
 
-// Polígono oficial del barrio según OpenStreetMap (OSM Way W1385977938)
+// Polígono oficial de la urbanización según OpenStreetMap (OSM Way W1385977938)
 const BARRIO_BOUNDARY: [number, number][] = [
   [10.3982196,-75.4931611],[10.3981014,-75.4930949],[10.3980439,-75.493056],
   [10.3979847,-75.4930038],[10.3979507,-75.4929742],[10.3979094,-75.4929381],
@@ -74,7 +74,7 @@ const BARRIO_BOUNDARY: [number, number][] = [
   [10.3982196,-75.4931611],
 ];
 
-// Límites del mapa (no deja salir del barrio)
+// Límites del mapa (no deja salir de la urbanización)
 const MAP_BOUNDS = L.latLngBounds(
   [10.3950, -75.4945],  // SW
   [10.4055, -75.4840],  // NE
@@ -180,7 +180,7 @@ export default function MapScreen({ onBack, theme }: MapScreenProps) {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
           <div>
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 700, margin: "0 0 2px", color: theme.ink }}>
-              Mapa del Barrio
+              Mapa de la Urbanización
             </h1>
             <p style={{ color: theme.muted, fontSize: 12, margin: 0 }}>
               Las Gaviotas · Cartagena de Indias
@@ -240,7 +240,7 @@ export default function MapScreen({ onBack, theme }: MapScreenProps) {
 
           <ZoomControl position="bottomright" />
 
-          {/* Delimitación del barrio — polígono punteado */}
+          {/* Delimitación de la urbanización — polígono punteado */}
           <Polygon
             positions={BARRIO_BOUNDARY}
             pathOptions={{
@@ -298,7 +298,7 @@ export default function MapScreen({ onBack, theme }: MapScreenProps) {
           <svg width="22" height="10" viewBox="0 0 22 10">
             <line x1="0" y1="5" x2="22" y2="5" stroke={TEAL} strokeWidth="2.5" strokeDasharray="5 3" />
           </svg>
-          <span style={{ fontSize: 11, fontWeight: 700, color: TEAL }}>Límite del barrio</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: TEAL }}>Límite de la urbanización</span>
         </div>
       </div>
 
@@ -391,7 +391,7 @@ export default function MapScreen({ onBack, theme }: MapScreenProps) {
                 Toca un marcador del mapa
               </p>
               <p style={{ fontSize: 11, color: theme.muted, margin: 0 }}>
-                El contorno punteado muestra el límite del barrio
+                El contorno punteado muestra el límite de la urbanización
               </p>
             </div>
           </div>

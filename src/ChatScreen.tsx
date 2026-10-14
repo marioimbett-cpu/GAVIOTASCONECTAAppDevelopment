@@ -23,11 +23,11 @@ function now() {
 const FAQ: { patterns: string[]; answer: string }[] = [
   {
     patterns: ["hola", "buenas", "buenos días", "buenas tardes", "buenas noches", "hey", "saludos"],
-    answer: "¡Hola! 👋 Soy *GaviotaBot*, el asistente virtual del Barrio Las Gaviotas.\n\nPuedo ayudarte con información sobre la JAC, eventos, servicios, reportes y más. ¿En qué te puedo ayudar hoy?",
+    answer: "¡Hola! 👋 Soy *GaviotaBot*, el asistente virtual de la Urbanización Las Gaviotas.\n\nPuedo ayudarte con información sobre la JAC, eventos, servicios, reportes y más. ¿En qué te puedo ayudar hoy?",
   },
   {
     patterns: ["jac", "junta", "acción comunal", "reunión", "asamblea", "presidente", "directiva"],
-    answer: "🏛 *Junta de Acción Comunal — Las Gaviotas*\n\n• Reuniones ordinarias: primer sábado de cada mes, 9 a.m.\n• Lugar: Salón Comunal del barrio\n• Horario de atención: Lun–Vie, 8 a.m. – 5 p.m.\n• Para contactar a la JAC, usa la sección *Contacto JAC* en el menú Más.",
+    answer: "🏛 *Junta de Acción Comunal — Las Gaviotas*\n\n• Reuniones ordinarias: primer sábado de cada mes, 9 a.m.\n• Lugar: Salón Comunal de la urbanización\n• Horario de atención: Lun–Vie, 8 a.m. – 5 p.m.\n• Para contactar a la JAC, usa la sección *Contacto JAC* en el menú Más.",
   },
   {
     patterns: ["agua", "acueducto", "aguas de cartagena", "corte de agua", "suspensión"],
@@ -39,11 +39,11 @@ const FAQ: { patterns: string[]; answer: string }[] = [
   },
   {
     patterns: ["salud", "médico", "medicina", "doctor", "hospital", "clínica", "urgencias", "puesto de salud"],
-    answer: "🏥 *Salud en el Barrio*\n\n• Puesto de Salud Las Gaviotas: Lun–Vie, 7 a.m. – 4 p.m.\n• Urgencias más cercanas: Hospital Universitario del Caribe\n• Línea de salud Cartagena: 106\n• Emergencias: 123\n\nEste sábado hay *Brigada de Salud Gratuita* en el barrio. ¡No te la pierdas!",
+    answer: "🏥 *Salud en la Urbanización*\n\n• Puesto de Salud Las Gaviotas: Lun–Vie, 7 a.m. – 4 p.m.\n• Urgencias más cercanas: Hospital Universitario del Caribe\n• Línea de salud Cartagena: 106\n• Emergencias: 123\n\nEste sábado hay *Brigada de Salud Gratuita* en la urbanización. ¡No te la pierdas!",
   },
   {
     patterns: ["educación", "colegio", "escuela", "institución", "sena", "beca", "estudio"],
-    answer: "🎓 *Educación*\n\n• Institución Educativa Las Gaviotas: atención 7 a.m. – 5 p.m.\n• SENA: 40 cupos de formación técnica gratuita disponibles para jóvenes 16–28 años del barrio.\n• Biblioteca Barrial: Lun–Sáb, 8 a.m. – 6 p.m.\n\n¿Te interesa la información de las becas del SENA?",
+    answer: "🎓 *Educación*\n\n• Institución Educativa Las Gaviotas: atención 7 a.m. – 5 p.m.\n• SENA: 40 cupos de formación técnica gratuita disponibles para jóvenes 16–28 años de la urbanización.\n• Biblioteca Barrial: Lun–Sáb, 8 a.m. – 6 p.m.\n\n¿Te interesa la información de las becas del SENA?",
   },
   {
     patterns: ["seguridad", "policía", "robo", "hurto", "delito", "peligro", "emergencia"],
@@ -59,7 +59,7 @@ const FAQ: { patterns: string[]; answer: string }[] = [
   },
   {
     patterns: ["mapa", "dónde queda", "ubicación", "dirección", "cómo llegar"],
-    answer: "🗺️ *Mapa del Barrio*\n\nPuedes explorar el mapa interactivo de Las Gaviotas desde la sección *Más → Mapa del Barrio*.\n\nAhí encontrarás la ubicación del Salón Comunal, el Parque, la Cancha, el Puesto de Salud, la Iglesia y más lugares del barrio.",
+    answer: "🗺️ *Mapa de la Urbanización*\n\nPuedes explorar el mapa interactivo de Las Gaviotas desde la sección *Más → Mapa de la Urbanización*.\n\nAhí encontrarás la ubicación del Salón Comunal, el Parque, la Cancha, el Puesto de Salud, la Iglesia y más lugares de la urbanización.",
   },
   {
     patterns: ["deporte", "deportivo", "cancha", "futbol", "fútbol", "recreacion", "recreación", "actividad fisica", "actividad física"],
@@ -67,11 +67,11 @@ const FAQ: { patterns: string[]; answer: string }[] = [
   },
   {
     patterns: ["seguridad", "policia", "policía", "robo", "hurto", "delito", "peligro", "vigilancia", "camara", "cámara"],
-    answer: "🚨 *Seguridad Barrial*\n\n• Policía Nacional: 112\n• Línea de emergencias: 123\n• Línea de denuncia anónima: 018000 910 600\n• Para reportar inseguridad en el barrio usa *Más → Participar → Reportar problema*.\n\nLa JAC trabaja con la Policía en jornadas de seguridad comunitaria. Puedes solicitar una reunión de seguridad contactando al Salón Comunal.",
+    answer: "🚨 *Seguridad Barrial*\n\n• Policía Nacional: 112\n• Línea de emergencias: 123\n• Línea de denuncia anónima: 018000 910 600\n• Para reportar inseguridad en la urbanización usa *Más → Participar → Reportar problema*.\n\nLa JAC trabaja con la Policía en jornadas de seguridad comunitaria. Puedes solicitar una reunión de seguridad contactando al Salón Comunal.",
   },
   {
     patterns: ["medio ambiente", "ambiente", "reciclaje", "reciclar", "árbol", "arbol", "siembra", "verde", "ecologia", "ecología", "contaminacion", "contaminación"],
-    answer: "🌿 *Medio Ambiente*\n\n• Jornadas de limpieza: organizadas por la JAC con la comunidad.\n• Reciclaje: separa residuos en orgánicos, plástico, papel y vidrio.\n• Próxima actividad: jornada de siembra de árboles en el Parque Central.\n• Para reportar puntos de basura o contaminación: usa *Más → Participar → Reportar problema*.\n\n¿Te gustaría unirte al comité ambiental del barrio?",
+    answer: "🌿 *Medio Ambiente*\n\n• Jornadas de limpieza: organizadas por la JAC con la comunidad.\n• Reciclaje: separa residuos en orgánicos, plástico, papel y vidrio.\n• Próxima actividad: jornada de siembra de árboles en el Parque Central.\n• Para reportar puntos de basura o contaminación: usa *Más → Participar → Reportar problema*.\n\n¿Te gustaría unirte al comité ambiental de la urbanización?",
   },
   {
     patterns: ["adulto mayor", "adultos mayores", "anciano", "abuelo", "tercera edad", "vejez", "pension", "pensión"],
@@ -83,7 +83,7 @@ const FAQ: { patterns: string[]; answer: string }[] = [
   },
   {
     patterns: ["juventud", "juventudes", "joven", "jóvenes", "jovenes", "adolescente", "muchacho", "chico"],
-    answer: "🎯 *Juventudes*\n\n• SENA: 40 cupos de formación técnica gratuita para jóvenes 16–28 años del barrio.\n• Casas de la Cultura: talleres de arte, música y danza en Cartagena.\n• Colombia Joven: programas y oportunidades — colombiajoven.gov.co\n• La JAC tiene un comité de juventud activo. ¡Participa!\n\n¿Te interesa saber más sobre algún programa en específico?",
+    answer: "🎯 *Juventudes*\n\n• SENA: 40 cupos de formación técnica gratuita para jóvenes 16–28 años de la urbanización.\n• Casas de la Cultura: talleres de arte, música y danza en Cartagena.\n• Colombia Joven: programas y oportunidades — colombiajoven.gov.co\n• La JAC tiene un comité de juventud activo. ¡Participa!\n\n¿Te interesa saber más sobre algún programa en específico?",
   },
   {
     patterns: ["reporte", "problema", "queja", "denuncia", "daño", "falla"],
@@ -91,7 +91,7 @@ const FAQ: { patterns: string[]; answer: string }[] = [
   },
   {
     patterns: ["encuesta", "opinión", "votación", "participar"],
-    answer: "🗳️ *Participa en las Encuestas*\n\nHay una encuesta activa: *¿Cómo calificarías la seguridad del barrio?*\n\nVe a *Más → Participar* para responder. Tu opinión ayuda a mejorar el barrio.",
+    answer: "🗳️ *Participa en las Encuestas*\n\nHay una encuesta activa: *¿Cómo calificarías la seguridad de la urbanización?*\n\nVe a *Más → Participar* para responder. Tu opinión ayuda a mejorar la urbanización.",
   },
   {
     patterns: ["gracias", "muchas gracias", "graci", "thank"],
@@ -143,7 +143,7 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
     {
       id: 0,
       from: "bot",
-      text: "¡Hola! 👋 Soy *GaviotaBot*, el asistente virtual del Barrio Las Gaviotas.\n\nPuedo responder preguntas sobre la JAC, servicios públicos, eventos, salud, seguridad y más. ¿En qué te ayudo?",
+      text: "¡Hola! 👋 Soy *GaviotaBot*, el asistente virtual de la Urbanización Las Gaviotas.\n\nPuedo responder preguntas sobre la JAC, servicios públicos, eventos, salud, seguridad y más. ¿En qué te ayudo?",
       time: now(),
     },
   ]);
@@ -319,7 +319,7 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
           </button>
         </form>
         <p style={{ textAlign: "center" as const, fontSize: 10, color: theme.muted, margin: "8px 0 0" }}>
-          GaviotaBot responde preguntas frecuentes del barrio · No almacena datos personales
+          GaviotaBot responde preguntas frecuentes de la urbanización · No almacena datos personales
         </p>
       </div>
 

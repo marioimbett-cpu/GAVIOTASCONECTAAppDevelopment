@@ -120,7 +120,7 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
             <p style={{ color: "white", fontSize: 10, fontWeight: 800, margin: "0 0 1px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
               Junta de Acción Comunal
             </p>
-            <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 10, fontWeight: 700, margin: "0 0 3px" }}>Barrio Las Gaviotas</p>
+            <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 10, fontWeight: 700, margin: "0 0 3px" }}>Urbanización Las Gaviotas</p>
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 9, margin: 0 }}>Cartagena de Indias, Bolívar</p>
           </div>
           {/* Logo JAC Las Gaviotas */}
@@ -150,7 +150,7 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
         {/* Encabezado cuerpo */}
         <p style={{ fontSize: 11.5, fontWeight: 800, color: "#0E2238", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "center", margin: "0 0 12px", lineHeight: 1.4 }}>
           El Presidente de la Junta de Acción Comunal<br />
-          <span style={{ fontSize: 10, fontWeight: 700, color: "#5B6B7F" }}>del Barrio Las Gaviotas</span>
+          <span style={{ fontSize: 10, fontWeight: 700, color: "#5B6B7F" }}>de la Urbanización Las Gaviotas</span>
         </p>
 
         <p style={{ fontSize: 12, fontWeight: 800, color: TEAL, textTransform: "uppercase", letterSpacing: "0.1em", textAlign: "center", margin: "0 0 14px" }}>
@@ -165,7 +165,7 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
           <strong>{cert.docType}</strong> No.{" "}
           <strong>{cert.docNumber}</strong>
           {docGen ? ` expedida en ${docGen}` : ""}
-          {", "}reside en este barrio en la dirección{" "}
+          {", "}reside en esta urbanización en la dirección{" "}
           <strong>{cert.address}</strong>
           {", "}en calidad de{" "}
           <strong>{cert.quality.toLowerCase()}</strong>
@@ -214,7 +214,7 @@ function CertificatePreview({ cert }: { cert: CertificateRequest }) {
               {settings.presidentName}
             </p>
             <p style={{ fontSize: 10.5, fontWeight: 600, color: "#5B6B7F", margin: "0 0 2px" }}>
-              Presidente – JAC Barrio Las Gaviotas
+              Presidente – JAC Urbanización Las Gaviotas
             </p>
             <p style={{ fontSize: 10, color: TEAL, margin: 0 }}>{settings.presidentEmail}</p>
           </div>

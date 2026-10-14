@@ -213,7 +213,7 @@ function DetailView({ item, onBack, onResolve, isAuthor }: {
     `Hola, vi tu publicación en Gaviotas Conecta sobre ${isLost ? "mascota/objeto perdido" : "mascota/objeto encontrado"}: "${title}". ¿Sigue disponible?`
   )}`;
   const shareText = encodeURIComponent(
-    `🔔 ${item.type.toUpperCase()}: ${title}\n📍 ${item.sector}\n📅 ${item.dateLostFound}\nContacto: ${item.phone}\n\nVisto en Gaviotas Conecta · Barrio Las Gaviotas`
+    `🔔 ${item.type.toUpperCase()}: ${title}\n📍 ${item.sector}\n📅 ${item.dateLostFound}\nContacto: ${item.phone}\n\nVisto en Gaviotas Conecta · Urbanización Las Gaviotas`
   );
   const shareUrl = `https://wa.me/?text=${shareText}`;
 
@@ -651,7 +651,7 @@ export default function LostFoundScreen({ onBack }: { onBack: () => void }) {
           Volver
         </button>
         <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 26, fontWeight: 800, margin: "0 0 4px" }}>Perdidos y Encontrados</h1>
-        <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: 0 }}>Mascotas y objetos · Barrio Las Gaviotas</p>
+        <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: 0 }}>Mascotas y objetos · Urbanización Las Gaviotas</p>
       </div>
 
       {/* Tabs */}
@@ -700,7 +700,7 @@ export default function LostFoundScreen({ onBack }: { onBack: () => void }) {
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <p style={{ fontSize: 13, color: "#5B6B7F", marginBottom: 4, fontWeight: 600 }}>🎉 {resolved.length} {resolved.length === 1 ? "final feliz" : "finales felices"} en el barrio</p>
+                <p style={{ fontSize: 13, color: "#5B6B7F", marginBottom: 4, fontWeight: 600 }}>🎉 {resolved.length} {resolved.length === 1 ? "final feliz" : "finales felices"} en la urbanización</p>
                 {resolved.map((item) => (
                   <button key={item.id} onClick={() => setSelected(item)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}>
                     <ResolvedCard item={item} />
