@@ -171,23 +171,23 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 // ── Icons ──────────────────────────────────────────────────────────────────
 function IconHome({ active }: { active: boolean }) {
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" fill={active ? TEAL : "none"} stroke={active ? TEAL : "#8AA0BA"} strokeWidth="1.8" strokeLinejoin="round" /><path d="M9 21V12h6v9" stroke={active ? "white" : "#8AA0BA"} strokeWidth="1.8" strokeLinecap="round" /></svg>;
+  return <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" fill={active ? TEAL : "none"} stroke={active ? TEAL : "#8AA0BA"} strokeWidth="1.8" strokeLinejoin="round" /><path d="M9 21V12h6v9" stroke={active ? "white" : "#8AA0BA"} strokeWidth="1.8" strokeLinecap="round" /></svg>;
 }
 function IconNews({ active }: { active: boolean }) {
   const c = active ? TEAL : "#8AA0BA";
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><line x1="7" y1="9" x2="17" y2="9" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="7" y1="13" x2="14" y2="13" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="7" y1="17" x2="11" y2="17" stroke={c} strokeWidth="1.8" strokeLinecap="round" /></svg>;
+  return <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><line x1="7" y1="9" x2="17" y2="9" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="7" y1="13" x2="14" y2="13" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="7" y1="17" x2="11" y2="17" stroke={c} strokeWidth="1.8" strokeLinecap="round" /></svg>;
 }
 function IconEvents({ active }: { active: boolean }) {
   const c = active ? TEAL : "#8AA0BA";
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><line x1="16" y1="3" x2="16" y2="7" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="3" x2="8" y2="7" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke={c} strokeWidth="1.8" /><circle cx="12" cy="15" r="2" fill={active ? TEAL : "#8AA0BA"} /></svg>;
+  return <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><line x1="16" y1="3" x2="16" y2="7" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="8" y1="3" x2="8" y2="7" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="3" y1="10" x2="21" y2="10" stroke={c} strokeWidth="1.8" /><circle cx="12" cy="15" r="2" fill={active ? TEAL : "#8AA0BA"} /></svg>;
 }
 function IconDirectory({ active }: { active: boolean }) {
   const c = active ? TEAL : "#8AA0BA";
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><path d="M3 20c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="8" x2="21" y2="8" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="12" x2="21" y2="12" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="16" x2="21" y2="16" stroke={c} strokeWidth="1.8" strokeLinecap="round" /></svg>;
+  return <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke={c} strokeWidth="1.8" fill={active ? TEAL + "22" : "none"} /><path d="M3 20c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="8" x2="21" y2="8" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="12" x2="21" y2="12" stroke={c} strokeWidth="1.8" strokeLinecap="round" /><line x1="16" y1="16" x2="21" y2="16" stroke={c} strokeWidth="1.8" strokeLinecap="round" /></svg>;
 }
 function IconMore({ active }: { active: boolean }) {
   const c = active ? TEAL : "#8AA0BA";
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.8" fill={c} /><circle cx="12" cy="12" r="1.8" fill={c} /><circle cx="19" cy="12" r="1.8" fill={c} /></svg>;
+  return <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.8" fill={c} /><circle cx="12" cy="12" r="1.8" fill={c} /><circle cx="19" cy="12" r="1.8" fill={c} /></svg>;
 }
 
 function StarIcon({ filled }: { filled: boolean }) {
@@ -1460,14 +1460,15 @@ function BottomNav({ active, onChange }: { active: Screen; onChange: (s: Screen)
     { id: "more", label: "Más", Icon: IconMore },
   ];
   return (
-    <div style={{ background: theme.card, borderTop: `1px solid ${theme.border}`, display: "flex", zIndex: 50, flexShrink: 0 }}>
+    <div style={{ background: theme.card, borderTop: `1px solid ${theme.border}`, boxShadow: "0 -6px 20px rgba(0,36,92,0.06)", display: "flex", zIndex: 50, flexShrink: 0, paddingBottom: "max(env(safe-area-inset-bottom, 0px), 8px)" }}>
       {tabs.map(({ id, label, Icon }) => {
         const isActive = active === id;
         return (
-          <button key={id} onClick={() => onChange(id)} style={{ flex: 1, padding: "10px 4px 8px", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 4, background: "none", border: "none", cursor: "pointer", position: "relative" as const }}>
-            {isActive && <div style={{ position: "absolute" as const, top: 0, left: "50%", transform: "translateX(-50%)", width: 30, height: 3, background: TEAL, borderRadius: "0 0 4px 4px" }} />}
-            <Icon active={isActive} />
-            <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, color: isActive ? TEAL : "rgba(122,152,152,0.8)" }}>{label}</span>
+          <button key={id} onClick={() => onChange(id)} aria-current={isActive ? "page" : undefined} style={{ flex: 1, padding: "10px 2px 4px", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 5, background: "none", border: "none", cursor: "pointer", position: "relative" as const }}>
+            <div style={{ width: 54, height: 34, borderRadius: 17, display: "flex", alignItems: "center", justifyContent: "center", background: isActive ? "#E3EFF9" : "transparent", transition: "background .2s" }}>
+              <Icon active={isActive} />
+            </div>
+            <span style={{ fontSize: 11.5, fontWeight: isActive ? 700 : 600, color: isActive ? TEAL : "#6B7C90" }}>{label}</span>
           </button>
         );
       })}

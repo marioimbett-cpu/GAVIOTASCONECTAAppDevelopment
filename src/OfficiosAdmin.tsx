@@ -114,7 +114,7 @@ export default function OfficiosAdmin() {
             ["Cédula (privado)", selected.cedula],
             ["Teléfono", selected.phone],
             ["WhatsApp", selected.whatsapp],
-            ["Sector", selected.sector],
+            ["Dirección", selected.sector],
             ["Oficios", selected.categories.map((c) => `${catIcon(c)} ${c}`).join(", ")],
             ["Experiencia", `${selected.yearsExp} años`],
             ["Horario", selected.schedule],

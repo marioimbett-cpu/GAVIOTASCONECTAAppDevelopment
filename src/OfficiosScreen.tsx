@@ -23,7 +23,6 @@ const ALL_CATEGORIES: { cat: OfficioCategory; icon: string }[] = [
   { cat: "Otros",                  icon: "🛠️" },
 ];
 
-const SECTORS = ["Sector Norte", "Sector Central", "Sector Sur", "Sector Oriente", "Otro"];
 
 function StarRow({ rating, count, small }: { rating: number; count?: number; small?: boolean }) {
   const size = small ? 13 : 16;
@@ -155,7 +154,7 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
         {/* Info grid */}
         <div style={{ background: "white", borderRadius: 14, padding: "14px 16px", border: "1px solid #D6E2EE" }}>
           {[
-            ["📍 Sector", worker.sector],
+            ["📍 Dirección", worker.sector],
             ["⏰ Horario", worker.schedule],
             ["💼 Experiencia", `${worker.yearsExp} año${worker.yearsExp !== 1 ? "s" : ""}`],
             worker.urgency ? ["🆘 Urgencias", "Atiende urgencias"] : null,
@@ -280,7 +279,7 @@ function WorkerProfile({ worker, reviews, authorId, onBack, onAddReview, onToggl
 function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; onBack: () => void; onSubmit: () => void }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
-    fullName: "", cedula: "", phone: "", whatsapp: "", sector: SECTORS[0], isAdult: false,
+    fullName: "", cedula: "", phone: "", whatsapp: "", sector: "", isAdult: false,
     categories: [] as OfficioCategory[], yearsExp: 1, schedule: "", urgency: false, description: "",
     photo: "" as string, workPhotos: [] as string[], authorizeData: false,
   });
@@ -392,16 +391,15 @@ function RegistrationForm({ authorId, onBack, onSubmit }: { authorId: string; on
               </div>
             ))}
             <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Sector de la urbanización</label>
-              <select value={form.sector} onChange={(e) => setForm((f) => ({ ...f, sector: e.target.value }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }}>
-                {SECTORS.map((s) => <option key={s} value={s}>{s}</option>)}
-              </select>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#5B6B7F", textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 5 }}>Dirección en la urbanización</label>
+              <input type="text" value={form.sector} maxLength={120} placeholder="Ej: Manzana 12, Lote 5" onChange={(e) => setForm((f) => ({ ...f, sector: e.target.value }))} style={{ width: "100%", padding: "12px 14px", borderRadius: 11, border: "1.5px solid #D6E2EE", fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box" }} />
+              <p style={{ fontSize: 11.5, color: "#5B6B7F", margin: "5px 0 0", lineHeight: 1.5 }}>Se mostrará en tu perfil para que los vecinos te ubiquen.</p>
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
               <input type="checkbox" checked={form.isAdult} onChange={(e) => setForm((f) => ({ ...f, isAdult: e.target.checked }))} required />
               <span style={{ fontSize: 13, color: "#0E2238" }}>Confirmo que soy mayor de 18 años</span>
             </label>
-            <button type="button" disabled={!form.fullName || !form.cedula || !form.phone || !form.isAdult} onClick={() => setStep(2)}
+            <button type="button" disabled={!form.fullName || !form.cedula || !form.phone || !form.sector.trim() || !form.isAdult} onClick={() => setStep(2)}
               style={{ padding: 13, borderRadius: 12, background: `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", opacity: (!form.fullName || !form.cedula || !form.phone || !form.isAdult) ? 0.5 : 1 }}>
               Siguiente →
             </button>
