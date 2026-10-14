@@ -428,7 +428,7 @@ function PublishForm({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 200, background: "white", display: "flex", flexDirection: "column", fontFamily: "'Outfit', sans-serif" }}>
       {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #00245C)`, padding: "16px 20px", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #00245C)`, padding: "calc(env(safe-area-inset-top, 0px) + 16px) 20px 16px", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
         <button onClick={onClose} style={{ background: "none", border: "none", color: "white", cursor: "pointer", padding: 4 }}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="white" strokeWidth="2.2" strokeLinecap="round" /></svg>
         </button>

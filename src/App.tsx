@@ -75,6 +75,18 @@ function Card({ children, style, onClick }: { children: React.ReactNode; style?:
   );
 }
 
+// Medallón circular con el emblema de la JAC
+function Medallion({ size }: { size: number }) {
+  return (
+    <div style={{ width: size, height: size, borderRadius: "50%", padding: Math.max(2, size * 0.05), flexShrink: 0,
+      background: "linear-gradient(145deg, rgba(255,255,255,0.95), rgba(127,211,245,0.6))", boxShadow: "0 0 0 1px rgba(255,255,255,0.18), 0 6px 18px rgba(0,0,0,0.35)" }}>
+      <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "#FFFFFF", padding: size * 0.07, boxSizing: "border-box" as const }}>
+        <img src="/emblema.png" alt="" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
+      </div>
+    </div>
+  );
+}
+
 // Encabezado de las pantallas de acceso: medallón con el emblema de la JAC sobre azul profundo
 function AuthHeader({ title, subtitle, compact = false }: { title: string; subtitle: string; compact?: boolean }) {
   const { theme } = useTheme();
@@ -182,14 +194,14 @@ function StarIcon({ filled }: { filled: boolean }) {
   return <svg width="18" height="18" viewBox="0 0 24 24" fill={filled ? CORAL : "none"} stroke={CORAL} strokeWidth="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>;
 }
 
-function BellIcon({ unread }: { unread: number }) {
+function BellIcon({ unread, color = "#8AA0BA" }: { unread: number; color?: string }) {
   return (
-    <div style={{ position: "relative" as const }}>
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8AA0BA" strokeWidth="1.8">
+    <div style={{ position: "relative" as const, display: "flex" }}>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.7">
         <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       {unread > 0 && (
-        <div style={{ position: "absolute" as const, top: -4, right: -4, width: 16, height: 16, borderRadius: "50%", background: CORAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: "white", fontWeight: 800 }}>
+        <div style={{ position: "absolute" as const, top: -6, right: -7, width: 16, height: 16, borderRadius: "50%", background: "#E0475B", boxShadow: "0 0 0 2px #00163D", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: "white", fontWeight: 800 }}>
           {unread > 9 ? "9+" : unread}
         </div>
       )}
@@ -205,6 +217,7 @@ const SKY = "#0078C0";
 function SplashScreen({ onNext }: { onNext: (v: "login" | "register" | "app") => void }) {
   return (
     <div style={{ minHeight: "100%", height: "100%", display: "flex", flexDirection: "column" as const, background: "#FFFFFF", overflowY: "auto" as const }}>
+      <div style={{ height: "env(safe-area-inset-top, 0px)", background: NAVY, flexShrink: 0 }} />
       {/* Logo y nombre sobre fondo blanco, como el logo */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", padding: "36px 28px 8px", textAlign: "center" as const }}>
         <img src="/logo-app.png" alt="Junta de Acción Comunal Urbanización Las Gaviotas" style={{ width: "min(62vw, 230px)", height: "auto", display: "block", marginBottom: 22 }} />
@@ -553,7 +566,6 @@ function EmergencyModal({ onClose, theme }: { onClose: () => void; theme: Return
 function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, onOpenChat, onGoNews, onGoEvents, onGoParticipate, onSubScreen }: { user: User | null; favorites: Set<number>; onToggleFav: (id: number) => void; onNotifications: () => void; onOpenMap: () => void; onOpenChat: () => void; onGoNews: () => void; onGoEvents: () => void; onGoParticipate: () => void; onSubScreen: (s: SubScreen) => void; }) {
   const { theme } = useTheme();
   const [showEmergency, setShowEmergency] = useState(false);
-  const greeting = user ? `Hola, ${user.name.split(" ")[0]} 👋` : "Bienvenido 👋";
   const quickLinks = [
     { icon: "📰", label: "Noticias", color: TEAL, action: onGoNews },
     { icon: "📅", label: "Eventos", color: CORAL, action: onGoEvents },
@@ -561,30 +573,55 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
     { icon: "🤖", label: "Chatbot", color: "#0060A8", action: onOpenChat },
   ];
 
+  const now = new Date();
+  const h = now.getHours();
+  const saludo = h < 12 ? "Buenos días" : h < 19 ? "Buenas tardes" : "Buenas noches";
+  const fecha = now.toLocaleDateString("es-CO", { day: "numeric", month: "short" }).replace(".", "");
+  const firstName = user ? user.name.split(" ")[0] : "";
+  const nombre = firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : "";
+  const quickIcons: Record<string, React.ReactNode> = {
+    Noticias: <><path d="M4 5h13v14H6a2 2 0 0 1-2-2z" /><path d="M17 9h3v8a2 2 0 0 1-2 2" /><path d="M8 9h5M8 13h5" /></>,
+    Eventos: <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4M16 3v4M4 10h16" /></>,
+    Mapa: <><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z" /><circle cx="12" cy="10" r="2.2" /></>,
+    Chatbot: <><path d="M5 5h14v10H9l-4 4z" /><path d="M9 10h.01M12 10h.01M15 10h.01" /></>,
+  };
+
   return (
     <div style={{ paddingBottom: 8 }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "28px 20px 24px", position: "relative" as const, overflow: "hidden" }}>
-        <div style={{ position: "absolute" as const, right: -30, top: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.06)" }} />
-        <div style={{ position: "absolute" as const, right: 40, top: 40, width: 80, height: 80, borderRadius: "50%", background: "rgba(0,136,204,0.22)" }} />
+      <div style={{ position: "relative" as const, overflow: "hidden",
+        background: "radial-gradient(70% 80% at 85% 10%, rgba(127,211,245,0.20) 0%, rgba(127,211,245,0) 60%), linear-gradient(180deg, #001F4F 0%, #002A66 50%, #003C86 100%)",
+        padding: "18px 22px 0" }}>
+        {/* Marca de agua: gaviota grande */}
+        <img src="/gaviota.png" alt="" aria-hidden="true" style={{ position: "absolute" as const, right: -26, top: 6, width: 190, opacity: 0.07, pointerEvents: "none" as const }} />
         <div style={{ position: "relative" as const, zIndex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <AppLogo size={40} radius={10} />
-            <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase" as const }}>Urbanización Las Gaviotas · Cartagena</div>
-          </div>
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: "0 0 3px" }}>{greeting}</p>
-          <h1 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 25, fontWeight: 700, lineHeight: 1.2, margin: 0 }}>
-            Gaviotas <span style={{ color: "#7FD3F5" }}>Conecta</span>
+          <p style={{ margin: "0 0 8px", fontSize: 10.5, fontWeight: 600, letterSpacing: "0.26em", color: "#9CCBEA", textTransform: "uppercase" as const }}>
+            {saludo} · {fecha}
+          </p>
+          <h1 style={{ fontFamily: "'Fraunces', serif", color: "#FFFFFF", fontSize: 34, fontWeight: 600, lineHeight: 1.05, margin: "0 0 12px", letterSpacing: "-0.015em" }}>
+            {nombre ? <>Hola, <span style={{ color: "#7FD3F5" }}>{nombre}</span></> : <>Bienvenido a <span style={{ color: "#7FD3F5" }}>Las Gaviotas</span></>}
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, margin: "5px 0 0" }}>Tu comunidad, siempre cerca</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }} aria-hidden="true">
+            <span style={{ display: "block", width: 34, height: 1, background: "linear-gradient(90deg, #7FD3F5, transparent)" }} />
+            <img src="/gaviota.png" alt="" style={{ width: 20, height: 20, opacity: 0.9 }} />
+            <span style={{ display: "block", width: 34, height: 1, background: "linear-gradient(90deg, #7FD3F5, transparent)" }} />
+          </div>
+          <p style={{ color: "#CFE6F7", fontSize: 14, margin: 0, letterSpacing: "0.01em" }}>Tu comunidad, siempre cerca</p>
         </div>
+        <svg viewBox="0 0 390 70" preserveAspectRatio="none" aria-hidden="true" style={{ display: "block", width: "calc(100% + 44px)", height: 70, margin: "22px -22px 0" }}>
+          <path d="M0,34 Q195,82 390,34 L390,70 L0,70 Z" fill="#7FD3F5" opacity="0.18" />
+          <path d="M0,46 Q195,90 390,46 L390,70 L0,70 Z" fill={theme.bg} />
+        </svg>
       </div>
 
-      <div style={{ padding: "16px 20px 0" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 10 }}>
-          {quickLinks.map((q) => (
-            <button key={q.label} onClick={q.action} style={{ background: theme.card, border: `1px solid ${theme.border}`, borderRadius: 14, padding: "13px 4px", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 6, cursor: "pointer" }}>
-              <div style={{ width: 40, height: 40, borderRadius: 11, background: q.color + "18", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>{q.icon}</div>
-              <span style={{ fontSize: 10, fontWeight: 700, color: q.color, textAlign: "center" as const, lineHeight: 1.2 }}>{q.label}</span>
+      {/* Accesos rápidos: tarjeta flotante */}
+      <div style={{ padding: "0 18px", marginTop: -42, position: "relative" as const, zIndex: 2 }}>
+        <div style={{ background: theme.card, borderRadius: 22, border: `1px solid ${theme.border}`, boxShadow: "0 16px 40px rgba(0,36,92,0.14)", padding: "14px 6px", display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))" }}>
+          {quickLinks.map((q, i) => (
+            <button key={q.label} onClick={q.action} style={{ background: "none", border: "none", borderLeft: i ? `1px solid ${theme.border}` : "none", padding: "4px 2px", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 7, cursor: "pointer" }}>
+              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "linear-gradient(145deg, #EAF4FB, #D6E9F7)", boxShadow: "inset 0 0 0 1px rgba(0,96,168,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{quickIcons[q.label]}</svg>
+              </div>
+              <span style={{ fontSize: 11.5, fontWeight: 600, color: theme.ink, textAlign: "center" as const, lineHeight: 1.2 }}>{q.label}</span>
             </button>
           ))}
         </div>
@@ -1525,28 +1562,28 @@ export default function App() {
     <ThemeCtx.Provider value={{ theme, toggle: () => setDarkMode(!darkMode) }}>
       <div style={{ ...wrapperStyle, height: "100%", display: "flex", flexDirection: "column" as const, background: theme.bg }}>
         {/* App header */}
-        <div style={{ background: theme.card, padding: "12px 20px 8px", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, borderBottom: `1px solid ${theme.border}` }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <AppLogo size={34} radius={9} />
+        <div style={{ background: "linear-gradient(180deg, #00163D 0%, #001F4F 100%)", padding: "calc(env(safe-area-inset-top, 0px) + 10px) 18px 10px", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, position: "relative" as const, zIndex: 5 }}>
+          <button onClick={() => { setScreen("home"); setSubScreen(null); }} aria-label="Ir al inicio" style={{ display: "flex", alignItems: "center", gap: 10, background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left" as const }}>
+            <Medallion size={38} />
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: theme.ink, fontFamily: "'Fraunces', serif", lineHeight: 1 }}>Gaviotas Conecta</div>
-              <div style={{ fontSize: 10, color: theme.muted, letterSpacing: "0.04em" }}>Las Gaviotas · Cartagena</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#FFFFFF", fontFamily: "'Fraunces', serif", lineHeight: 1.1, letterSpacing: "-0.01em" }}>Gaviotas <span style={{ color: "#7FD3F5" }}>Conecta</span></div>
+              <div style={{ fontSize: 9.5, color: "#9CCBEA", letterSpacing: "0.22em", textTransform: "uppercase" as const, marginTop: 2 }}>Urb. Las Gaviotas</div>
             </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <button onClick={() => { setScreen("more"); setSubScreen("notifications"); }} style={{ background: "none", border: "none", cursor: "pointer", padding: 2 }}>
-              <BellIcon unread={unreadCount} />
+          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button onClick={() => { setScreen("more"); setSubScreen("notifications"); }} aria-label="Notificaciones" style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.16)", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <BellIcon unread={unreadCount} color="#FFFFFF" />
             </button>
             {user && (
               <div style={{ position: "relative" as const }}>
                 <button onClick={() => setShowUserMenu((v) => !v)} aria-label="Menú de la cuenta" aria-expanded={showUserMenu}
-                  style={{ width: 30, height: 30, borderRadius: 9, background: `linear-gradient(135deg, ${TEAL}, ${CORAL})`, display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 13, fontWeight: 700, border: "none", cursor: "pointer", padding: 0 }}>
+                  style={{ width: 38, height: 38, borderRadius: "50%", background: "linear-gradient(145deg, #7FD3F5 0%, #0060A8 100%)", boxShadow: "0 0 0 2px rgba(255,255,255,0.85), 0 6px 16px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", padding: 0, fontFamily: "'Fraunces', serif" }}>
                   {user.name[0].toUpperCase()}
                 </button>
                 {showUserMenu && (
                   <>
                     <div onClick={() => setShowUserMenu(false)} style={{ position: "fixed" as const, inset: 0, zIndex: 9990 }} />
-                    <div role="menu" style={{ position: "absolute" as const, top: 38, right: 0, zIndex: 9991, minWidth: 220, background: theme.card, border: `1px solid ${theme.border}`, borderRadius: 14, boxShadow: "0 12px 32px rgba(0,36,92,0.18)", overflow: "hidden" }}>
+                    <div role="menu" style={{ position: "absolute" as const, top: 46, right: 0, zIndex: 9991, minWidth: 220, background: theme.card, border: `1px solid ${theme.border}`, borderRadius: 14, boxShadow: "0 12px 32px rgba(0,36,92,0.18)", overflow: "hidden" }}>
                       <div style={{ padding: "12px 14px", borderBottom: `1px solid ${theme.border}` }}>
                         <div style={{ fontSize: 14, fontWeight: 700, color: theme.ink }}>{user.name}</div>
                         <div style={{ fontSize: 12, color: theme.muted, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>{user.email}</div>
@@ -1561,10 +1598,6 @@ export default function App() {
                 )}
               </div>
             )}
-            <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-              <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#22C55E" }} />
-              <span style={{ fontSize: 11, color: theme.muted }}>En línea</span>
-            </div>
           </div>
         </div>
 

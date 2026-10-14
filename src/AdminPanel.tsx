@@ -712,7 +712,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
   return (
     <div style={{ position: "fixed" as const, inset: 0, zIndex: 99999, background: "#F4F8FC", display: "flex", flexDirection: "column" as const, fontFamily: "'Outfit', sans-serif" }}>
       {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #00245C)`, padding: "16px 20px 14px", flexShrink: 0 }}>
+      <div style={{ background: `linear-gradient(135deg, ${TEAL}, #00245C)`, padding: "calc(env(safe-area-inset-top, 0px) + 16px) 20px 14px", flexShrink: 0 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>⚙️</div>
