@@ -75,16 +75,49 @@ function Card({ children, style, onClick }: { children: React.ReactNode; style?:
   );
 }
 
+// Encabezado de las pantallas de acceso: azul del logo, gaviotas suaves y ola inferior
+function AuthHeader({ title, subtitle }: { title: string; subtitle: string }) {
+  const { theme } = useTheme();
+  return (
+    <div style={{ position: "relative" as const, overflow: "hidden", background: "radial-gradient(120% 90% at 20% 0%, #1A73C2 0%, #0060A8 35%, #003078 75%, #00245C 100%)", padding: "calc(env(safe-area-inset-top, 0px) + 40px) 24px 0", textAlign: "center" as const }}>
+      <img src="/gaviota.png" alt="" aria-hidden="true" style={{ position: "absolute" as const, top: 28, right: 26, width: 54, opacity: 0.18 }} />
+      <img src="/gaviota.png" alt="" aria-hidden="true" style={{ position: "absolute" as const, top: 86, left: 22, width: 34, opacity: 0.12, transform: "scaleX(-1)" }} />
+      <div style={{ width: 88, height: 88, margin: "0 auto 18px", borderRadius: 24, background: "#FFFFFF", padding: 6, boxShadow: "0 0 0 6px rgba(255,255,255,0.12), 0 16px 36px rgba(0,20,60,0.35)" }}>
+        <img src="/logo-app.png" alt="JAC Urbanización Las Gaviotas" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
+      </div>
+      <h2 style={{ fontFamily: "'Fraunces', serif", color: "#FFFFFF", fontSize: 30, fontWeight: 700, margin: "0 0 6px", letterSpacing: "-0.01em" }}>{title}</h2>
+      <p style={{ color: "#BFDDF2", fontSize: 14, margin: "0 auto", maxWidth: 280, lineHeight: 1.5 }}>{subtitle}</p>
+      <svg viewBox="0 0 390 96" preserveAspectRatio="none" aria-hidden="true" style={{ display: "block", width: "calc(100% + 48px)", height: 96, margin: "18px -24px 0" }}>
+        <path d="M0,58 C80,30 160,30 230,48 C300,66 350,60 390,44 L390,96 L0,96 Z" fill="#7FD3F5" opacity="0.35" />
+        <path d="M0,70 C90,44 170,46 240,62 C305,77 352,72 390,58 L390,96 L0,96 Z" fill={theme.bg} />
+      </svg>
+    </div>
+  );
+}
+
+const FIELD_ICONS: Record<string, React.ReactNode> = {
+  email: <path d="M4 6h16v12H4z M4 7l8 6 8-6" />,
+  password: <><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></>,
+  tel: <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z" />,
+  text: <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></>,
+};
+
 function InputField({ label, type = "text", placeholder, value, onChange }: { label: string; type?: string; placeholder: string; value: string; onChange: (v: string) => void }) {
   const { theme } = useTheme();
   const [showPwd, setShowPwd] = useState(false);
+  const [focused, setFocused] = useState(false);
   const isPwd = type === "password";
+  const icon = FIELD_ICONS[type] ?? FIELD_ICONS.text;
   return (
     <div>
-      <label style={{ fontSize: 12, fontWeight: 700, color: theme.muted, textTransform: "uppercase" as const, letterSpacing: "0.05em", display: "block", marginBottom: 6 }}>{label}</label>
+      <label style={{ fontSize: 13, fontWeight: 600, color: theme.ink, display: "block", marginBottom: 7 }}>{label}</label>
       <div style={{ position: "relative" as const }}>
-      <input type={isPwd && showPwd ? "text" : type} placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} style={{ width: "100%", boxSizing: "border-box" as const, padding: isPwd ? "13px 46px 13px 16px" : "13px 16px", borderRadius: 12, border: `1.5px solid ${theme.border}`, fontSize: 14, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink }} />
-      {isPwd && <EyeToggle visible={showPwd} onToggle={() => setShowPwd((v) => !v)} color={theme.muted} />}
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={focused ? TEAL : theme.muted} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+          style={{ position: "absolute" as const, left: 14, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" as const }}>{icon}</svg>
+        <input type={isPwd && showPwd ? "text" : type} placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)}
+          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+          style={{ width: "100%", boxSizing: "border-box" as const, padding: isPwd ? "14px 46px 14px 44px" : "14px 16px 14px 44px", borderRadius: 14, border: `1.5px solid ${focused ? TEAL : theme.border}`, boxShadow: focused ? `0 0 0 4px ${TEAL}1F` : "none", fontSize: 15, fontFamily: "'Outfit', sans-serif", outline: "none", background: theme.inputBg, color: theme.ink, transition: "border-color .15s, box-shadow .15s" }} />
+        {isPwd && <EyeToggle visible={showPwd} onToggle={() => setShowPwd((v) => !v)} color={theme.muted} />}
       </div>
     </div>
   );
@@ -220,34 +253,42 @@ function LoginScreen({ onLogin, onGoRegister, onRecover, onSkip }: { onLogin: (u
 
   return (
     <div style={{ height: "100%", overflowY: "auto" as const, background: theme.bg }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
-        <AppLogo size={72} radius={18} style={{ margin: "0 auto 16px" }} />
-        <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 26, fontWeight: 700, margin: "0 0 4px" }}>Bienvenido</h2>
-        <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Inicia sesión en Gaviotas Conecta</p>
-      </div>
-      <div style={{ padding: "28px 20px" }}>
-        <Card>
-          <form onSubmit={handleSubmit} style={{ padding: "24px 20px", display: "flex", flexDirection: "column" as const, gap: 16 }}>
+      <AuthHeader title="Bienvenido" subtitle="Inicia sesión en Gaviotas Conecta" />
+      <div style={{ padding: "0 20px 28px", marginTop: -44, position: "relative" as const }}>
+        <div style={{ background: theme.card, borderRadius: 24, boxShadow: "0 18px 44px rgba(0,36,92,0.12)", border: `1px solid ${theme.border}` }}>
+          <form onSubmit={handleSubmit} style={{ padding: "26px 22px 22px", display: "flex", flexDirection: "column" as const, gap: 18 }}>
             <InputField label="Correo electrónico" type="email" placeholder="tucorreo@email.com" value={email} onChange={setEmail} />
-            <InputField label="Contraseña" type="password" placeholder="••••••••" value={password} onChange={setPassword} />
-            {error && <div style={{ background: "#FEE2E2", borderRadius: 10, padding: "10px 14px", display: "flex", gap: 8 }}><span>⚠️</span><span style={{ fontSize: 13, color: "#B91C1C" }}>{error}</span></div>}
-            <button type="button" onClick={onRecover} style={{ background: "none", border: "none", color: TEAL, fontSize: 13, fontWeight: 600, cursor: "pointer", textAlign: "right" as const, padding: 0 }}>
-              ¿Olvidaste tu contraseña?
-            </button>
-            <button type="submit" disabled={loading} style={{ padding: "14px", borderRadius: 12, background: loading ? theme.muted : `linear-gradient(135deg, ${TEAL}, #003078)`, color: "white", fontSize: 15, fontWeight: 700, border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
-              {loading ? "Iniciando sesión..." : "Iniciar sesión"}
+            <div>
+              <InputField label="Contraseña" type="password" placeholder="Tu contraseña" value={password} onChange={setPassword} />
+              <div style={{ textAlign: "right" as const, marginTop: 10 }}>
+                <button type="button" onClick={onRecover} style={{ background: "none", border: "none", color: TEAL, fontSize: 13, fontWeight: 600, cursor: "pointer", padding: 0 }}>
+                  ¿Olvidaste tu contraseña?
+                </button>
+              </div>
+            </div>
+            {error && <div role="alert" style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 12, padding: "10px 14px", fontSize: 13, color: "#B91C1C" }}>{error}</div>}
+            <button type="submit" disabled={loading} style={{ padding: "15px", borderRadius: 14, background: loading ? theme.muted : "linear-gradient(135deg, #0060A8 0%, #003078 100%)", color: "white", fontSize: 16, fontWeight: 700, border: "none", cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 10px 24px rgba(0,48,120,0.28)", letterSpacing: "0.01em" }}>
+              {loading ? "Iniciando sesión…" : "Iniciar sesión"}
             </button>
             <p style={{ textAlign: "center" as const, fontSize: 14, color: theme.muted, margin: 0 }}>
               ¿No tienes cuenta?{" "}
-              <button type="button" onClick={onGoRegister} style={{ background: "none", border: "none", color: TEAL, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Regístrate</button>
+              <button type="button" onClick={onGoRegister} style={{ background: "none", border: "none", color: TEAL, fontWeight: 700, cursor: "pointer", fontSize: 14, padding: 0 }}>Regístrate</button>
             </p>
           </form>
-        </Card>
-        <button onClick={onSkip} style={{ width: "100%", padding: "14px", borderRadius: 12, background: "none", color: theme.muted, fontSize: 14, border: `1.5px solid ${theme.border}`, cursor: "pointer", marginTop: 12 }}>
-          Explorar sin cuenta
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "22px 6px 14px" }}>
+          <div style={{ flex: 1, height: 1, background: theme.border }} />
+          <span style={{ fontSize: 12, color: theme.muted }}>o</span>
+          <div style={{ flex: 1, height: 1, background: theme.border }} />
+        </div>
+        <button onClick={onSkip} style={{ width: "100%", padding: "13px", borderRadius: 14, background: "transparent", color: TEAL, fontSize: 15, fontWeight: 600, border: `1.5px solid ${TEAL}55`, cursor: "pointer" }}>
+          Explorar sin cuenta →
         </button>
-        <p style={{ textAlign: "center" as const, fontSize: 11, color: theme.muted, margin: "18px 0 0", lineHeight: 1.6 }}>
-          🔒 Datos protegidos bajo la Ley 1581 de 2012.<br />Al iniciar sesión aceptas nuestros Términos y Política de Privacidad.
+
+        <p style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 6, textAlign: "center" as const, fontSize: 11.5, color: theme.muted, margin: "22px 8px 0", lineHeight: 1.6 }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginTop: 3, flexShrink: 0 }} aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+          <span>Datos protegidos bajo la Ley 1581 de 2012. Al iniciar sesión aceptas los Términos y la Política de Privacidad.</span>
         </p>
       </div>
     </div>
@@ -279,12 +320,8 @@ function RegisterScreen({ onRegister, onGoLogin }: { onRegister: (u: User) => vo
 
   return (
     <div style={{ height: "100%", overflowY: "auto" as const, background: theme.bg }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
-        <AppLogo size={72} radius={18} style={{ margin: "0 auto 16px" }} />
-        <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 26, fontWeight: 700, margin: "0 0 4px" }}>Crear cuenta</h2>
-        <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Únete a la comunidad de Las Gaviotas</p>
-      </div>
-      <div style={{ padding: "28px 20px" }}>
+      <AuthHeader title="Crear cuenta" subtitle="Únete a la Urbanización Las Gaviotas" />
+      <div style={{ padding: "0 20px 28px", marginTop: -44, position: "relative" as const }}>
         <Card>
           <form onSubmit={handleSubmit} style={{ padding: "24px 20px", display: "flex", flexDirection: "column" as const, gap: 16 }}>
             <InputField label="Nombre completo *" placeholder="Tu nombre" value={form.name} onChange={set("name")} />
@@ -329,12 +366,8 @@ function RecoverScreen({ onBack }: { onBack: () => void }) {
 
   return (
     <div style={{ height: "100%", background: theme.bg, overflowY: "auto" as const }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
-        <div style={{ width: 60, height: 60, borderRadius: 16, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 16px" }}>🔑</div>
-        <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 24, fontWeight: 700, margin: "0 0 4px" }}>Recuperar contraseña</h2>
-        <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Te enviaremos un enlace a tu correo</p>
-      </div>
-      <div style={{ padding: "28px 20px" }}>
+      <AuthHeader title="Recuperar contraseña" subtitle="Te enviaremos un enlace a tu correo" />
+      <div style={{ padding: "0 20px 28px", marginTop: -44, position: "relative" as const }}>
         {sent ? (
           <Card>
             <div style={{ padding: "32px 20px", textAlign: "center" as const }}>
@@ -387,12 +420,8 @@ function NewPasswordScreen({ onDone }: { onDone: () => void }) {
 
   return (
     <div style={{ height: "100%", background: theme.bg, overflowY: "auto" as const }}>
-      <div style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #003078 100%)`, padding: "48px 24px 32px", textAlign: "center" as const }}>
-        <div style={{ width: 60, height: 60, borderRadius: 16, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 16px" }}>🔑</div>
-        <h2 style={{ fontFamily: "'Fraunces', serif", color: "white", fontSize: 24, fontWeight: 700, margin: "0 0 4px" }}>Nueva contraseña</h2>
-        <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, margin: 0 }}>Escribe la contraseña que usarás de ahora en adelante</p>
-      </div>
-      <div style={{ padding: "28px 20px" }}>
+      <AuthHeader title="Nueva contraseña" subtitle="Escribe la contraseña que usarás de ahora en adelante" />
+      <div style={{ padding: "0 20px 28px", marginTop: -44, position: "relative" as const }}>
         <Card>
           <div style={{ padding: "24px 20px", display: "flex", flexDirection: "column" as const, gap: 16 }}>
             <InputField label="Nueva contraseña" type="password" placeholder="Mínimo 6 caracteres" value={password} onChange={(v) => { setPassword(v); setError(""); }} />
