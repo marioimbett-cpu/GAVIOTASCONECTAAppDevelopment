@@ -191,7 +191,7 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
             display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22,
             boxShadow: `0 4px 16px ${TEAL}44`,
           }}>
-            🦅
+            <img src="/gaviota.png" alt="" style={{ width: 42, height: 42, display: "block" }} />
           </div>
           <div>
             <p style={{ margin: 0, fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: 16, color: theme.ink }}>GaviotaBot</p>
@@ -238,7 +238,7 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
           }}>
             {msg.from === "bot" && (
               <div style={{ width: 30, height: 30, borderRadius: 10, background: `linear-gradient(135deg, ${TEAL}, #0a4f4f)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0 }}>
-                🦅
+                <img src="/gaviota.png" alt="" style={{ width: 28, height: 28, display: "block" }} />
               </div>
             )}
             <div style={{
@@ -263,7 +263,7 @@ export default function ChatScreen({ onBack, theme }: { onBack: () => void; them
         {typing && (
           <div style={{ display: "flex", alignItems: "flex-end", gap: 8, marginBottom: 12 }}>
             <div style={{ width: 30, height: 30, borderRadius: 10, background: `linear-gradient(135deg, ${TEAL}, #0a4f4f)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0 }}>
-              🦅
+              <img src="/gaviota.png" alt="" style={{ width: 28, height: 28, display: "block" }} />
             </div>
             <div style={{
               background: theme.card, border: `1px solid ${theme.border}`,

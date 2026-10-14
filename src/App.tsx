@@ -998,7 +998,7 @@ function GalleryScreen({ onBack }: { onBack: () => void }) {
 function AboutScreen({ onBack }: { onBack: () => void }) {
   const { theme } = useTheme();
   const sections = [
-    { icon: "🦅", title: "Gaviotas Conecta", desc: "Plataforma digital comunitaria del Barrio Las Gaviotas de Cartagena de Indias. Creada para facilitar la comunicación, participación y acceso a la información de los habitantes." },
+    { icon: <img src="/gaviota.png" alt="" style={{ width: 24, height: 24, filter: "brightness(0) saturate(100%) invert(27%) sepia(61%) saturate(749%) hue-rotate(141deg)" }} />, title: "Gaviotas Conecta", desc: "Plataforma digital comunitaria del Barrio Las Gaviotas de Cartagena de Indias. Creada para facilitar la comunicación, participación y acceso a la información de los habitantes." },
     { icon: "🏘", title: "Barrio Las Gaviotas", desc: "Las Gaviotas es un barrio de Cartagena de Indias con una comunidad activa y participativa. [Información detallada pendiente de confirmación con la JAC.]" },
     { icon: "🏛", title: "Junta de Acción Comunal", desc: "La JAC del Barrio Las Gaviotas representa los intereses de los residentes ante las autoridades locales. [Datos de la JAC pendientes de confirmación.]" },
     { icon: "🎯", title: "Misión", desc: "Conectar digitalmente a los habitantes de Las Gaviotas para fortalecer la participación ciudadana, la comunicación y el acceso a la información local." },
@@ -1333,7 +1333,7 @@ function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, onGoN
 
         <div style={{ padding: "14px 16px", background: theme.card, borderRadius: 14, border: `1px solid ${theme.border}` }}>
           <p style={{ fontSize: 12, color: theme.muted, textAlign: "center" as const, margin: 0, lineHeight: 1.6 }}>
-            🦅 Gaviotas Conecta v1.0 · MVP<br />
+            Gaviotas Conecta v1.0 · MVP<br />
             Barrio Las Gaviotas · Cartagena de Indias<br />
             Comunidad · 2026
           </p>

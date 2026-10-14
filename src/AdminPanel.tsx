@@ -632,7 +632,7 @@ function SettingsManager() {
     <div>
       <SaveBanner saved={saved} />
       <ACard>
-        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#162323" }}>🦅 Identidad de la App</p>
+        <p style={{ margin: "0 0 12px", fontWeight: 700, fontSize: 14, color: "#162323" }}>Identidad de la App</p>
         <AField label="Nombre de la app" value={settings.appName} onChange={(v) => setSettings({ ...settings, appName: v })} placeholder="Gaviotas Conecta" />
         <div style={{ background: "#F0EBE3", borderRadius: 12, padding: "14px", textAlign: "center" as const, marginBottom: 10 }}>
           <img src="/logo-app.png" alt="Logo" style={{ width: 72, height: 72, objectFit: "contain", borderRadius: 14, background: "#FFFFFF", marginBottom: 6 }} />
