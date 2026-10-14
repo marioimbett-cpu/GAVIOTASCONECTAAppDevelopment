@@ -12,10 +12,34 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Gaviotas" />
     <title><!-- figma:title --></title>
+    <style>
+      /* Pantalla de carga: se ve apenas abre la app, antes de que cargue el código */
+      #gc-loader { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        background: linear-gradient(160deg, #0060A8 0%, #00245C 100%); color: #fff; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        transition: opacity .3s ease; }
+      #gc-loader.gc-done { opacity: 0; pointer-events: none; }
+      #gc-loader img { width: 132px; height: 132px; animation: gc-fly 2.4s ease-in-out infinite; }
+      #gc-loader h1 { margin: 6px 0 4px; font-size: 30px; font-weight: 700; letter-spacing: -0.01em; }
+      #gc-loader h1 span { color: #7FD3F5; }
+      #gc-loader p { margin: 0 0 28px; font-size: 13px; color: rgba(255,255,255,.7); }
+      #gc-bar { width: min(64vw, 240px); height: 6px; border-radius: 99px; background: rgba(255,255,255,.18); overflow: hidden; }
+      #gc-bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #7FD3F5, #FFFFFF);
+        animation: gc-load 8s cubic-bezier(.1,.7,.3,1) forwards; }
+      #gc-loader.gc-full #gc-bar i { width: 100% !important; animation: none; transition: width .25s ease-out; }
+      @keyframes gc-load { 0% { width: 0 } 15% { width: 35% } 40% { width: 62% } 100% { width: 92% } }
+      @keyframes gc-fly { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+      @media (prefers-reduced-motion: reduce) { #gc-loader img { animation: none } }
+    </style>
     <!-- figma:head-end -->
   </head>
   <body>
     <!-- figma:body-start -->
+    <div id="gc-loader" role="status" aria-label="Cargando Gaviotas Conecta">
+      <img src="/gaviota.png" alt="" />
+      <h1>Gaviotas <span>Conecta</span></h1>
+      <p>Barrio Las Gaviotas · Cartagena</p>
+      <div id="gc-bar"><i></i></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <!-- figma:body-end -->
