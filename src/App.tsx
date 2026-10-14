@@ -76,35 +76,38 @@ function Card({ children, style, onClick }: { children: React.ReactNode; style?:
 }
 
 // Encabezado de las pantallas de acceso: medallón con el emblema de la JAC sobre azul profundo
-function AuthHeader({ title, subtitle }: { title: string; subtitle: string }) {
+function AuthHeader({ title, subtitle, compact = false }: { title: string; subtitle: string; compact?: boolean }) {
   const { theme } = useTheme();
+  // En pantallas bajitas (iPhone SE) se achica más para que el formulario quepa completo
+  const tiny = compact && typeof window !== "undefined" && window.innerHeight < 720;
+  const m = tiny ? 0.58 : compact ? 0.74 : 1;
   const line = (dir: "l" | "r") => (
     <span style={{ display: "block", width: 46, height: 1, background: dir === "l" ? "linear-gradient(90deg, transparent, #7FD3F5)" : "linear-gradient(90deg, #7FD3F5, transparent)" }} />
   );
   return (
     <div style={{ position: "relative" as const, overflow: "hidden", textAlign: "center" as const,
       background: "radial-gradient(90% 60% at 50% 22%, rgba(127,211,245,0.22) 0%, rgba(127,211,245,0) 60%), linear-gradient(180deg, #00163D 0%, #002A66 55%, #003C86 100%)",
-      padding: "calc(env(safe-area-inset-top, 0px) + 44px) 24px 0" }}>
+      padding: `calc(env(safe-area-inset-top, 0px) + ${tiny ? 14 : compact ? 22 : 44}px) 24px 0` }}>
       {/* Medallón */}
-      <div style={{ width: 124, height: 124, margin: "0 auto 22px", borderRadius: "50%", padding: 5,
+      <div style={{ width: 124 * m, height: 124 * m, margin: `0 auto ${compact ? 14 : 22}px`, borderRadius: "50%", padding: 5,
         background: "linear-gradient(145deg, rgba(255,255,255,0.95), rgba(127,211,245,0.55))",
         boxShadow: "0 0 0 8px rgba(127,211,245,0.10), 0 0 0 9px rgba(255,255,255,0.22), 0 22px 48px rgba(0,10,40,0.55)" }}>
         <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "#FFFFFF", padding: 8, boxSizing: "border-box" as const }}>
           <img src="/emblema.png" alt="JAC Urbanización Las Gaviotas" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
         </div>
       </div>
-      <p style={{ margin: "0 0 10px", fontSize: 10.5, fontWeight: 600, letterSpacing: "0.3em", color: "#9CCBEA", textTransform: "uppercase" as const }}>
+      {!tiny && <p style={{ margin: `0 0 ${compact ? 6 : 10}px`, fontSize: 10.5, fontWeight: 600, letterSpacing: "0.3em", color: "#9CCBEA", textTransform: "uppercase" as const }}>
         JAC · Urbanización Las Gaviotas
-      </p>
-      <h2 style={{ fontFamily: "'Fraunces', serif", color: "#FFFFFF", fontSize: 36, fontWeight: 600, margin: "0 0 12px", letterSpacing: "-0.015em", lineHeight: 1.05 }}>{title}</h2>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 12 }} aria-hidden="true">
+      </p>}
+      <h2 style={{ fontFamily: "'Fraunces', serif", color: "#FFFFFF", fontSize: compact ? 30 : 36, fontWeight: 600, margin: `0 0 ${compact ? 8 : 12}px`, letterSpacing: "-0.015em", lineHeight: 1.05 }}>{title}</h2>
+      {!tiny && <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: compact ? 8 : 12 }} aria-hidden="true">
         {line("l")}
         <img src="/gaviota.png" alt="" style={{ width: 22, height: 22, opacity: 0.9 }} />
         {line("r")}
-      </div>
+      </div>}
       <p style={{ color: "#CFE6F7", fontSize: 14.5, margin: "0 auto", maxWidth: 290, lineHeight: 1.5, letterSpacing: "0.01em" }}>{subtitle}</p>
       {/* Curva suave hacia el formulario */}
-      <svg viewBox="0 0 390 80" preserveAspectRatio="none" aria-hidden="true" style={{ display: "block", width: "calc(100% + 48px)", height: 80, margin: "26px -24px 0" }}>
+      <svg viewBox="0 0 390 80" preserveAspectRatio="none" aria-hidden="true" style={{ display: "block", width: "calc(100% + 48px)", height: tiny ? 44 : compact ? 56 : 80, margin: `${tiny ? 8 : compact ? 14 : 26}px -24px 0` }}>
         <path d="M0,40 Q195,92 390,40 L390,80 L0,80 Z" fill="#7FD3F5" opacity="0.18" />
         <path d="M0,52 Q195,100 390,52 L390,80 L0,80 Z" fill={theme.bg} />
       </svg>
@@ -270,14 +273,14 @@ function LoginScreen({ onLogin, onGoRegister, onRecover, onSkip }: { onLogin: (u
 
   return (
     <div style={{ height: "100%", overflowY: "auto" as const, background: theme.bg }}>
-      <AuthHeader title="Bienvenido" subtitle="Inicia sesión en Gaviotas Conecta" />
-      <div style={{ padding: "0 20px 28px", marginTop: -30, position: "relative" as const }}>
+      <AuthHeader compact title="Bienvenido" subtitle="Inicia sesión en Gaviotas Conecta" />
+      <div style={{ padding: "0 20px 20px", marginTop: -26, position: "relative" as const }}>
         <div style={{ background: theme.card, borderRadius: 24, boxShadow: "0 18px 44px rgba(0,36,92,0.12)", border: `1px solid ${theme.border}` }}>
-          <form onSubmit={handleSubmit} style={{ padding: "26px 22px 22px", display: "flex", flexDirection: "column" as const, gap: 18 }}>
+          <form onSubmit={handleSubmit} style={{ padding: "20px 20px 18px", display: "flex", flexDirection: "column" as const, gap: 14 }}>
             <InputField label="Correo electrónico" type="email" placeholder="tucorreo@email.com" value={email} onChange={setEmail} />
             <div>
               <InputField label="Contraseña" type="password" placeholder="Tu contraseña" value={password} onChange={setPassword} />
-              <div style={{ textAlign: "right" as const, marginTop: 10 }}>
+              <div style={{ textAlign: "right" as const, marginTop: 8 }}>
                 <button type="button" onClick={onRecover} style={{ background: "none", border: "none", color: TEAL, fontSize: 13, fontWeight: 600, cursor: "pointer", padding: 0 }}>
                   ¿Olvidaste tu contraseña?
                 </button>
@@ -294,7 +297,7 @@ function LoginScreen({ onLogin, onGoRegister, onRecover, onSkip }: { onLogin: (u
           </form>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "22px 6px 14px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "14px 6px 10px" }}>
           <div style={{ flex: 1, height: 1, background: theme.border }} />
           <span style={{ fontSize: 12, color: theme.muted }}>o</span>
           <div style={{ flex: 1, height: 1, background: theme.border }} />
@@ -303,7 +306,7 @@ function LoginScreen({ onLogin, onGoRegister, onRecover, onSkip }: { onLogin: (u
           Explorar sin cuenta →
         </button>
 
-        <p style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 6, textAlign: "center" as const, fontSize: 11.5, color: theme.muted, margin: "22px 8px 0", lineHeight: 1.6 }}>
+        <p style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 6, textAlign: "center" as const, fontSize: 11.5, color: theme.muted, margin: "14px 8px 0", lineHeight: 1.5 }}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginTop: 3, flexShrink: 0 }} aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
           <span>Datos protegidos bajo la Ley 1581 de 2012. Al iniciar sesión aceptas los Términos y la Política de Privacidad.</span>
         </p>
