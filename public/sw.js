@@ -1,6 +1,6 @@
 // Service worker de Gaviotas Conecta: permite instalar la app y abrirla aunque falle la conexión.
 // Siempre intenta la red primero, así cada publicación nueva se ve de inmediato.
-const CACHE = "gaviotas-v1";
+const CACHE = "gaviotas-v2";
 
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
