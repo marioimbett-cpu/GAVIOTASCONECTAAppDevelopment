@@ -7,6 +7,7 @@ import LostFoundScreen from "./LostFoundScreen";
 import OfficiosScreen from "./OfficiosScreen";
 import { store } from "./store";
 import EyeToggle from "./EyeToggle";
+import { type PushStatus, getPushStatus, enablePush, disablePush, fetchNotifications, readIds, saveReadIds, timeAgo } from "./push";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type Screen = "home" | "news" | "events" | "directory" | "more";
@@ -14,7 +15,7 @@ type SubScreen = "contact" | "gallery" | "about" | "privacy" | "participate" | "
 type AuthView = "splash" | "login" | "register" | "recover" | "newPassword" | "app";
 
 interface User { name: string; email: string; }
-interface Notification { id: number; icon: string; title: string; body: string; time: string; read: boolean; }
+interface Notification { id: number; icon: string; title: string; body: string; time: string; read: boolean; screen: "news" | "events" | "lostfound"; }
 
 // ── Theme Context ──────────────────────────────────────────────────────────
 interface Theme {
@@ -39,14 +40,6 @@ function makeTheme(dark: boolean): Theme {
 const TEAL = "#0060A8";
 const CORAL = "#0088CC";
 
-// ── Static notifications (admin panel doesn't manage these yet) ────────────
-const NOTIFICATIONS_DATA: Notification[] = [
-  { id: 1, icon: "📢", title: "Corte de agua mañana", body: "El 13 de septiembre habrá suspensión del servicio en el sector norte de 8 a.m. a 4 p.m.", time: "Hace 2 horas", read: false },
-  { id: 2, icon: "📅", title: "Evento este domingo", body: "Jornada de limpieza del Parque Central — 14 sep a las 7:00 a.m. ¡Anímate a participar!", time: "Hace 5 horas", read: false },
-  { id: 3, icon: "🌱", title: "Nuevo proyecto aprobado", body: "La Alcaldía aprobó el presupuesto para la cancha sintética de la urbanización.", time: "Ayer", read: true },
-  { id: 4, icon: "📋", title: "Encuesta activa", body: "¿Cómo calificarías la seguridad de la urbanización? Tu opinión es importante.", time: "Hace 2 días", read: true },
-  { id: 5, icon: "🎓", title: "Becas SENA disponibles", body: "Se abrieron 40 cupos de formación técnica gratuita para jóvenes de Las Gaviotas.", time: "Hace 3 días", read: true },
-];
 
 // ── Shared Components ──────────────────────────────────────────────────────
 function Badge({ text, color = TEAL }: { text: string; color?: string }) {
@@ -490,8 +483,25 @@ function saveNotifPref(on: boolean) {
   try { localStorage.setItem(NOTIF_KEY, on ? "on" : "off"); } catch { /* sin almacenamiento */ }
 }
 
+// Estado de los avisos en el celular (push) y cómo activarlos
+function PushHint({ status, onActivate }: { status: PushStatus; onActivate: () => void }) {
+  const { theme } = useTheme();
+  const box = (bg: string, children: React.ReactNode) => (
+    <div style={{ background: bg, borderRadius: 12, padding: "10px 14px", marginBottom: 14, fontSize: 13, lineHeight: 1.5, color: theme.ink }}>{children}</div>
+  );
+  if (status === "activo") return box(TEAL + "12", <span>📲 Recibes los avisos en este celular, aunque la app esté cerrada.</span>);
+  if (status === "inactivo") return (
+    <button onClick={onActivate} style={{ width: "100%", padding: "12px 14px", marginBottom: 14, borderRadius: 12, background: TEAL, color: "white", fontSize: 14, fontWeight: 700, border: "none", cursor: "pointer" }}>
+      📲 Recibir avisos en este celular
+    </button>
+  );
+  if (status === "instalar-ios") return box("#FEF3C7", <span>📱 <b>En iPhone:</b> toca <b>Compartir</b> y luego <b>"Agregar a inicio"</b>. Abre la app desde ese ícono y activa aquí los avisos.</span>);
+  if (status === "bloqueado") return box("#FEE2E2", <span>🔒 Bloqueaste los avisos para esta página. Permítelos en la configuración del navegador (ícono del candado junto a la dirección) y vuelve a intentarlo.</span>);
+  return box(theme.surface, <span>Este navegador no permite avisos en el celular. Prueba con Chrome (Android) o Safari (iPhone).</span>);
+}
+
 // ── Notifications Panel ────────────────────────────────────────────────────
-function NotificationsScreen({ notifications, onMark, onBack, enabled, onToggle }: { notifications: Notification[]; onMark: (id: number) => void; onBack: () => void; enabled: boolean; onToggle: () => void }) {
+function NotificationsScreen({ notifications, onMark, onOpen, onBack, enabled, onToggle, pushStatus, onActivatePush }: { notifications: Notification[]; onMark: (id: number) => void; onOpen: (n: Notification) => void; onBack: () => void; enabled: boolean; onToggle: () => void; pushStatus: PushStatus; onActivatePush: () => void }) {
   const { theme } = useTheme();
   const unread = notifications.filter((n) => !n.read).length;
 
@@ -504,7 +514,7 @@ function NotificationsScreen({ notifications, onMark, onBack, enabled, onToggle 
           <div style={{ textAlign: "center" as const, padding: "50px 20px", color: theme.muted }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>🔕</div>
             <p style={{ fontSize: 15, fontWeight: 700, color: theme.ink, margin: "0 0 6px" }}>Notificaciones desactivadas</p>
-            <p style={{ fontSize: 13, margin: "0 0 20px", lineHeight: 1.5 }}>No verás avisos de noticias, eventos ni de la JAC.</p>
+            <p style={{ fontSize: 13, margin: "0 0 20px", lineHeight: 1.5 }}>No verás avisos de noticias, comunicados, proyectos, eventos ni de Perdidos y Encontrados.</p>
             <button onClick={onToggle} style={{ padding: "11px 22px", borderRadius: 12, background: TEAL, color: "white", fontSize: 14, fontWeight: 700, border: "none", cursor: "pointer" }}>Activar notificaciones</button>
           </div>
         </div>
@@ -519,11 +529,12 @@ function NotificationsScreen({ notifications, onMark, onBack, enabled, onToggle 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
           <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 24, fontWeight: 700, margin: 0, color: theme.ink }}>Notificaciones</h1>
           {unread > 0 && (
-            <button onClick={() => notifications.forEach((n) => onMark(n.id))} style={{ background: "none", border: "none", color: TEAL, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+            <button onClick={() => onMark(-1)} style={{ background: "none", border: "none", color: TEAL, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
               Marcar todas leídas
             </button>
           )}
         </div>
+        <PushHint status={pushStatus} onActivate={onActivatePush} />
         {unread > 0 && (
           <div style={{ background: TEAL + "15", borderRadius: 12, padding: "10px 14px", marginBottom: 14, display: "flex", gap: 8, alignItems: "center" }}>
             <span style={{ fontSize: 14 }}>🔔</span>
@@ -532,7 +543,7 @@ function NotificationsScreen({ notifications, onMark, onBack, enabled, onToggle 
         )}
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
           {notifications.map((n) => (
-            <Card key={n.id} onClick={() => onMark(n.id)} style={{ opacity: n.read ? 0.7 : 1 }}>
+            <Card key={n.id} onClick={() => onOpen(n)} style={{ opacity: n.read ? 0.7 : 1 }}>
               <div style={{ padding: "14px 16px", display: "flex", gap: 12, alignItems: "flex-start" }}>
                 {!n.read && <div style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, flexShrink: 0, marginTop: 6 }} />}
                 <div style={{ width: 40, height: 40, borderRadius: 11, flexShrink: 0, background: n.read ? theme.surface : TEAL + "18", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, marginLeft: n.read ? 20 : 0 }}>{n.icon}</div>
@@ -1376,7 +1387,7 @@ function AdminAccess({ onOpen, theme }: { onOpen: () => void; theme: ReturnType<
   );
 }
 
-function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, notifEnabled, onToggleNotif, onGoNews, onGoEvents, onGoDirectory, onOpenAdmin }: { user: User | null; onSubScreen: (s: SubScreen) => void; onLogout: () => void; darkMode: boolean; onToggleDark: () => void; notifEnabled: boolean; onToggleNotif: () => void; onGoNews: () => void; onGoEvents: () => void; onGoDirectory: () => void; onOpenAdmin: () => void; }) {
+function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, notifEnabled, onToggleNotif, pushStatus, onActivatePush, onGoNews, onGoEvents, onGoDirectory, onOpenAdmin }: { user: User | null; onSubScreen: (s: SubScreen) => void; onLogout: () => void; darkMode: boolean; onToggleDark: () => void; notifEnabled: boolean; onToggleNotif: () => void; pushStatus: PushStatus; onActivatePush: () => void; onGoNews: () => void; onGoEvents: () => void; onGoDirectory: () => void; onOpenAdmin: () => void; }) {
   const { theme } = useTheme();
   const menuItems = [
     { icon: "🗺️", label: "Mapa de la Urbanización", desc: "Lugares e instalaciones de Las Gaviotas", sub: "map" as SubScreen, color: "#2E86AB" },
@@ -1461,11 +1472,14 @@ function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, notif
               </div>
               <div>
                 <p style={{ fontSize: 14, fontWeight: 700, margin: 0, color: theme.ink }}>Notificaciones</p>
-                <p style={{ fontSize: 12, color: theme.muted, margin: 0 }}>{notifEnabled ? "Activas" : "Desactivadas"}</p>
+                <p style={{ fontSize: 12, color: theme.muted, margin: 0 }}>{!notifEnabled ? "Desactivadas" : pushStatus === "activo" ? "Activas en este celular" : "Activas solo dentro de la app"}</p>
               </div>
             </div>
             <Switch on={notifEnabled} onToggle={onToggleNotif} label="Notificaciones" />
           </div>
+          {notifEnabled && pushStatus !== "activo" && (
+            <div style={{ padding: "0 16px 2px" }}><PushHint status={pushStatus} onActivate={onActivatePush} /></div>
+          )}
         </Card>
 
         {/* Menu items */}
@@ -1536,9 +1550,39 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
   const [subScreen, setSubScreen] = useState<SubScreen>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
-  const [notifications, setNotifications] = useState<Notification[]>(NOTIFICATIONS_DATA);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notifEnabled, setNotifEnabled] = useState<boolean>(readNotifPref);
-  function toggleNotif() { setNotifEnabled((v) => { saveNotifPref(!v); return !v; }); }
+  const [pushStatus, setPushStatus] = useState<PushStatus>("inactivo");
+
+  async function loadNotifications() {
+    const list = await fetchNotifications();
+    const read = readIds();
+    setNotifications(list.map((n) => ({ id: n.id, icon: n.icon, title: n.title, body: n.body, time: timeAgo(n.createdAt), read: read.has(n.id), screen: n.screen })));
+  }
+  function openScreen(p: string | null) {
+    if (p === "news" || p === "events") { setScreen(p); setSubScreen(null); }
+    else if (p === "lostfound") { setScreen("more"); setSubScreen("lostfound"); }
+  }
+  // Avisos: cargar al abrir, al volver a la app, y abrir la pantalla del aviso tocado.
+  useEffect(() => {
+    void loadNotifications();
+    void getPushStatus().then(setPushStatus);
+    const pantalla = new URLSearchParams(window.location.search).get("pantalla");
+    if (pantalla) { openScreen(pantalla); window.history.replaceState(null, "", window.location.pathname); }
+    const onVisible = () => { if (document.visibilityState === "visible") void loadNotifications(); };
+    const onMessage = (e: MessageEvent) => { if (e.data?.tipo === "abrir") { openScreen(e.data.pantalla); void loadNotifications(); } };
+    document.addEventListener("visibilitychange", onVisible);
+    navigator.serviceWorker?.addEventListener("message", onMessage);
+    return () => { document.removeEventListener("visibilitychange", onVisible); navigator.serviceWorker?.removeEventListener("message", onMessage); };
+  }, []);
+
+  async function activatePush() { setPushStatus(await enablePush()); }
+  async function toggleNotif() {
+    const next = !notifEnabled;
+    setNotifEnabled(next); saveNotifPref(next);
+    if (next) await activatePush();
+    else { await disablePush(); setPushStatus(await getPushStatus()); }
+  }
   const [showAdmin, setShowAdmin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -1559,9 +1603,11 @@ export default function App() {
     });
   }
   function markNotification(id: number) {
+    const ids = readIds(); ids.add(id); saveReadIds(ids);
     setNotifications((ns) => ns.map((n) => n.id === id ? { ...n, read: true } : n));
   }
   function markAllRead() {
+    const ids = readIds(); notifications.forEach((n) => ids.add(n.id)); saveReadIds(ids);
     setNotifications((ns) => ns.map((n) => ({ ...n, read: true })));
   }
 
@@ -1594,7 +1640,7 @@ export default function App() {
     about: <AboutScreen onBack={() => setSubScreen(null)} />,
     privacy: <PrivacyScreen onBack={() => setSubScreen(null)} />,
     participate: <ParticipateScreen onBack={() => setSubScreen(null)} />,
-    notifications: <NotificationsScreen notifications={notifications} onMark={(id) => id === -1 ? markAllRead() : markNotification(id)} onBack={() => setSubScreen(null)} enabled={notifEnabled} onToggle={toggleNotif} />,
+    notifications: <NotificationsScreen notifications={notifications} onMark={(id) => id === -1 ? markAllRead() : markNotification(id)} onOpen={(n) => { markNotification(n.id); openScreen(n.screen); }} onBack={() => setSubScreen(null)} enabled={notifEnabled} onToggle={toggleNotif} pushStatus={pushStatus} onActivatePush={activatePush} />,
     map: <MapScreen onBack={() => setSubScreen(null)} theme={theme} />,
     chat: <ChatScreen onBack={() => setSubScreen(null)} theme={theme} />,
     certificate: <CertificateScreen onBack={() => setSubScreen(null)} />,
@@ -1607,7 +1653,7 @@ export default function App() {
     news: <NewsScreen favorites={favorites} onToggleFav={toggleFav} />,
     events: <EventsScreen favorites={favorites} onToggleFav={toggleFav} />,
     directory: <DirectoryScreen />,
-    more: subScreen ? subScreenMap[subScreen] : <MoreScreen user={user} onSubScreen={setSubScreen} onLogout={handleLogout} darkMode={darkMode} onToggleDark={() => setDarkMode(!darkMode)} notifEnabled={notifEnabled} onToggleNotif={toggleNotif} onGoNews={() => setScreen("news")} onGoEvents={() => setScreen("events")} onGoDirectory={() => setScreen("directory")} onOpenAdmin={() => setShowAdmin(true)} />,
+    more: subScreen ? subScreenMap[subScreen] : <MoreScreen user={user} onSubScreen={setSubScreen} onLogout={handleLogout} darkMode={darkMode} onToggleDark={() => setDarkMode(!darkMode)} notifEnabled={notifEnabled} onToggleNotif={toggleNotif} pushStatus={pushStatus} onActivatePush={activatePush} onGoNews={() => setScreen("news")} onGoEvents={() => setScreen("events")} onGoDirectory={() => setScreen("directory")} onOpenAdmin={() => setShowAdmin(true)} />,
   };
 
   const currentContent = screen === "more" && subScreen ? subScreenMap[subScreen] : mainScreens[screen];
