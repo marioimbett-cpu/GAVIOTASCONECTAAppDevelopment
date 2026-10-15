@@ -194,13 +194,14 @@ function StarIcon({ filled }: { filled: boolean }) {
   return <svg width="18" height="18" viewBox="0 0 24 24" fill={filled ? CORAL : "none"} stroke={CORAL} strokeWidth="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>;
 }
 
-function BellIcon({ unread, color = "#8AA0BA" }: { unread: number; color?: string }) {
+function BellIcon({ unread, color = "#8AA0BA", muted = false }: { unread: number; color?: string; muted?: boolean }) {
   return (
     <div style={{ position: "relative" as const, display: "flex" }}>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.7">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.7" style={{ opacity: muted ? 0.6 : 1 }}>
         <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" strokeLinecap="round" strokeLinejoin="round" />
+        {muted && <line x1="3" y1="3" x2="21" y2="21" strokeLinecap="round" />}
       </svg>
-      {unread > 0 && (
+      {!muted && unread > 0 && (
         <div style={{ position: "absolute" as const, top: -6, right: -7, width: 16, height: 16, borderRadius: "50%", background: "#E0475B", boxShadow: "0 0 0 2px #00163D", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: "white", fontWeight: 800 }}>
           {unread > 9 ? "9+" : unread}
         </div>
@@ -470,10 +471,46 @@ function NewPasswordScreen({ onDone }: { onDone: () => void }) {
   );
 }
 
+// ── Interruptor (switch) ───────────────────────────────────────────────────
+function Switch({ on, onToggle, label }: { on: boolean; onToggle: () => void; label: string }) {
+  const { theme } = useTheme();
+  return (
+    <button role="switch" aria-checked={on} aria-label={label} onClick={onToggle} style={{ width: 48, height: 28, borderRadius: 100, background: on ? TEAL : theme.border, border: "none", cursor: "pointer", position: "relative" as const, transition: "background 0.25s", flexShrink: 0 }}>
+      <div style={{ position: "absolute" as const, top: 3, left: on ? 22 : 3, width: 22, height: 22, borderRadius: "50%", background: "white", transition: "left 0.25s", boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }} />
+    </button>
+  );
+}
+
+// Preferencia de notificaciones guardada en este dispositivo.
+const NOTIF_KEY = "gc:notificaciones";
+function readNotifPref(): boolean {
+  try { return localStorage.getItem(NOTIF_KEY) !== "off"; } catch { return true; }
+}
+function saveNotifPref(on: boolean) {
+  try { localStorage.setItem(NOTIF_KEY, on ? "on" : "off"); } catch { /* sin almacenamiento */ }
+}
+
 // ── Notifications Panel ────────────────────────────────────────────────────
-function NotificationsScreen({ notifications, onMark, onBack }: { notifications: Notification[]; onMark: (id: number) => void; onBack: () => void }) {
+function NotificationsScreen({ notifications, onMark, onBack, enabled, onToggle }: { notifications: Notification[]; onMark: (id: number) => void; onBack: () => void; enabled: boolean; onToggle: () => void }) {
   const { theme } = useTheme();
   const unread = notifications.filter((n) => !n.read).length;
+
+  if (!enabled) {
+    return (
+      <div>
+        <div style={{ padding: "24px 20px 0" }}>
+          <BackButton onBack={onBack} />
+          <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 24, fontWeight: 700, margin: "0 0 16px", color: theme.ink }}>Notificaciones</h1>
+          <div style={{ textAlign: "center" as const, padding: "50px 20px", color: theme.muted }}>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>🔕</div>
+            <p style={{ fontSize: 15, fontWeight: 700, color: theme.ink, margin: "0 0 6px" }}>Notificaciones desactivadas</p>
+            <p style={{ fontSize: 13, margin: "0 0 20px", lineHeight: 1.5 }}>No verás avisos de noticias, eventos ni de la JAC.</p>
+            <button onClick={onToggle} style={{ padding: "11px 22px", borderRadius: 12, background: TEAL, color: "white", fontSize: 14, fontWeight: 700, border: "none", cursor: "pointer" }}>Activar notificaciones</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -1339,7 +1376,7 @@ function AdminAccess({ onOpen, theme }: { onOpen: () => void; theme: ReturnType<
   );
 }
 
-function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, onGoNews, onGoEvents, onGoDirectory, onOpenAdmin }: { user: User | null; onSubScreen: (s: SubScreen) => void; onLogout: () => void; darkMode: boolean; onToggleDark: () => void; onGoNews: () => void; onGoEvents: () => void; onGoDirectory: () => void; onOpenAdmin: () => void; }) {
+function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, notifEnabled, onToggleNotif, onGoNews, onGoEvents, onGoDirectory, onOpenAdmin }: { user: User | null; onSubScreen: (s: SubScreen) => void; onLogout: () => void; darkMode: boolean; onToggleDark: () => void; notifEnabled: boolean; onToggleNotif: () => void; onGoNews: () => void; onGoEvents: () => void; onGoDirectory: () => void; onOpenAdmin: () => void; }) {
   const { theme } = useTheme();
   const menuItems = [
     { icon: "🗺️", label: "Mapa de la Urbanización", desc: "Lugares e instalaciones de Las Gaviotas", sub: "map" as SubScreen, color: "#2E86AB" },
@@ -1411,9 +1448,23 @@ function MoreScreen({ user, onSubScreen, onLogout, darkMode, onToggleDark, onGoN
                 <p style={{ fontSize: 12, color: theme.muted, margin: 0 }}>{darkMode ? "Activo" : "Inactivo"}</p>
               </div>
             </div>
-            <button onClick={onToggleDark} style={{ width: 48, height: 28, borderRadius: 100, background: darkMode ? TEAL : theme.border, border: "none", cursor: "pointer", position: "relative" as const, transition: "background 0.25s", flexShrink: 0 }}>
-              <div style={{ position: "absolute" as const, top: 3, left: darkMode ? 22 : 3, width: 22, height: 22, borderRadius: "50%", background: "white", transition: "left 0.25s", boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }} />
-            </button>
+            <Switch on={darkMode} onToggle={onToggleDark} label="Modo oscuro" />
+          </div>
+        </Card>
+
+        {/* Notifications toggle */}
+        <Card style={{ marginBottom: 12 }}>
+          <div style={{ padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <div style={{ width: 38, height: 38, borderRadius: 10, background: notifEnabled ? TEAL + "18" : theme.surface, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>
+                {notifEnabled ? "🔔" : "🔕"}
+              </div>
+              <div>
+                <p style={{ fontSize: 14, fontWeight: 700, margin: 0, color: theme.ink }}>Notificaciones</p>
+                <p style={{ fontSize: 12, color: theme.muted, margin: 0 }}>{notifEnabled ? "Activas" : "Desactivadas"}</p>
+              </div>
+            </div>
+            <Switch on={notifEnabled} onToggle={onToggleNotif} label="Notificaciones" />
           </div>
         </Card>
 
@@ -1486,6 +1537,8 @@ export default function App() {
   const [subScreen, setSubScreen] = useState<SubScreen>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [notifications, setNotifications] = useState<Notification[]>(NOTIFICATIONS_DATA);
+  const [notifEnabled, setNotifEnabled] = useState<boolean>(readNotifPref);
+  function toggleNotif() { setNotifEnabled((v) => { saveNotifPref(!v); return !v; }); }
   const [showAdmin, setShowAdmin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -1541,7 +1594,7 @@ export default function App() {
     about: <AboutScreen onBack={() => setSubScreen(null)} />,
     privacy: <PrivacyScreen onBack={() => setSubScreen(null)} />,
     participate: <ParticipateScreen onBack={() => setSubScreen(null)} />,
-    notifications: <NotificationsScreen notifications={notifications} onMark={(id) => id === -1 ? markAllRead() : markNotification(id)} onBack={() => setSubScreen(null)} />,
+    notifications: <NotificationsScreen notifications={notifications} onMark={(id) => id === -1 ? markAllRead() : markNotification(id)} onBack={() => setSubScreen(null)} enabled={notifEnabled} onToggle={toggleNotif} />,
     map: <MapScreen onBack={() => setSubScreen(null)} theme={theme} />,
     chat: <ChatScreen onBack={() => setSubScreen(null)} theme={theme} />,
     certificate: <CertificateScreen onBack={() => setSubScreen(null)} />,
@@ -1554,7 +1607,7 @@ export default function App() {
     news: <NewsScreen favorites={favorites} onToggleFav={toggleFav} />,
     events: <EventsScreen favorites={favorites} onToggleFav={toggleFav} />,
     directory: <DirectoryScreen />,
-    more: subScreen ? subScreenMap[subScreen] : <MoreScreen user={user} onSubScreen={setSubScreen} onLogout={handleLogout} darkMode={darkMode} onToggleDark={() => setDarkMode(!darkMode)} onGoNews={() => setScreen("news")} onGoEvents={() => setScreen("events")} onGoDirectory={() => setScreen("directory")} onOpenAdmin={() => setShowAdmin(true)} />,
+    more: subScreen ? subScreenMap[subScreen] : <MoreScreen user={user} onSubScreen={setSubScreen} onLogout={handleLogout} darkMode={darkMode} onToggleDark={() => setDarkMode(!darkMode)} notifEnabled={notifEnabled} onToggleNotif={toggleNotif} onGoNews={() => setScreen("news")} onGoEvents={() => setScreen("events")} onGoDirectory={() => setScreen("directory")} onOpenAdmin={() => setShowAdmin(true)} />,
   };
 
   const currentContent = screen === "more" && subScreen ? subScreenMap[subScreen] : mainScreens[screen];
@@ -1573,7 +1626,7 @@ export default function App() {
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <button onClick={() => { setScreen("more"); setSubScreen("notifications"); }} aria-label="Notificaciones" style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.16)", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <BellIcon unread={unreadCount} color="#FFFFFF" />
+              <BellIcon unread={unreadCount} color="#FFFFFF" muted={!notifEnabled} />
             </button>
             {user && (
               <div style={{ position: "relative" as const }}>
