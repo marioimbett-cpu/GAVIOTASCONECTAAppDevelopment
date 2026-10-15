@@ -675,6 +675,36 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
         </div>
       </div>
 
+      {/* Servicios de la urbanización — justo debajo de los accesos rápidos */}
+      <div style={{ padding: "18px 20px 0" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
+          <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 19, fontWeight: 600, margin: 0, color: theme.ink }}>Servicios de la urbanización</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 8 }}>
+          {[
+            { icon: "📋", label: "Certif. vecindad", color: TEAL, action: () => onSubScreen("certificate") },
+            { icon: "🐾", label: "Perdidos", color: CORAL, action: () => onSubScreen("lostfound") },
+            { icon: "🤖", label: "Asistente", color: TEAL, action: () => onSubScreen("chat") },
+            { icon: "🗳️", label: "Participar", color: "#7B4FBF", action: () => onSubScreen("participate") },
+            { icon: "💬", label: "Contacto", color: TEAL, action: () => onSubScreen("contact") },
+            { icon: "🖼️", label: "Galería", color: "#2E86AB", action: () => onSubScreen("gallery") },
+            { icon: "ℹ️", label: "Acerca de", color: "#7B4FBF", action: () => onSubScreen("about") },
+            { icon: "🧰", label: "Oficios", color: TEAL, action: () => onSubScreen("oficios") },
+          ].map((s) => (
+            <button key={s.label} onClick={s.action} style={{
+              background: theme.card, border: `1px solid ${theme.border}`, borderRadius: 14,
+              padding: "12px 4px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+              cursor: "pointer",
+            }}>
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: s.color + "18", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>
+                {s.icon}
+              </div>
+              <span style={{ fontSize: 10, fontWeight: 700, color: theme.ink, textAlign: "center", lineHeight: 1.2 }}>{s.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Alert */}
       <div style={{ padding: "14px 20px 0" }}>
         <div style={{ background: "#FEF3C7", borderRadius: 14, padding: "12px 16px", display: "flex", gap: 10, alignItems: "center", border: "1px solid #FCD34D" }}>
@@ -726,36 +756,6 @@ function HomeScreen({ user, favorites, onToggleFav, onNotifications, onOpenMap, 
             </div>
           </div>
         </Card>
-      </div>
-
-      {/* Services grid — all "Más" items */}
-      <div style={{ padding: "20px 20px 0" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
-          <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 19, fontWeight: 600, margin: 0, color: theme.ink }}>Servicios de la urbanización</h2>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 8 }}>
-          {[
-            { icon: "📋", label: "Certif. vecindad", color: TEAL, action: () => onSubScreen("certificate") },
-            { icon: "🐾", label: "Perdidos", color: CORAL, action: () => onSubScreen("lostfound") },
-            { icon: "🤖", label: "Asistente", color: TEAL, action: () => onSubScreen("chat") },
-            { icon: "🗳️", label: "Participar", color: "#7B4FBF", action: () => onSubScreen("participate") },
-            { icon: "💬", label: "Contacto", color: TEAL, action: () => onSubScreen("contact") },
-            { icon: "🖼️", label: "Galería", color: "#2E86AB", action: () => onSubScreen("gallery") },
-            { icon: "ℹ️", label: "Acerca de", color: "#7B4FBF", action: () => onSubScreen("about") },
-            { icon: "🧰", label: "Oficios", color: TEAL, action: () => onSubScreen("oficios") },
-          ].map((s) => (
-            <button key={s.label} onClick={s.action} style={{
-              background: theme.card, border: `1px solid ${theme.border}`, borderRadius: 14,
-              padding: "12px 4px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-              cursor: "pointer",
-            }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: s.color + "18", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>
-                {s.icon}
-              </div>
-              <span style={{ fontSize: 10, fontWeight: 700, color: theme.ink, textAlign: "center", lineHeight: 1.2 }}>{s.label}</span>
-            </button>
-          ))}
-        </div>
       </div>
 
       <div style={{ padding: "12px 20px 0" }}>
